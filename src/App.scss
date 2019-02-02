@@ -1,3 +1,5 @@
+// RESET CSS
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -42,15 +44,25 @@ table {
 	border-spacing: 0;
 }
 
+// VARIABLES
 
-
+$light: #EFE2D2;
+$bright: #EDAF80;
+$muted: #9F8588;
+$gray: #4C4E5A;
+$deep: #86534F;
+$font-stack: 'Raleway', sans-serif;
 
 
 * {
-  background-color: #efe2d2;
-  color: #86534f;
+  background-color: $light;
+  color: $deep;
 }
 
 h1, h2, span, button, input {
-  font-family: sans-serif;
+  font-family: $font-stack;
+}
+
+a {
+	color: $muted
 }

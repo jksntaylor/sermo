@@ -1,0 +1,7 @@
+-- CREATE TABLE reddit_users (
+--     id SERIAL PRIMARY KEY,
+--     username VARCHAR,
+--     hash VARCHAR,
+--     email VARCHAR,
+--     savedPosts VARCHAR []
+-- )
