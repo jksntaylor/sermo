@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import User from './user/user';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
+import Posts from './posts/posts';
 
 class Home extends Component {
     componentDidMount() {
@@ -14,6 +15,7 @@ class Home extends Component {
             <div>
                 <h1>Home</h1>
                 <User />
+                <Posts />
             </div>
         )
     }

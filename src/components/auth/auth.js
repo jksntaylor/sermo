@@ -1,8 +1,26 @@
 import React, {Component} from 'react';
 import Login from './login';
 import Register from './register';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import {loggedIn} from '../../redux/reducer';
+import {withRouter} from 'react-router-dom';
 
-export default class Auth extends Component {
+
+class Auth extends Component {
+
+    componentDidMount() {
+        axios.get('/api/checkAuth').then(res => {
+            if (res.data) {
+                console.log(res.data)
+                this.props.loggedIn(res.data)
+                this.props.history.push('/home');
+            } else {
+                console.log(res.data);
+            }
+        })
+    }
+
     render() {
         return (
             <div>
@@ -13,3 +31,5 @@ export default class Auth extends Component {
         )
     }
 }
+
+export default withRouter(connect(null, {loggedIn})(Auth));

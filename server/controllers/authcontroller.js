@@ -41,6 +41,8 @@ module.exports = {
             return res.status(403).send('Invalid Credentials');
         }
 
+        //REQ.SESSION COMPETENCIES
+
         req.session.user = user;
         res.status(200).send(req.session.user);
     },
@@ -48,5 +50,13 @@ module.exports = {
     logout: (req, res) => {
         req.session.destroy();
         return res.sendStatus(200);
+    },
+
+    checkAuth: (req, res) => {
+        if (req.session.user) {
+            return res.status(200).send(req.session.user)
+        } else {
+             res.status(200).send(null);
+        }
     }
 }
