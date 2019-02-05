@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
+
 class NewPost extends Component {
     constructor() {
         super();
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
+            title: '',
+            text: ''
         }
     }
 
@@ -16,19 +20,35 @@ class NewPost extends Component {
     closeModal = () => {
         this.setState({modalIsOpen: false});
     }
+
+    post = () => {
+
+    }
+
+    handleTitleChange = e => {
+        this.setState({
+            title: e.target.value
+        })
+    }
+
+    handleTextChange = e => {
+        this.setState({
+            text: e.target.value
+        })
+    }
     
     render() {
         return (
             <div>
-                <button onClick={this.openModal}>Open Modal</button>
+                <button onClick={this.openModal}>New Post</button>
                 <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
         
                 <button onClick={this.closeModal}>x</button>
-                <input placeholder='Title' />
-                <input placeholder='Text' />
+                <input placeholder='Title' onChange={this.handleTitleChange}/>
+                <input placeholder='Text' onChange={this.handleTextChange}/>
                 <button>Post</button>
                 </Modal>
             </div>

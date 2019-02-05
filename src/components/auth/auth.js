@@ -12,11 +12,8 @@ class Auth extends Component {
     componentDidMount() {
         axios.get('/api/checkAuth').then(res => {
             if (res.data) {
-                console.log(res.data)
                 this.props.loggedIn(res.data)
                 this.props.history.push('/home');
-            } else {
-                console.log(res.data);
             }
         })
     }

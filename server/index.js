@@ -8,6 +8,7 @@ const {CONNECTION_STRING, SERVER_PORT, SESSION_SECRET} = process.env;
 
 // CONTROLLERS
 const ac = require('./controllers/authcontroller.js')
+const pc = require('./controllers/postcontroller.js')
 
 const app = express();
 
@@ -34,6 +35,9 @@ app.post('/api/login', ac.login);
 app.post('/api/register', ac.register);
 app.post('/api/logout', ac.logout);
 app.get('/api/checkAuth', ac.checkAuth);
+
+//POSTS
+app.get('/api/initialLoadPosts', pc.initialLoad)
 
 app.listen(SERVER_PORT, () => {
     console.log('i need some goddamn jellybeans', SERVER_PORT)
