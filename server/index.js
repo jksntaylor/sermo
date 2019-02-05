@@ -38,6 +38,7 @@ app.get('/api/checkAuth', ac.checkAuth);
 
 //POSTS
 app.get('/api/initialLoadPosts', pc.initialLoad)
+app.post('/api/newpost', pc.newPost)
 
 app.listen(SERVER_PORT, () => {
     console.log('i need some goddamn jellybeans', SERVER_PORT)

@@ -19,11 +19,15 @@ class Posts extends Component {
             })
         })
     }
+
+    updatePosts = arr => {
+        this.setState({posts: arr});
+    }
     
     render() {
         if (this.state.posts) {
-        var posts = this.state.posts.map((post, i) => {
-            return <Post post={post} key={i}/>
+        var posts = this.state.posts.map(post => {
+            return <Post post={post} key={post.id}/>
         })
         } else {
         posts = <h1>No posts available</h1>
@@ -32,7 +36,7 @@ class Posts extends Component {
             <div>
                 <h1>Posts</h1>
                 <div>{posts}</div>
-                <NewPost posts={this.state.posts}/>
+                <NewPost posts={this.state.posts} updatePosts={this.updatePosts}/>
             </div>
         )
     }

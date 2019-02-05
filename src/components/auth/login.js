@@ -32,6 +32,13 @@ class Login extends Component {
         position: toast.POSITION.TOP_CENTER
     });
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+                this.login()
+        } 
+    }
+    
+
     login = () => {
         const {username, password} = this.state;
         axios.post('/api/login', {username, password}).then(response => {
@@ -54,8 +61,7 @@ class Login extends Component {
                 <ToastContainer/>
                 <h2>Login</h2>
                 <input placeholder='username' value={this.state.username} onChange={this.handleUsernameChange}/>
-                <input placeholder='password' value={this.state.password} onChange={this.handlePasswordChange} type='password'/>
-                <input type='checkbox' onChange={this.handleCheckboxChange}/><span>Remember Me</span>
+                <input placeholder='password' value={this.state.password} onChange={this.handlePasswordChange} type='password' onKeyPress={this.handleKeyPress}/>
                 <button onClick={this.login}>Login</button>
             </div>
         )

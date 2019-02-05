@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {loggedOut} from '../../../redux/reducer';
+import axios from 'axios';
 
 class Logout extends Component {
         
     logout = () => {
-        this.props.loggedOut();
-        this.props.history.push('/')
+        axios.post('/api/logout').then(() => {
+            this.props.loggedOut();
+            this.props.history.push('/')
+        })
     }
 
     render() {

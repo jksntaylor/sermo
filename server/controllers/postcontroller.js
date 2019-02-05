@@ -2,7 +2,7 @@ module.exports = {
     newPost: async (req, res) => {
         const db = req.app.get('db');
         const {id, username} = req.session.user
-        const {title, text} = req.session;
+        const {title, text} = req.body;
         const time = new Date();
 
         const newPost = await db.newPost([id, title, text, time, username]);
