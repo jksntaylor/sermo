@@ -24,7 +24,7 @@ export default class Post extends Component {
                 <div onClick={this.openModal}>
                     <h1>{author}</h1>
                     <h2>{title}</h2>
-                    <p>{text.slice(0,50)}. . .</p>
+                    <p>{text.slice(0,100)}. . .</p>
                     <h6>{time}</h6>
                 </div>
                 <Modal
