@@ -1,3 +1,4 @@
 SELECT * FROM reddit_posts
 ORDER BY id DESC
-LIMIT 20;
+LIMIT $1
+OFFSET $2

@@ -12,7 +12,14 @@ module.exports = {
 
     initialLoad: async (req, res) => {
         const db = req.app.get('db');
-        const posts = await db.initialLoadPosts();
+        const posts = await db.getNewPosts([20, 0]);
         return res.status(200).send(posts);  
+    },
+
+    sortPosts: async (req, res) => {
+        const db = req.app.get('db');
+        const currentTime = new Date.getTime();
+        const {filter, limit, page} = req.params;
+        console.log(req.params, currentTime);
     }
 }

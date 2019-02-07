@@ -7,13 +7,24 @@ class Posts extends Component {
     constructor() {
         super();
         this.state = {
-            posts: []
+            posts: [],
+            filter: 'new',
+            limit: 25,
+            page: 1
         }
     }
 
     componentDidMount = () => {
         axios.get('/api/initialLoadPosts').then(res => {
-            console.log('success');
+            this.setState({
+                posts: res.data
+            })
+        });
+        this.handleSortPosts();
+    }
+
+    handleSortPosts = () => {
+        axios.get(`/api/${this.state.filter}/${this.state.limit}/${this.state.page}`).then(res => {
             this.setState({
                 posts: res.data
             })
