@@ -19,12 +19,17 @@ export default class Post extends Component {
     
     render() {
         const {author, time, title, text} = this.state.post
+        if (text.length>100) {
+            var teaserdots = '...'
+        } else {
+            teaserdots = null
+        }
         return (
-            <div>
+            <div style={{border: '1px solid red', margin: '2px'}}>
                 <div onClick={this.openModal}>
                     <h1>{author}</h1>
                     <h2>{title}</h2>
-                    <p>{text.slice(0,100)}. . .</p>
+                    <p>{text.slice(0,100)}{teaserdots}</p>
                     <h6>{time}</h6>
                 </div>
                 <Modal

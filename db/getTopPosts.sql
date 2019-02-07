@@ -1,0 +1,4 @@
+SELECT * FROM reddit_posts
+ORDER BY (CARDINALITY(upvoters)-CARDINALITY(downvoters)) DESC;
+LIMIT $1
+OFFSET $2;
