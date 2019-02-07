@@ -9,6 +9,7 @@ class Posts extends Component {
         this.state = {
             posts: [],
             filter: 'new',
+            time: 'day',
             limit: 25,
             page: 1
         }
@@ -24,7 +25,8 @@ class Posts extends Component {
     }
 
     handleSortPosts = () => {
-        axios.get(`/api/${this.state.filter}/${this.state.limit}/${this.state.page}`).then(res => {
+        const {filter, time, limit, page} = this.state;
+        axios.get(`/api/${filter}/${time}/${limit}/${page}`).then(res => {
             this.setState({
                 posts: res.data
             })

@@ -3,9 +3,9 @@ module.exports = {
         const db = req.app.get('db');
         const {id, username} = req.session.user
         const {title, text} = req.body;
-        const time = new Date();
-
-        const newPost = await db.newPost([id, title, text, time, username]);
+        const date = new Date();
+        const time = date.getTime().toString();
+        const newPost = await db.newPost([id, title, text, date, username, time]);
 
         return res.status(200).send(newPost)
     },
@@ -18,8 +18,17 @@ module.exports = {
 
     sortPosts: async (req, res) => {
         const db = req.app.get('db');
-        const currentTime = new Date.getTime();
+        const currentDate = new Date;
+        const currentTime = currentDate.getTime();
         const {filter, limit, page} = req.params;
-        console.log(req.params, currentTime);
+        // console.log(req.params, currentDate, currentTime);
+        if (filter==='new') {
+            var posts = await db.getNewPosts([])
+        } else if (filter==='top') {
+            posts = await db.getTopPosts([])
+        } else {
+            posts = await db.getActivePosts([])
+        }
+        res.status(200).send(posts)
     }
 }
