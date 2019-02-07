@@ -21,7 +21,7 @@ class Posts extends Component {
                 posts: res.data
             })
         });
-        this.handleSortPosts();
+        // this.handleSortPosts();
     }
 
     handleSortPosts = () => {
