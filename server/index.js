@@ -39,7 +39,7 @@ app.get('/api/checkAuth', ac.checkAuth);
 //POSTS
 app.post('/api/newpost', pc.newPost)
 app.get('/api/initialLoadPosts', pc.initialLoad)
-app.get('/api/:filter/:limit/:page', pc.sortPosts)
+app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
 
 app.listen(SERVER_PORT, () => {
     console.log('i need some goddamn jellybeans', SERVER_PORT)

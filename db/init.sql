@@ -30,5 +30,6 @@
 -- CREATE TABLE reddit_posts_comments (
 --     id SERIAL PRIMARY KEY,
 --     parent_id INTEGER,
---     comment_id INTEGER
+--     comment_id INTEGER,
+--     post_id INTEGER
 -- )
