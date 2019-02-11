@@ -26,7 +26,7 @@ module.exports = {
 
     login: async (req, res) => {
         const db = req.app.get('db');
-        const {username, password} = req.body;
+        const {username, password, remember} = req.body;
 
         const getUser = await db.getUser([username]);
         const user = getUser[0];
@@ -44,6 +44,15 @@ module.exports = {
         //REQ.SESSION COMPETENCIES
 
         req.session.user = user;
+        if (remember) {
+            console.log('remember');
+            var year = 86400000 * 365;
+            req.session.cookie.expires = new Date(Date.now() + year);
+            req.session.cookie.maxAge = year;
+        } else {
+            console.log('no remember');
+        }
+        console.log(req.session.cookie.expires, req.session.cookie.maxAge)
         res.status(200).send(req.session.user);
     },
 

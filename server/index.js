@@ -25,7 +25,6 @@ app.use(session({
     secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
-    expires: 2147483647000
 }));
 
 // REQUEST LEVEL MIDDLEWARE COMPETENCIES

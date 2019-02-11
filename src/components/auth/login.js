@@ -40,8 +40,8 @@ class Login extends Component {
     
 
     login = () => {
-        const {username, password} = this.state;
-        axios.post('/api/login', {username, password}).then(response => {
+        const {username, password, remember} = this.state;
+        axios.post('/api/login', {username, password, remember}).then(response => {
             this.setState({
                 username: '',
                 password: '',
@@ -62,6 +62,7 @@ class Login extends Component {
                 <h2>Login</h2>
                 <input placeholder='username' value={this.state.username} onChange={this.handleUsernameChange}/>
                 <input placeholder='password' value={this.state.password} onChange={this.handlePasswordChange} type='password' onKeyPress={this.handleKeyPress}/>
+                <input type='checkbox' value={this.state.remember} onChange={this.handleCheckboxChange}/><span>Remember Me</span>
                 <button onClick={this.login}>Login</button>
             </div>
         )
