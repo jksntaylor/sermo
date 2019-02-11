@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Modal from 'react-modal';
+import NewComment from './newcomment';
 
 export default class Post extends Component {
     constructor(props) {
@@ -40,6 +41,7 @@ export default class Post extends Component {
                     <h6>{time}</h6>
                     <h2>{title}</h2>
                     <p>{text}</p>
+                    <NewComment parentIsPost={true}/>
                 </Modal>
             </div>
         )
