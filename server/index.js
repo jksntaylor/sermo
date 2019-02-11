@@ -9,6 +9,7 @@ const {CONNECTION_STRING, SERVER_PORT, SESSION_SECRET} = process.env;
 // CONTROLLERS
 const ac = require('./controllers/authcontroller.js')
 const pc = require('./controllers/postcontroller.js')
+const cc = require('./controllers/commentcontroller.js')
 
 const app = express();
 
@@ -39,6 +40,10 @@ app.get('/api/checkAuth', ac.checkAuth);
 app.post('/api/newpost', pc.newPost)
 app.get('/api/initialLoadPosts', pc.initialLoad)
 app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
+
+//COMMENTS
+app.post('/api/newComment', cc.newComment)
+app.get('/api/:postID/comments', cc.getPostComments)
 
 app.listen(SERVER_PORT, () => {
     console.log('i need some goddamn jellybeans', SERVER_PORT)
