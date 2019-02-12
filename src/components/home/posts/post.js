@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Modal from 'react-modal';
 import NewComment from './newcomment';
 import axios from 'axios';
+import Comments from './comments';
 
 export default class Post extends Component {
     constructor(props) {
@@ -26,6 +27,11 @@ export default class Post extends Component {
             this.setState({comments: res.data})
         })
     }
+
+    componentDidMount = () => {
+        this.handleNewComment();
+    }
+
     render() {
         const {author, time, title, text} = this.state.post
         if (text.length>100) {
@@ -50,6 +56,7 @@ export default class Post extends Component {
                     <h2>{title}</h2>
                     <p>{text}</p>
                     <NewComment parentIsPost={true} parentID={this.props.postID} handleNewComment={this.handleNewComment}/>
+                    <Comments comments={this.state.comments}/>
                 </Modal>
             </div>
         )
