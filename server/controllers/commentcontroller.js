@@ -26,5 +26,16 @@ module.exports = {
 
     getCommentComments: async (req, res) => {
         console.log('working on it')
+    },
+
+    deleteComment: async (req, res) => {
+        const db =req.app.get('db')
+        const {id} = req.params
+        try {
+            db.deleteComment([+id]);
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(500).send(error)
+        }
     }
 }

@@ -44,6 +44,8 @@ app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
 //COMMENTS
 app.post('/api/newComment', cc.newComment)
 app.get('/api/:postID/comments', cc.getPostComments)
+app.post('/api/deleteComment/:id', cc.deleteComment)
+// app.post('/api/editComment/:id', cc.editComment)
 
 app.listen(SERVER_PORT, () => {
     console.log('i need some goddamn jellybeans', SERVER_PORT)

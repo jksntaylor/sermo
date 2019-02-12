@@ -56,7 +56,7 @@ export default class Post extends Component {
                     <h2>{title}</h2>
                     <p>{text}</p>
                     <NewComment parentIsPost={true} parentID={this.props.postID} handleNewComment={this.handleNewComment}/>
-                    <Comments comments={this.state.comments}/>
+                    <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
                 </Modal>
             </div>
         )

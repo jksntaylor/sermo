@@ -1,21 +1,16 @@
 import React from 'react';
+import Comment from './comment';
 
-export default function Comments (props) {
-        if (props.comments) {
-            var comments = props.comments.map(comment => {
-                const {author, text, date} = comment;
-                return (
-                    <div key={comment.id}>
-                        <h1>{author}</h1>
-                        <h2>{date}</h2>
-                        <p>{text}</p>
-                    </div>
-                )
-            })
-        }
+export default function Comments (props)  {
+    var comments = props.comments.map(comment => {
         return (
-            <div>
-                {comments}
-            </div>
+            <Comment key={comment.id} comment={comment} handleNewComment={props.handleNewComment}/>
         )
+    });
+
+    return (
+        <div>
+            {comments}
+        </div>
+    )
 }
