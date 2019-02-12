@@ -36,14 +36,14 @@ class Comment extends Component {
     submitEdit = () => {
         let text = this.state.text;
         text += ' (edited)'
-        axios.post(`/api/editComment/${this.state.comment.id}`, {text}).then(() => {
+        axios.post(`/api/editComment/${this.state.comment.comment_id}`, {text}).then(() => {
             this.props.handleNewComment();
             this.closeEditor();
         })
     }
 
     deleteComment = () => {
-        axios.post(`/api/deleteComment/${this.state.comment.id}`).then(() => {
+        axios.post(`/api/deleteComment/${this.state.comment.comment_id}`).then(() => {
             this.props.handleNewComment();
         })
     }

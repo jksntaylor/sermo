@@ -24,9 +24,9 @@ export default class NewComment extends Component {
     
     comment = () => {
         const {text} = this.state;
-        const {parentID, parentIsPost} = this.props;
-        console.log(text, parentID, parentIsPost);
-        axios.post('/api/newComment', {text, parentID, parentIsPost}).then(() => {
+        const {parentID, postID} = this.props;
+        console.log(text, parentID, postID);
+        axios.post('/api/newComment', {text, parentID, postID}).then(() => {
             this.props.handleNewComment();
             this.setState({text: '', modalIsOpen: false})
         })

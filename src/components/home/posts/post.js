@@ -14,6 +14,7 @@ export default class Post extends Component {
             commentCount: 0
         }
     }
+
     openModal = () => {
         this.setState({modalIsOpen: true});
       }
@@ -57,7 +58,7 @@ export default class Post extends Component {
                     <h6>{time}</h6>
                     <h2>{title}</h2>
                     <p>{text}</p>
-                    <NewComment parentIsPost={true} parentID={this.props.postID} handleNewComment={this.handleNewComment}/>
+                    <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
                     <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
                 </Modal>
             </div>
