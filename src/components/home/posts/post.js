@@ -10,7 +10,8 @@ export default class Post extends Component {
         this.state = {
             modalIsOpen:false,
             post: this.props.post,
-            comments: []
+            comments: [],
+            commentCount: 0
         }
     }
     openModal = () => {
@@ -24,7 +25,7 @@ export default class Post extends Component {
     handleNewComment = () => {
         axios.get(`/api/${this.state.post.id}/comments`).then(res => {
             console.log(res);
-            this.setState({comments: res.data})
+            this.setState({comments: res.data, commentCount: res.data.length});
         })
     }
 
@@ -42,10 +43,11 @@ export default class Post extends Component {
         return (
             <div style={{border: '1px solid red', margin: '2px'}}>
                 <div onClick={this.openModal}>
-                    <h1>{author}</h1>
                     <h2>{title}</h2>
                     <p>{text.slice(0,100)}{teaserdots}</p>
+                    <h1>{author}</h1>
                     <h6>{time}</h6>
+                    <h5>{this.state.commentCount} comments</h5>
                 </div>
                 <Modal
                 isOpen={this.state.modalIsOpen}

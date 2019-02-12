@@ -34,8 +34,11 @@ class Comment extends Component {
     }
 
     submitEdit = () => {
-        axios.post(`/api/editComment/${this.state.comment.id}`).then(() => {
+        let text = this.state.text;
+        text += ' (edited)'
+        axios.post(`/api/editComment/${this.state.comment.id}`, {text}).then(() => {
             this.props.handleNewComment();
+            this.closeEditor();
         })
     }
 

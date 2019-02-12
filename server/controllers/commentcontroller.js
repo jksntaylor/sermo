@@ -28,7 +28,19 @@ module.exports = {
         console.log('working on it')
     },
 
-    deleteComment: async (req, res) => {
+    editComment: (req, res) => {
+        const db = req.app.get('db');
+        const {id} = req.params;
+        const {text} = req.body;
+        try {
+            db.editComment([text, +id]);
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(500).send(error)
+        }
+    },
+
+    deleteComment: (req, res) => {
         const db =req.app.get('db')
         const {id} = req.params
         try {
