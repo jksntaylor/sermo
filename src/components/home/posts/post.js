@@ -35,17 +35,24 @@ export default class Post extends Component {
     }
 
     render() {
-        const {author, time, title, text} = this.state.post
-        if (text.length>100) {
+        const {author, time, title, text, posttype, media} = this.state.post
+        if (posttype==='text'&&text.length>100) {
             var teaserdots = '...'
         } else {
             teaserdots = null
+        }
+        if (posttype==='text') {
+            var teasercontent = <p>{text.slice(0,100)}{teaserdots}</p>
+            var content = <p>{text}</p>
+        } else {
+            teasercontent = <img height='100' alt='' src={media}/>
+            content = <img alt='' src={media}/>
         }
         return (
             <div style={{border: '1px solid red', margin: '2px'}}>
                 <div onClick={this.openModal}>
                     <h2>{title}</h2>
-                    <p>{text.slice(0,100)}{teaserdots}</p>
+                    {teasercontent}
                     <h1>{author}</h1>
                     <h6>{time}</h6>
                     <h5>{this.state.commentCount} comments</h5>
@@ -57,7 +64,7 @@ export default class Post extends Component {
                     <h1>{author}</h1>
                     <h6>{time}</h6>
                     <h2>{title}</h2>
-                    <p>{text}</p>
+                    {content}
                     <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
                     <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
                 </Modal>

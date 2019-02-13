@@ -37,7 +37,8 @@ app.post('/api/logout', ac.logout);
 app.get('/api/checkAuth', ac.checkAuth);
 
 //POSTS
-app.post('/api/newpost', pc.newPost)
+app.post('/api/newTextPost', pc.newTextPost)
+app.post('/api/newMediaPost', pc.newMediaPost)
 app.get('/api/initialLoadPosts', pc.initialLoad)
 app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
 
