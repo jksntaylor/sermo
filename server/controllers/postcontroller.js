@@ -1,14 +1,26 @@
 module.exports = {
-    newPost: async (req, res) => {
+    newTextPost: async (req, res) => {
         const db = req.app.get('db');
         const {id, username} = req.session.user
         const {title, text} = req.body;
         const date = new Date();
         const time = date.getTime().toString();
-        const newPost = await db.newPost([id, title, text, date, username, time]);
+        const newPost = await db.newPost([id, title, text, date, username, time, 'text', null, [0, id], [0]]);
 
         return res.status(200).send(newPost)
     },
+
+    newMediaPost: async (req, res) => {
+        const db = req.app.get('db');
+        const {id, username} = req.session.user
+        const {title, link} = req.body
+        const date = new Date();
+        const time = date.getTime().toString();
+        const newPost = await db.newPost([id, title, null, date, username, time, 'media', link, [0, id], [0]]);
+
+        return res.status(200).send(newPost)
+    },
+
 
     initialLoad: async (req, res) => {
         const db = req.app.get('db');
