@@ -1,18 +1,20 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import Modal from 'react-modal';
 import NewComment from './newcomment';
 import axios from 'axios';
 import Comments from './comments';
 import Voting from './voting';
 
-export default class Post extends Component {
+class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
             modalIsOpen:false,
             post: this.props.post,
             comments: [],
-            commentCount: 0
+            commentCount: 0,
+            uservote: 'none'
         }
     }
 
@@ -31,8 +33,19 @@ export default class Post extends Component {
         })
     }
 
+    handleUservoteChange = val => {
+        this.setState({
+            uservote: val
+        })
+    }
+
     componentDidMount = () => {
         this.handleNewComment();
+        if (this.state.post.upvoters.includes(+this.props.user.id)) {
+            this.setState({uservote: 'up'})
+        } else if (this.state.post.downvoters.includes(+this.props.user.id)) {
+            this.setState({uservote: 'down'})
+        }
     }
 
     render() {
@@ -51,7 +64,7 @@ export default class Post extends Component {
         }
         return (
             <div style={{border: '1px solid red', margin: '2px'}}>
-                <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id}/>
+                <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
                 <div onClick={this.openModal}>
                     <h2>{title}</h2>
                     {teasercontent}
@@ -63,7 +76,7 @@ export default class Post extends Component {
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
-                    <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id}/>
+                    <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
                     <h1>{author}</h1>
                     <h6>{time}</h6>
                     <h2>{title}</h2>
@@ -75,3 +88,11 @@ export default class Post extends Component {
         )
     }
 }
+
+let mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(Post);
