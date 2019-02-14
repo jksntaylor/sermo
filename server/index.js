@@ -23,6 +23,9 @@ massive(CONNECTION_STRING).then(db => {
 
 app.use(bodyParser.json());
 
+// EXPRESS STATIC COMPETENCY, I DON'T NEED IT RIGHT NOW BUT THIS IS HOW YOU DO IT, JUST GET RID OF ALL LOCALHOST AS WELL
+// app.use( express.static(`${__dirname}/build`));
+
 app.use(session({
     secret: SESSION_SECRET,
     resave: true,
@@ -51,6 +54,9 @@ app.post('/api/newComment', cc.newComment)
 app.get('/api/:postID/comments', cc.getPostComments)
 app.post('/api/deleteComment/:id', cc.deleteComment)
 app.post('/api/editComment/:id', cc.editComment)
+
+// REST QUERY COMPETENCIES
+app.get('/api/searchusers', ac.searchusers)
 
 app.listen(SERVER_PORT, () => {
     console.log('i need some goddamn jellybeans', SERVER_PORT)

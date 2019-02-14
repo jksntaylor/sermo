@@ -80,7 +80,10 @@ class Register extends Component {
                 <input placeholder='username' onChange={this.handleUsernameChange}/>
                 <input placeholder='password' onChange={this.handlePasswordChange}/>
                 <input placeholder='confirm password' onChange={this.handleConfirmChange}/>
-                <input type='checkbox' onChange={this.handleRememberChange}/><span>Remember Me</span>
+                <div>
+                    <input type='checkbox' onChange={this.handleRememberChange}/>
+                    <span>Remember Me</span>
+                </div>
                 <button onClick={this.register}>Register</button>
             </div>
         )

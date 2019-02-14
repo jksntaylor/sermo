@@ -46,9 +46,8 @@ class Posts extends Component {
         posts = <h1>No posts available</h1>
         } 
         return (
-            <div>
-                <h1>Posts</h1>
-                <div>{posts}</div>
+            <div className='posts-component-container'>
+                <div className='posts-container'>{posts}</div>
                 <NewPost posts={this.state.posts} updatePosts={this.updatePosts}/>
             </div>
         )

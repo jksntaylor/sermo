@@ -67,5 +67,18 @@ module.exports = {
         } else {
              res.status(200).send(null);
         }
+    },
+
+    //REST QUERY COMPETENCIES
+
+    searchusers: async (req, res) => {
+        const db = req.app.get('db');
+        const {user} = req.query
+        const gotUser = await db.searchuser([user])
+        if (gotUser[0]) {
+            res.status(200).send(gotUser[0])
+        } else {
+            res.status(200).send('No User Found')
+        }
     }
 }
