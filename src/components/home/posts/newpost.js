@@ -49,6 +49,10 @@ class NewPost extends Component {
             text: e.target.value
         })
     }
+    
+    handleLinkChange = e => {
+        this.setState({link: e.target.value})
+    }
 
     handleMediaChange = e => {
         this.setState({
@@ -68,11 +72,7 @@ class NewPost extends Component {
           });
         })
     }
-
-    handleLinkChange = e => {
-        this.setState({link: e.target.value})
-    }
-
+   
     post = () => {
         const {title, text, mediaFile, postType, link} = this.state
         if (postType==='text') {
@@ -120,7 +120,7 @@ class NewPost extends Component {
         } else if (this.state.postType==='link') {
             input = <input value={this.state.link} placeholder='image url' onChange={this.handleLinkChange}/>
         } else {
-            input = <input type='file' onChange={this.handleMediaChange}/>
+            input = <input type='file' accept="image/*, video/*" onChange={this.handleMediaChange}/>
         }
         return (
             <div>

@@ -5,7 +5,7 @@ module.exports = {
         const {title, text} = req.body;
         const date = new Date();
         const time = date.getTime().toString();
-        const newPost = await db.newPost([id, title, text, date, username, time, 'text', null]);
+        const newPost = await db.newPost([id, title, text, date, username, time, 'text', null, [0, id], [0]]);
 
         return res.status(200).send(newPost)
     },
@@ -16,7 +16,7 @@ module.exports = {
         const {title, link} = req.body
         const date = new Date();
         const time = date.getTime().toString();
-        const newPost = await db.newPost([id, title, null, date, username, time, 'media', link]);
+        const newPost = await db.newPost([id, title, null, date, username, time, 'media', link, [0, id], [0]]);
 
         return res.status(200).send(newPost)
     },

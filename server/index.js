@@ -10,6 +10,7 @@ const {CONNECTION_STRING, SERVER_PORT, SESSION_SECRET} = process.env;
 const ac = require('./controllers/authcontroller.js')
 const pc = require('./controllers/postcontroller.js')
 const cc = require('./controllers/commentcontroller.js')
+const vc = require('./controllers/votingcontroller.js')
 
 const app = express();
 
@@ -41,6 +42,9 @@ app.post('/api/newTextPost', pc.newTextPost)
 app.post('/api/newMediaPost', pc.newMediaPost)
 app.get('/api/initialLoadPosts', pc.initialLoad)
 app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
+
+//VOTING
+app.post('/api/:postID/voting', vc.updateVoting)
 
 //COMMENTS
 app.post('/api/newComment', cc.newComment)

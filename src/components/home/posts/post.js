@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import NewComment from './newcomment';
 import axios from 'axios';
 import Comments from './comments';
+import Voting from './voting';
 
 export default class Post extends Component {
     constructor(props) {
@@ -35,7 +36,7 @@ export default class Post extends Component {
     }
 
     render() {
-        const {author, time, title, text, posttype, media} = this.state.post
+        const {author, time, title, text, posttype, media, upvoters, downvoters} = this.state.post
         if (posttype==='text'&&text.length>100) {
             var teaserdots = '...'
         } else {
@@ -50,6 +51,7 @@ export default class Post extends Component {
         }
         return (
             <div style={{border: '1px solid red', margin: '2px'}}>
+                <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id}/>
                 <div onClick={this.openModal}>
                     <h2>{title}</h2>
                     {teasercontent}
@@ -61,6 +63,7 @@ export default class Post extends Component {
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
+                    <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id}/>
                     <h1>{author}</h1>
                     <h6>{time}</h6>
                     <h2>{title}</h2>
