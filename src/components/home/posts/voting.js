@@ -3,79 +3,59 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 
 class Voting extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            uservote: 'none'
-        }
-    }
-
-    componentDidMount() {
-        if (this.props.upvoters.includes(+this.props.user.id)) {
-            this.setState({uservote: 'up'})
-        } else if (this.props.downvoters.includes(+this.props.user.id)) {
-            this.setState({uservote: 'down'})
-        }
-        console.log(this.props.upvoters, this.props.downvoters)
-    }
-
     handleUpvote = () => {
-        let {upvoters, downvoters} = this.props;
-        let {uservote} = this.state;
+        let {upvoters, downvoters, uservote, handleUservoteChange} = this.props;
         if (uservote==='up') {
             upvoters.splice(upvoters.indexOf(+this.props.user.id), 1)
-            this.setState({uservote: 'none'}, () => {
-                console.log(upvoters, downvoters, this.state.uservote)
-                axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
-            })
+            handleUservoteChange('none');
+            axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
         } else if (uservote==='none') {
             upvoters.push(+this.props.user.id)
-            this.setState({uservote: 'up'}, () => {
-                console.log(upvoters, downvoters, this.state.uservote)
-                axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
-            })
+            handleUservoteChange('up');
+            axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
         } else {
             downvoters.splice(downvoters.indexOf(+this.props.user.id), 1)
             upvoters.push(+this.props.user.id);
-            this.setState({uservote: 'up'},  () => {
-                console.log(upvoters, downvoters, this.state.uservote)
-                axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
-            })
+            handleUservoteChange('up');
+            axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
         }
     }
 
     handleDownvote = () => {
-        let {upvoters, downvoters} = this.props;
-        let {uservote} = this.state;
+        let {upvoters, downvoters, uservote, handleUservoteChange} = this.props;
         if (uservote==='down') {
             downvoters.splice(downvoters.indexOf(+this.props.user.id), 1)
-            this.setState({uservote: 'none'}, () => {
-                console.log(upvoters, downvoters, this.state.uservote)
-                axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
-            })
+            handleUservoteChange('none');
+            axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
         } else if (uservote==='none') {
             downvoters.push(+this.props.user.id)
-            this.setState({uservote: 'down'}, () => {
-                console.log(upvoters, downvoters, this.state.uservote)
-                axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
-            })
+            handleUservoteChange('down');
+            axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
         } else {
             upvoters.splice(upvoters.indexOf(+this.props.user.id), 1)
             downvoters.push(+this.props.user.id);
-            this.setState({uservote: 'down'},  () => {
-                console.log(upvoters, downvoters, this.state.uservote)
-                axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
-            })
+            handleUservoteChange('down');
+            axios.post(`/api/${this.props.postID}/voting`, {upvoters, downvoters})
         }
     }
 
     render() {
+        if (this.props.uservote==='up') {
+            var upStyle = {color: 'green'}
+            var downStyle = {color: 'gray'}
+        } else if (this.props.uservote==='down') {
+            upStyle = {color: 'gray'}
+            downStyle = {color: 'red'}
+        } else {
+            upStyle = {color: 'gray'}
+            downStyle = {color: 'gray'}
+        }
         const votingScore = this.props.upvoters.length - this.props.downvoters.length
         return (
             <div>
-                <button onClick={this.handleUpvote}><i className="fas fa-arrow-up"/></button>
+                <button onClick={this.handleUpvote}><i style={upStyle} className="fas fa-arrow-up"/></button>
                 <h1>{votingScore}</h1>
-                <button onClick={this.handleDownvote}><i className="fas fa-arrow-down"/></button>
+                <button onClick={this.handleDownvote}><i style={downStyle} className="fas fa-arrow-down"/></button>
             </div>
         )
     }
