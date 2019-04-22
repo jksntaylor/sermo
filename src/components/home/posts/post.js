@@ -48,8 +48,35 @@ class Post extends Component {
         }
     }
 
+    calculateTime = () => {
+        const {time} = this.state.post
+        const timeMS = new Date(time).getTime();
+        const current = new Date().getTime();
+        const elapsed = current - timeMS;
+        if (elapsed<60000) {
+            let num = Math.floor(elapsed/1000).toString();
+            return num + 's';
+        } else if (elapsed<3600000) {
+            let num = Math.floor(elapsed/60000).toString();
+            return num + 'm';
+        } else if (elapsed<86400000) {
+            let num = Math.floor(elapsed/3600000).toString();
+            return num + 'hr'
+        } else if (elapsed<2592000000) {
+            let num = Math.floor(elapsed/86400000).toString();
+            return num + 'd'
+        } else if (elapsed<31536000000) {
+            let num = Math.floor(elapsed/2592000000).toString();
+            return num + 'mo'
+        } else {
+            let num = Math.floor(elapsed/31536000000).toString();
+            return num + 'y'
+        }
+    }
+
     render() {
-        const {author, time, title, text, posttype, media, upvoters, downvoters} = this.state.post
+        const {author, title, text, posttype, media, upvoters, downvoters} = this.state.post
+        var elapsedTime = this.calculateTime();
         if (posttype==='text'&&text.length>100) {
             var teaserdots = '...'
         } else {
@@ -70,7 +97,7 @@ class Post extends Component {
                     {teasercontent}
                     <div>
                         <h1>{author}</h1>
-                        <h6>{time}</h6>
+                        <h6>{elapsedTime}</h6>
                         <h5>{this.state.commentCount} comments</h5>
                     </div>
                 </div>
@@ -80,7 +107,7 @@ class Post extends Component {
                 >
                     <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
                     <h1>{author}</h1>
-                    <h6>{time}</h6>
+                    <h6>{elapsedTime}</h6>
                     <h2>{title}</h2>
                     {content}
                     <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>

@@ -53,17 +53,17 @@ input, button {
 
 // VARIABLES
 
-$light: #EFE2D2;
-$bright: #EDAF80;
-$muted: #9F8588;
-$gray: #4C4E5A;
-$deep: #86534F;
+$light: #E1BE52;
+$bright: #DE9E36;
+$muted: #BFBDC1;
+$gray: #6D6E75;
+$deep: #322E39;
 $font-stack: 'Raleway', sans-serif;
 
 
 * {
-  background-color: $light;
-  color: $deep;
+  background-color: $deep;
+  color: $muted;
 }
 
 h1, h2, span, button, input {
@@ -125,13 +125,13 @@ a {
 		position: fixed;
 		top: 10px;
 		right: 10px;
-		border-radius: 50%;
-		background-image: radial-gradient($light 40%, $muted);
+		// border-radius: 50%;
+		// background-image: radial-gradient($light 40%, $muted);
 		
 		button {
 			width: 100%;
 			height: 100%;
-			border: 1px solid $muted;
+			// border: 1px solid $muted;
 			border-radius: 50%;
 
 			i {
@@ -144,7 +144,7 @@ a {
 .posts-container {
 	* {
 		background: none;
-		color: $light;
+		color: $deep;
 	}
 	width: 80%;
 	margin: 0 10%;
