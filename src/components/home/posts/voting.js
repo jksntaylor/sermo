@@ -41,7 +41,7 @@ class Voting extends Component {
 
     render() {
         if (this.props.uservote==='up') {
-            var upStyle = {color: 'green'}
+            var upStyle = {color: 'lawngreen'}
             var downStyle = {color: 'gray'}
         } else if (this.props.uservote==='down') {
             upStyle = {color: 'gray'}
@@ -53,9 +53,9 @@ class Voting extends Component {
         const votingScore = this.props.upvoters.length - this.props.downvoters.length
         return (
             <div>
-                <button onClick={this.handleUpvote}><i style={upStyle} className="fas fa-arrow-up"/></button>
+                <button onClick={this.handleUpvote}><i style={upStyle} className="fas fa-2x fa-arrow-up"/></button>
                 <h1>{votingScore}</h1>
-                <button onClick={this.handleDownvote}><i style={downStyle} className="fas fa-arrow-down"/></button>
+                <button onClick={this.handleDownvote}><i style={downStyle} className="fas fa-2x fa-arrow-down"/></button>
             </div>
         )
     }

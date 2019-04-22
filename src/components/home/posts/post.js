@@ -59,18 +59,20 @@ class Post extends Component {
             var teasercontent = <p>{text.slice(0,100)}{teaserdots}</p>
             var content = <p>{text}</p>
         } else {
-            teasercontent = <img height='100' alt='' src={media}/>
+            teasercontent = <img alt='' src={media}/>
             content = <img alt='' src={media}/>
         }
         return (
-            <div style={{border: '1px solid red', margin: '2px'}}>
+            <div>
                 <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
-                <div onClick={this.openModal}>
+                <div className='post-teaser-container' onClick={this.openModal}>
                     <h2>{title}</h2>
                     {teasercontent}
-                    <h1>{author}</h1>
-                    <h6>{time}</h6>
-                    <h5>{this.state.commentCount} comments</h5>
+                    <div>
+                        <h1>{author}</h1>
+                        <h6>{time}</h6>
+                        <h5>{this.state.commentCount} comments</h5>
+                    </div>
                 </div>
                 <Modal
                 isOpen={this.state.modalIsOpen}

@@ -20,8 +20,7 @@ class Auth extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Auth</h1>
+            <div className='auth-component-container'>
                 <Login />
                 <Register />
             </div>

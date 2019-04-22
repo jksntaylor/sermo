@@ -123,7 +123,7 @@ class NewPost extends Component {
             input = <input type='file' accept="image/*, video/*" onChange={this.handleMediaChange}/>
         }
         return (
-            <div>
+            <div className='newpost-component-container'>
                 {postButton}
                 <div style={style}>
                     <button onClick={this.openModalText}>Text</button>

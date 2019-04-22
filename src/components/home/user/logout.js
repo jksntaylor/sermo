@@ -16,7 +16,7 @@ class Logout extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.logout}>Logout</button>
+                <button onClick={this.logout}><i className='fas fa-3x fa-sign-out-alt'/></button>
             </div>
         )
     }

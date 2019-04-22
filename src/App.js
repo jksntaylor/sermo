@@ -10,6 +10,8 @@ class App extends Component {
     return (
       <Switch>
         <Route exact path='/' component={Auth}/>
+        {/* MATCH OBJECT COMPETENCIES */}
+        <Route exact path='/home/:number' render={props => <Home {...props}/>}/>
         <Route path='/home' component={Home}/>
         <Route path='/profile' component={Profile}/>
       </Switch>
