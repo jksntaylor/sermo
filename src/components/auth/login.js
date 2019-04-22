@@ -12,7 +12,8 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            remember: false
+            remember: false,
+            failed: false
         }
     }
 
@@ -29,7 +30,8 @@ class Login extends Component {
     }
 
     loginFailed = () => toast('Invalid Credentials', {
-        position: toast.POSITION.TOP_CENTER
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000
     });
 
     handleKeyPress = e => {
@@ -37,9 +39,14 @@ class Login extends Component {
                 this.login()
         } 
     }
+
+    componentDidMount() {
+        this.setState(this.state)
+    }
     
 
     login = () => {
+        if (this.state.failed) {return}
         const {username, password, remember} = this.state;
         axios.post('/api/login', {username, password, remember}).then(response => {
             this.setState({
@@ -52,6 +59,9 @@ class Login extends Component {
         }).catch( err => {
             console.log(err);
             this.loginFailed();
+            this.setState({failed: true}, () => {setTimeout(() => {
+                this.setState({failed: false})
+            }, 2000);});
         })
     }
 
