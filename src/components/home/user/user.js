@@ -16,17 +16,17 @@ export default class User extends Component {
         })
     }
 
-    search = () => {
-        axios.get(`/api/searchusers?user=${this.state.input}`).then(res => {
-            alert(res.data.username + '  ' + res.data.email);
-        })
-    }
+    // search = () => {
+    //     axios.get(`/api/searchusers?user=${this.state.input}`).then(res => {
+    //         alert(res.data.username + '  ' + res.data.email);
+    //     })
+    // }
     render() {
         return (
             <div className='user-component-container'>
                 <Logout />
-                <input value={this.state.input} onChange={this.handleChange} placeholder='search users'/>
-                <button onClick={this.search}>Search</button>
+                {/* <input value={this.state.input} onChange={this.handleChange} placeholder='search users'/>
+                <button onClick={this.search}>Search</button> */}
             </div>
         )
     }

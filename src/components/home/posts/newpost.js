@@ -90,8 +90,8 @@ class NewPost extends Component {
                 'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
             }
             axios.post('https://api.imgur.com/3/image', {"image": mediaFile}, {'headers': headers}).then(res => {
-                const {link} = res.data.data;
-                console.log(link)
+                const {link, in_gallery} = res.data.data;
+                console.log(link, in_gallery)
                 axios.post('/api/newMediaPost', {title, link}).then(res => {
                     this.props.updatePosts(res.data);
                     this.closeModal();
