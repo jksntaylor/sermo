@@ -47,8 +47,36 @@ class Comment extends Component {
             this.props.handleNewComment();
         })
     }
+
+    calculateTime = () => {
+        const {date} = this.state.comment
+        const timeMS = new Date(date).getTime();
+        const current = new Date().getTime();
+        const elapsed = current - timeMS;
+        if (elapsed<60000) {
+            let num = Math.floor(elapsed/1000).toString();
+            return num + 's';
+        } else if (elapsed<3600000) {
+            let num = Math.floor(elapsed/60000).toString();
+            return num + 'm';
+        } else if (elapsed<86400000) {
+            let num = Math.floor(elapsed/3600000).toString();
+            return num + 'hr'
+        } else if (elapsed<2592000000) {
+            let num = Math.floor(elapsed/86400000).toString();
+            return num + 'd'
+        } else if (elapsed<31536000000) {
+            let num = Math.floor(elapsed/2592000000).toString();
+            return num + 'mo'
+        } else {
+            let num = Math.floor(elapsed/31536000000).toString();
+            return num + 'y'
+        }
+    }
+
     render() {
         const {author, date, text} = this.state.comment;
+        const elapsedTime = this.calculateTime();
         if (this.state.canEdit) {
             if (this.state.isEditing) {
                var editor = <div>
@@ -69,7 +97,7 @@ class Comment extends Component {
         return (
             <div>
                 <h1>{author}</h1>
-                <h2>{date}</h2>
+                <h2>{elapsedTime}</h2>
                 <p>{text}</p>
                 {editor}
             </div>

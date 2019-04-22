@@ -24,7 +24,7 @@ massive(CONNECTION_STRING).then(db => {
 app.use(bodyParser.json());
 
 // EXPRESS STATIC COMPETENCY, I DON'T NEED IT RIGHT NOW BUT THIS IS HOW YOU DO IT, JUST GET RID OF ALL LOCALHOST AS WELL
-// app.use( express.static(`${__dirname}/build`));
+app.use( express.static(`${__dirname}/build`));
 
 app.use(session({
     secret: SESSION_SECRET,
