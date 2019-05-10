@@ -41,6 +41,9 @@ class Post extends Component {
     }
 
     componentDidMount = () => {
+        if (this.state.post.downvoters.length > 5) {
+            this.deletePost();
+        }
         this.handleNewComment();
         if (this.state.post.upvoters.includes(+this.props.user.id)) {
             this.setState({uservote: 'up'})
