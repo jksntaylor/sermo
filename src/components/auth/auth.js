@@ -13,6 +13,7 @@ class Auth extends Component {
         axios.get('/api/checkAuth').then(res => {
             if (res.data) {
                 this.props.loggedIn(res.data)
+                console.log('logged in')
                 this.props.history.push('/home');
             }
         })

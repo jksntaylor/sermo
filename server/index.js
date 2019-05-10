@@ -45,6 +45,7 @@ app.post('/api/newTextPost', pc.newTextPost)
 app.post('/api/newMediaPost', pc.newMediaPost)
 app.get('/api/initialLoadPosts', pc.initialLoad)
 app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
+app.post('/api/deletePost/:id', pc.deletePost)
 
 //VOTING
 app.post('/api/:postID/voting', vc.updateVoting)

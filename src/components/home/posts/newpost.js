@@ -14,7 +14,9 @@ class NewPost extends Component {
             mediaFile: "",
             link: '',
             postType: 'text',
-            postButtons: false
+            postButtons: false,
+            tooBig: false,
+            anon: false
         }
     }
 
@@ -55,8 +57,14 @@ class NewPost extends Component {
     }
 
     handleMediaChange = e => {
+        if (e.target.files[0].size>4999999) {
+            this.setState({tooBig: true});
+            return null;
+        }
+
         this.setState({
-            mediaFile: e.target.files[0]
+            mediaFile: e.target.files[0],
+            tooBig: false
         }, () => {
         const fileToBase64 = (file) => {
             return new Promise(resolve => {
@@ -72,16 +80,21 @@ class NewPost extends Component {
           });
         })
     }
+
+    handleAnonChange = () => {
+        this.setState({anon: !this.state.anon})
+    }
    
     post = () => {
-        const {title, text, mediaFile, postType, link} = this.state
+        console.log('posting')
+        const {title, text, mediaFile, postType, link, anon} = this.state
         if (postType==='text') {
-            axios.post('/api/newTextPost', {title, text}).then(res => {
+            axios.post('/api/newTextPost', {title, text, anon}).then(res => {
                 this.props.updatePosts(res.data);
                 this.closeModal();
             })
         } else if (postType==='link') {
-            axios.post('/api/newMediaPost', {title, link}).then(res => {
+            axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
                 this.props.updatePosts(res.data);
                 this.closeModal();
             })
@@ -92,7 +105,7 @@ class NewPost extends Component {
             axios.post('https://api.imgur.com/3/image', {"image": mediaFile}, {'headers': headers}).then(res => {
                 const {link, in_gallery} = res.data.data;
                 console.log(link, in_gallery)
-                axios.post('/api/newMediaPost', {title, link}).then(res => {
+                axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
                     this.props.updatePosts(res.data);
                     this.closeModal();
                 })
@@ -103,6 +116,14 @@ class NewPost extends Component {
     }
     
     render() {
+
+        if (this.state.tooBig) {
+            var tooBig = 'Please choose a smaller file (less than 5MB)';
+        } else {
+            tooBig = <button onClick={this.post}>Post</button>;
+            
+        }
+
         if (this.state.postButtons) {
             var postButton = <button onClick={this.handlePostButton}>x</button>
         } else {
@@ -138,7 +159,8 @@ class NewPost extends Component {
                 <button onClick={this.closeModal}>x</button>
                 <input placeholder='Title' onChange={this.handleTitleChange}/>
                 {input}
-                <button onClick={this.post}>Post</button>
+                <input type='checkbox' onChange={this.handleAnonChange}/><span>Post Anonymously</span>
+                {tooBig}
                 </Modal>
             </div>
         );

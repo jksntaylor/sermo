@@ -41,8 +41,6 @@ module.exports = {
             return res.status(403).send('Invalid Credentials');
         }
 
-        //REQ.SESSION COMPETENCIES
-
         req.session.user = user;
         if (remember) {
             console.log('remember');
