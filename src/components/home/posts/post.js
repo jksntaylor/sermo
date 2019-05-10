@@ -28,24 +28,34 @@ class Post extends Component {
     
     handleNewComment = () => {
         axios.get(`/api/${this.state.post.id}/comments`).then(res => {
-            console.log(res);
+            // console.log(res);
             this.setState({comments: res.data, commentCount: res.data.length});
         })
     }
 
     handleUservoteChange = val => {
+        console.log(val)
         this.setState({
             uservote: val
         })
     }
 
     componentDidMount = () => {
+        if (this.state.post.downvoters.length > 5) {
+            this.deletePost();
+        }
         this.handleNewComment();
         if (this.state.post.upvoters.includes(+this.props.user.id)) {
             this.setState({uservote: 'up'})
         } else if (this.state.post.downvoters.includes(+this.props.user.id)) {
             this.setState({uservote: 'down'})
         }
+    }
+
+    deletePost = () => {
+        axios.post(`/api/deletePost/${this.state.post.id}`).then(() => {
+            this.closeModal();
+        })
     }
 
     calculateTime = () => {
@@ -96,6 +106,7 @@ class Post extends Component {
                     <h2>{title}</h2>
                     {teasercontent}
                     <div>
+                        {+this.props.post.user_id === +this.props.user.id ? <button onClick={this.deletePost()}>Delete</button> : null}
                         <h1>{author}</h1>
                         <h6>{elapsedTime}</h6>
                         <h5>{this.state.commentCount} comments</h5>
@@ -106,6 +117,7 @@ class Post extends Component {
                 onRequestClose={this.closeModal}
                 >
                     <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
+                    {+this.props.post.user_id === +this.props.user.id ? <button onClick={this.deletePost()}>Delete</button> : null}
                     <h1>{author}</h1>
                     <h6>{elapsedTime}</h6>
                     <h2>{title}</h2>

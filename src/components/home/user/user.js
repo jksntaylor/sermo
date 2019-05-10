@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Logout from './logout';
-import axios from 'axios';
 
 export default class User extends Component {
     constructor() {

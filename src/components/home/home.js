@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import User from './user/user';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import {HashRouter, Route, Switch, Link, withRouter} from 'react-router-dom';
 import Posts from './posts/posts';
+import Messaging from './messaging/messaging';
 
 class Home extends Component {
     // componentDidMount() {
@@ -12,12 +13,17 @@ class Home extends Component {
     // }
     render() {
         return (
-            <div className='home-component-container'>
-                {/* MATCH OBJECT COMPETENCIES */}
-                <button>{this.props.match.params.number}</button>
-                <User />
-                <Posts />
-            </div>
+            <HashRouter>
+                <div className='home-component-container'>
+                    <User/>
+                        <Link to='/home'>Posts</Link>
+                        <Link to='/home/messaging'>Messages</Link>
+                        <Switch>
+                            <Route exact path='/home' component={Posts}/>
+                            <Route path='/home/messaging' component={Messaging}/>
+                        </Switch>
+                </div>
+            </HashRouter>
         )
     }   
 }

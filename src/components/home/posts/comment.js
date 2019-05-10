@@ -75,7 +75,7 @@ class Comment extends Component {
     }
 
     render() {
-        const {author, date, text} = this.state.comment;
+        const {author, text} = this.state.comment;
         const elapsedTime = this.calculateTime();
         if (this.state.canEdit) {
             if (this.state.isEditing) {

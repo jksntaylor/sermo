@@ -1,19 +1,33 @@
 module.exports = {
     newTextPost: async (req, res) => {
+        console.log('posting2');
         const db = req.app.get('db');
-        const {id, username} = req.session.user
-        const {title, text} = req.body;
+        const {title, text, anon} = req.body;
+        console.log(req.session)
+        if (anon) {
+            var {id} = req.session.user
+            var username = null
+        } else {
+            var {id} = req.session.user;
+            var username = req.session.user.username;
+        }
         const date = new Date();
         const time = date.getTime().toString();
         const newPost = await db.newPost([id, title, text, date, username, time, 'text', null, [0, id], [0]]);
-
+        console.log(newPost)
         return res.status(200).send(newPost)
     },
 
     newMediaPost: async (req, res) => {
         const db = req.app.get('db');
-        const {id, username} = req.session.user
-        const {title, link} = req.body
+        const {title, link, anon} = req.body
+        if (anon) {
+            var {id} = req.session.user
+            var username = null
+        } else {
+            var id = req.session.user.id;
+            var username = req.session.user.username;
+        }
         const date = new Date();
         const time = date.getTime().toString();
         const newPost = await db.newPost([id, title, null, date, username, time, 'media', link, [0, id], [0]]);
@@ -52,5 +66,13 @@ module.exports = {
             posts = await db.getActivePosts([currentTime, range, limit, offset])
         }
         res.status(200).send(posts)
+    },
+
+    deletePost: async (req, res) => {
+        const db = req.app.get('db');
+        const {id} = req.params;
+        db.deletePost([id]).then(() => {
+            res.sendStatus(200)
+        })
     }
 }
