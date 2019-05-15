@@ -13,8 +13,8 @@ module.exports = {
 
     getAllMessages: async (req, res) => {
         const db = req.app.get('db');
-        const {id} = req.session.user;
-        const messages = await db.getAllMessages([+id]);
+        const {username} = req.session.user;
+        const messages = await db.getAllMessages([username]);
         if (messages[0]) {
             res.status(200).send(messages)
         } else {
@@ -22,12 +22,12 @@ module.exports = {
         }
     },
 
-    newMessageRequest: async (req, res) => {
+    newRequest: async (req, res) => {
         const db = req.app.get('db');
-        const {id} = req.session.user;
-        const {id2, message} = req.body;
-        const room = `${id}>${id2}`;
-        const request = await db.newMessageRequest([id, id2, message, room, true, false]);
+        const {username} = req.session.user;
+        const {username2, messages} = req.body;
+        const room = `${username}>${username2}`;
+        const request = await db.newMessageRequest([username, username2, messages, room, true, false]);
         if (request[0]) {
             res.sendStatus(200)
         }

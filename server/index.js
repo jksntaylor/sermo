@@ -86,8 +86,8 @@ app.post('/api/deleteComment/:id', cc.deleteComment)
 app.post('/api/editComment/:id', cc.editComment)
 
 // // MESSAGING
-// app.post('/api/newMessageRequest', mc.newRequest)
-// app.post('/api/newMessageConfirm', mc.confirm)
+app.post('/api/newMessageRequest', mc.newRequest)
+// app.post('/api/newMessageResponse', mc.requestResponse)
 app.get('/api/getAllMessages', mc.getAllMessages)
 // app.get('/api/messages/:id', mc.getMessages)
 // app.post('/api/messages/:id/newMessage', mc.newMessage)

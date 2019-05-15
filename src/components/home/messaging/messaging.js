@@ -12,7 +12,9 @@ class Messaging extends Component {
             modalIsOpen: false,
             userSearch: '',
             messages: [],
-            searchResults: []
+            searchResults: [],
+            expandedRequest: '',
+            requestText: ''
         }
     }
 
@@ -23,8 +25,8 @@ class Messaging extends Component {
         })
     }
 
-    handleInputChange = val => {
-        this.setState({userSearch: val})
+    handleChange = (key, val) => {
+        this.setState({[key]: val})
     }
 
     openModal = () => {
@@ -41,6 +43,10 @@ class Messaging extends Component {
         })
     }
 
+    messageRequest = val => {
+        this.setState({expandedRequest: val, requestText: ''})
+    }
+
     render() {
         const messages = this.state.messages.map(message => {
             let userID;
@@ -51,13 +57,22 @@ class Messaging extends Component {
             }
             return ( <div>
                        <h1>{userID}</h1> 
-                     </div>)
+                     </div>
+                    )
         })
         let results;
         if (this.state.searchResults) {
             results = this.state.searchResults.map(result => {
                 return (
-                    <div key={result.id}>{result.username}</div>
+                    <div key={result.id}>
+                        <h1>{result.username}</h1>
+                        <button onClick={() => {this.messageRequest(result.username)}}>Request</button>
+                        {this.state.expandedRequest === result.username ? 
+                            <div>
+                                <textarea onChange={e => {this.handleChange('requestText', e.target.value)}}/>
+                                <button>Send</button>
+                            </div> : null}
+                    </div>
                 )
             })
         } else {results = null}
@@ -70,7 +85,7 @@ class Messaging extends Component {
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
-                <input placeholder='username' onChange={e => {this.handleInputChange(e.target.value)}}/>
+                <input placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
                 <button onClick={this.searchMessagingUsers}>Search</button>
                 {results}
                 </Modal>
