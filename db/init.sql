@@ -34,9 +34,14 @@
 --     post_id INTEGER
 -- )
 
+-- user1_id is always origin. if pending, user2_id has option to accept or decline
+
 -- CREATE TABLE reddit_chats (
 --     id SERIAL PRIMARY KEY,
 --     user1_id INTEGER,
 --     user2_id INTEGER,
---     messages jsonb
+--     messages jsonb,
+--     room VARCHAR,
+--     pending BOOLEAN,
+--     accepted BOOLEAN
 -- )

@@ -20,5 +20,16 @@ module.exports = {
         } else {
             res.sendStatus(404)
         }
+    },
+
+    newMessageRequest: async (req, res) => {
+        const db = req.app.get('db');
+        const {id} = req.session.user;
+        const {id2, message} = req.body;
+        const room = `${id}>${id2}`;
+        const request = await db.newMessageRequest([id, id2, message, room, true, false]);
+        if (request[0]) {
+            res.sendStatus(200)
+        }
     }
 }

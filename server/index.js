@@ -36,12 +36,12 @@ app.use(middleware);
 let onlineUsers = {};
 
 io.on('connection', function(socket) {
-    let onlineID, onlineUsername;
+    let onlineSocket, onlineUsername;
     socket.on('username', function(onlineUser) {
-        if (onlineUser.username && !onlineUsers[onlineUser.id]) {onlineUsers[onlineUser.id] = onlineUser.username}
+        if (onlineUser.socket && !onlineUsers[onlineUser.socket]) {onlineUsers[onlineUser.socket] = onlineUser.username}
         console.log(`${onlineUser.username} connected\nOnline Users:`)
-        console.log(JSON.stringify(onlineUsers))
-        onlineID = onlineUser.id;
+        console.log(onlineUsers)
+        onlineSocket = onlineUser.socket;
         onlineUsername = onlineUser.username
     })
     socket.on('chat message', function(message) {
@@ -56,9 +56,9 @@ io.on('connection', function(socket) {
         io.in(room).emit('dm', message)
     })
     socket.on('disconnect', function() {
-        delete onlineUsers[onlineID]
+        delete onlineUsers[onlineSocket]
         console.log(`${onlineUsername} disconnected\nOnline Users:`);
-        console.log(JSON.stringify(onlineUsers))
+        console.log(onlineUsers)
     });
 })
 
