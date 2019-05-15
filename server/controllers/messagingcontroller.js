@@ -31,5 +31,15 @@ module.exports = {
         if (request[0]) {
             res.sendStatus(200)
         }
+    },
+
+    newResponse: async (req, res) => {
+        const db = req.app.get('db');
+        const username2 = req.session.user.username
+        const {username1, bool} = req.body;
+        const request = await db.newMessageResponse([username1, username2, bool]);
+        if (request[0]) {
+            res.sendStatus(200);
+        }
     }
 }

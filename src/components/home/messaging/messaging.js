@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import Modal from 'react-modal';
 import axios from 'axios';
+import Message from './message';
 
 
 class Messaging extends Component {
@@ -43,22 +44,30 @@ class Messaging extends Component {
         })
     }
 
-    messageRequest = val => {
+    openMessageRequest = val => {
         this.setState({expandedRequest: val, requestText: ''})
+    }
+
+    sendMessageRequest = () => {
+        const {socket} = this.props;
+        const data = {
+            username: this.state.expandedRequest,
+            message: {
+                author: this.props.user.id,
+                timestamp: new Date(),
+                content: this.state.requestText
+            }
+        }
+        socket.emit('message request', data.username, data.message)
+        axios.post('/api/newMessageRequest', data).then(() => {
+            this.closeModal();
+            this.getAllMessages();
+        })
     }
 
     render() {
         const messages = this.state.messages.map(message => {
-            let userID;
-            if (this.props.user.id === message.user1_id) {
-                userID = message.user2_id
-            } else {
-                userID = message.user1_id
-            }
-            return ( <div>
-                       <h1>{userID}</h1> 
-                     </div>
-                    )
+            return (<Message key={message.room} message={message} user={this.props.user}/>)
         })
         let results;
         if (this.state.searchResults) {
@@ -66,7 +75,7 @@ class Messaging extends Component {
                 return (
                     <div key={result.id}>
                         <h1>{result.username}</h1>
-                        <button onClick={() => {this.messageRequest(result.username)}}>Request</button>
+                        <button onClick={() => {this.openMessageRequest(result.username)}}>Request</button>
                         {this.state.expandedRequest === result.username ? 
                             <div>
                                 <textarea onChange={e => {this.handleChange('requestText', e.target.value)}}/>

@@ -38,7 +38,7 @@ let onlineUsers = {};
 io.on('connection', function(socket) {
     let onlineSocket, onlineUsername;
     socket.on('username', function(onlineUser) {
-        if (onlineUser.socket && !onlineUsers[onlineUser.socket]) {onlineUsers[onlineUser.socket] = onlineUser.username}
+        if (onlineUser.socket && !onlineUsers[onlineUser.socket]) {onlineUsers[onlineUser.username] = onlineUser.socket}
         console.log(`${onlineUser.username} connected\nOnline Users:`)
         console.log(onlineUsers)
         onlineSocket = onlineUser.socket;
@@ -50,6 +50,12 @@ io.on('connection', function(socket) {
     })
     socket.on('chat request', function(user1, user2) {
         socket.join(`${user1}||${user2}`) 
+    })
+
+    socket.on('message request', function(username, message) {
+        if (onlineUsers[username]) {
+            io.to(`${onlineUsers[username]}`).emit(message);
+        }
     })
 
     socket.on('direct message', function(room, message) {
@@ -87,7 +93,7 @@ app.post('/api/editComment/:id', cc.editComment)
 
 // // MESSAGING
 app.post('/api/newMessageRequest', mc.newRequest)
-// app.post('/api/newMessageResponse', mc.requestResponse)
+app.post('/api/newMessageResponse', mc.newReponse)
 app.get('/api/getAllMessages', mc.getAllMessages)
 // app.get('/api/messages/:id', mc.getMessages)
 // app.post('/api/messages/:id/newMessage', mc.newMessage)

@@ -13,15 +13,10 @@ class Home extends Component {
         if (!this.props.isLoggedIn) {
             this.props.history.push('/')
         }
-        const onlineUser = {username: `${this.props.user.username}|${this.props.user.id}`,
+        const onlineUser = {username: this.props.user.username,
                             socket: socket.id}
         console.log(onlineUser)
         if (onlineUser.username) {socket.emit('username', onlineUser)}
-        socket.on('chat message', message => {
-            const arr = this.state.messages.slice();
-            arr.push(message);
-            this.setState({messages: arr})
-        })
     }
     render() {
         return (
