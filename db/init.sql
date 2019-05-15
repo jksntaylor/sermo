@@ -33,3 +33,10 @@
 --     comment_id INTEGER,
 --     post_id INTEGER
 -- )
+
+-- CREATE TABLE reddit_chats (
+--     id SERIAL PRIMARY KEY,
+--     user1_id INTEGER,
+--     user2_id INTEGER,
+--     messages jsonb
+-- )

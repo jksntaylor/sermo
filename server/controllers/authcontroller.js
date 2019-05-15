@@ -43,14 +43,10 @@ module.exports = {
 
         req.session.user = user;
         if (remember) {
-            console.log('remember');
             var year = 86400000 * 365;
             req.session.cookie.expires = new Date(Date.now() + year);
             req.session.cookie.maxAge = year;
-        } else {
-            console.log('no remember');
         }
-        console.log(req.session.cookie.expires, req.session.cookie.maxAge)
         res.status(200).send(req.session.user);
     },
 
