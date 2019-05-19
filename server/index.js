@@ -14,6 +14,7 @@ const ac = require('./controllers/authcontroller.js')
 const pc = require('./controllers/postcontroller.js')
 const cc = require('./controllers/commentcontroller.js')
 const vc = require('./controllers/votingcontroller.js')
+const mc = require('./controllers/messagingcontroller.js')
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db);
@@ -32,16 +33,39 @@ const middleware = session({
 
 app.use(middleware);
 
-io.on('connection', function(socket) {
-    console.log('a user connected');
-    socket.on('disconnect', function() {
-        console.log('a user disconnected')
-    });
+let onlineUsers = {};
 
+io.on('connection', function(socket) {
+    let onlineSocket, onlineUsername;
+    socket.on('username', function(onlineUser) {
+        if (onlineUser.socket && !onlineUsers[onlineUser.socket]) {onlineUsers[onlineUser.username] = onlineUser.socket}
+        console.log(`${onlineUser.username} connected\nOnline Users:`)
+        console.log(onlineUsers)
+        onlineSocket = onlineUser.socket;
+        onlineUsername = onlineUser.username
+    })
     socket.on('chat message', function(message) {
         console.log(message)
         io.emit('chat message', message)
     })
+    socket.on('chat request', function(user1, user2) {
+        socket.join(`${user1}||${user2}`) 
+    })
+
+    socket.on('message request', function(username, message) {
+        if (onlineUsers[username]) {
+            io.to(`${onlineUsers[username]}`).emit(message);
+        }
+    })
+
+    socket.on('direct message', function(room, message) {
+        io.in(room).emit('dm', message)
+    })
+    socket.on('disconnect', function() {
+        delete onlineUsers[onlineSocket]
+        console.log(`${onlineUsername} disconnected\nOnline Users:`);
+        console.log(onlineUsers)
+    });
 })
 
 
@@ -66,6 +90,15 @@ app.post('/api/newComment', cc.newComment)
 app.get('/api/:postID/comments', cc.getPostComments)
 app.post('/api/deleteComment/:id', cc.deleteComment)
 app.post('/api/editComment/:id', cc.editComment)
+
+// // MESSAGING
+app.post('/api/newMessageRequest', mc.newRequest)
+app.post('/api/newMessageResponse', mc.newResponse)
+app.get('/api/getAllMessages', mc.getAllMessages)
+app.get('/api/getPendingMessages', mc.getPendingMessages)
+// app.get('/api/messages/:id', mc.getMessages)
+// app.post('/api/messages/:id/newMessage', mc.newMessage)
+app.get('/api/messaging/searchUsers/:query', mc.searchUsers)
 
 // SOCKETS
 
