@@ -13,16 +13,28 @@ class Messaging extends Component {
             modalIsOpen: false,
             userSearch: '',
             messages: [],
+            pendingMessages: [],
             searchResults: [],
             expandedRequest: '',
             requestText: ''
         }
     }
 
+    componentDidMount() {
+        this.getAllMessages();
+        this.getPendingMessages();
+    }
+
 
     getAllMessages = () => {
         axios.get('/api/getAllMessages').then(res => {
             this.setState({messages: res.data})
+        })
+    }
+
+    getPendingMessages = () => {
+        axios.get('/api/pendingMessages').then(res => {
+            this.setState({pendingMessages: res.data})
         })
     }
 

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 export default class Message extends Component {
-    constructor() {
-        super();
-    }
+//     constructor() {
+//         super();
+//     }
 
     newMessageResponse = bool => {
         const data = {

@@ -22,6 +22,17 @@ module.exports = {
         }
     },
 
+    getPendingMessages: async (req, res) => {
+        const db = req.app.get('db');
+        const {username} = req.session.user;
+        const messages = await db.getPendingMessages([username]);
+        if (messages[0]) {
+            res.status(200).send(messages)
+        } else {
+            res.sendStatus(404)
+        }
+    },
+
     newRequest: async (req, res) => {
         const db = req.app.get('db');
         const {username} = req.session.user;
