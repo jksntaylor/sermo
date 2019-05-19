@@ -93,7 +93,7 @@ app.post('/api/editComment/:id', cc.editComment)
 
 // // MESSAGING
 app.post('/api/newMessageRequest', mc.newRequest)
-app.post('/api/newMessageResponse', mc.newReponse)
+app.post('/api/newMessageResponse', mc.newResponse)
 app.get('/api/getAllMessages', mc.getAllMessages)
 // app.get('/api/messages/:id', mc.getMessages)
 // app.post('/api/messages/:id/newMessage', mc.newMessage)
