@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import Modal from 'react-modal';
 import axios from 'axios';
-import Message from './message';
+import MessageTeaser from './messageTeaser';
 import PendingMessage from './pendingMessage';
+import Message from './message';
 
 
 class Messaging extends Component {
@@ -15,6 +16,7 @@ class Messaging extends Component {
             userSearch: '',
             messages: [],
             pendingMessages: [],
+            expandedMessage: '',
             searchResults: [],
             expandedRequest: '',
             requestText: ''
@@ -47,6 +49,14 @@ class Messaging extends Component {
 
     handleChange = (key, val) => {
         this.setState({[key]: val})
+    }
+
+    handleExpansion = val => {
+        if (this.state.expandedMessage !== val) {
+            this.setState({expandedMessage: val})
+        } else {
+            this.setState({expandedMessage: ''})
+        }
     }
 
     openModal = () => {
@@ -88,10 +98,14 @@ class Messaging extends Component {
 
     render() {
         const messages = this.state.messages.map(message => {
-            return (<Message key={message.room} message={message} user={this.props.user}/>)
+            return (<li onClick={() => {this.handleExpansion(message.room)}}>
+                <MessageTeaser key={message.room} message={message} user={this.props.user}/>
+                    </li>)
         })
         const pending = this.state.pendingMessages.map(message => {
-            return (<PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.refresh}/>)
+            return (<li onClick={() => {this.handleExpansion(message.room)}}>
+                <PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.refresh}/>
+            </li>)
         })
         let results;
         if (this.state.searchResults) {
@@ -109,16 +123,18 @@ class Messaging extends Component {
                 )
             })
         } else {results = null}
+        let openMessage = this.state.messages.filter(message => message.room === this.state.expandedMessage)
         return (
             <div>
                 <h1>Messaging</h1>
-                <div className='pending-messages'>
+                <ul className='pending-messages-list'>
                     {pending}
-                </div>
-                <div className='messages'>
+                </ul>
+                <ul className='messages-list'>
                     {messages}
-                </div>
+                </ul>
                 <button onClick={this.openModal}>New Chat</button>
+                <Message room={this.state.expandedMessage} message={openMessage[0]}/>
                 <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}

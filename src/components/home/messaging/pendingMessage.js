@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 export default class PendingMessage extends Component {
-    constructor(props) {
-        super(props)
-    }
     accept = () => {
         const data = {
             username: this.props.message.user1
@@ -18,6 +15,7 @@ export default class PendingMessage extends Component {
         }
         axios.post('/api/rejectMessage', data).then(this.props.refresh())
     }
+
     render() {
         let content;
         for (var message in this.props.message.messages) {
