@@ -1,21 +1,46 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class PendingMessage extends Component {
     accept = () => {
-
+        const data = {
+            username: this.props.message.user1
+        }
+        axios.post('/api/acceptMessage', data).then(this.props.refresh())
     }
 
     reject = () => {
-        
+        const data = {
+            username: this.props.message.user1
+        }
+        axios.post('/api/rejectMessage', data).then(this.props.refresh())
     }
+
     render() {
+        let content;
+        for (var message in this.props.message.messages) {
+            content = this.props.message.messages[message]['content']
+        }
         return (
-            <div>
-                <h1>{this.props.message.user1}</h1>
-                
-                <button>Accept</button>
-                <button>Reject</button>
+            <div style={{border: '1px solid white'}}>
+                {
+                this.props.user.username === this.props.message.user2 ?
+                <div>
+                    <h1>{this.props.message.user1}</h1>
+                    <p>{content}</p>
+                    <div className='buttons'>
+                    <button onClick={this.accept}>Accept</button>
+                    <button onClick={this.reject}>Reject</button>
+                    </div>
+                </div>
+                :
+                <div>
+                    <h1>{this.props.message.user2}</h1>
+                    <p>{content}</p>
+                    <h2>Waiting on Response</h2>
+                </div>
+             }
             </div>
         )
     }
-}
+}   

@@ -21,7 +21,7 @@ module.exports = {
         if (messages[0]) {
             res.status(200).send(messages)
         } else {
-            res.sendStatus(404)
+            res.status(200).send([])
         }
     },
 
@@ -29,10 +29,10 @@ module.exports = {
         const db = req.app.get('db');
         const {username} = req.session.user;
         const messages = await db.getPendingMessages([username]);
-        if (messages) {
+        if (messages[0]) { 
             res.status(200).send(messages)
         } else {
-            res.sendStatus(404)
+            res.status(200).send([])
         }
     },
 
@@ -49,11 +49,22 @@ module.exports = {
         }
     },
 
-    newResponse: async (req, res) => {
+    acceptMessage: async (req, res) => {
         const db = req.app.get('db');
         const username2 = req.session.user.username
-        const {username1, bool} = req.body;
-        const request = await db.newMessageResponse([username1, username2, bool]);
+        const {username} = req.body;
+        console.log(req.body)
+        const request = await db.newMessageResponse([username, username2, true]);
+        if (request[0]) {
+            res.sendStatus(200);
+        }
+    },
+
+    rejectMessage: async (req, res) => {
+        const db = req.app.get('db');
+        const username2 = req.session.user.username
+        const {username} = req.body;
+        const request = await db.newMessageResponse([username, username2, false]);
         if (request[0]) {
             res.sendStatus(200);
         }
