@@ -24,7 +24,7 @@ export default class PendingMessage extends Component {
             content = this.props.message.messages[message]['content']
         }
         return (
-            <div>
+            <div style={{border: '1px solid white'}}>
                 {
                 this.props.user.username === this.props.message.user2 ?
                 <div>

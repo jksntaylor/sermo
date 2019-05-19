@@ -23,8 +23,13 @@ class Messaging extends Component {
 
     componentDidMount() {
         if (this.props.user) {
-            this.getAllMessages();
+            this.refresh();
         }
+    }
+
+    refresh = () => {
+        this.getAllMessages();
+        this.getPendingMessages();
     }
 
 
@@ -32,6 +37,9 @@ class Messaging extends Component {
         axios.get('/api/getAllMessages').then(res => {
             this.setState({messages: res.data})
         });
+    }
+
+    getPendingMessages = () => {
         axios.get('/api/getPendingMessages').then(res => {
             this.setState({pendingMessages: res.data})
         });
@@ -83,7 +91,7 @@ class Messaging extends Component {
             return (<Message key={message.room} message={message} user={this.props.user}/>)
         })
         const pending = this.state.pendingMessages.map(message => {
-            return (<PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.getAllMessages}/>)
+            return (<PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.refresh}/>)
         })
         let results;
         if (this.state.searchResults) {

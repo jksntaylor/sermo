@@ -21,7 +21,7 @@ module.exports = {
         if (messages[0]) {
             res.status(200).send(messages)
         } else {
-            res.sendStatus(404)
+            res.status(200).send([])
         }
     },
 
@@ -29,10 +29,10 @@ module.exports = {
         const db = req.app.get('db');
         const {username} = req.session.user;
         const messages = await db.getPendingMessages([username]);
-        if (messages) {
+        if (messages[0]) { 
             res.status(200).send(messages)
         } else {
-            res.sendStatus(404)
+            res.status(200).send([])
         }
     },
 
