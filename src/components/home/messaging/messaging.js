@@ -22,21 +22,19 @@ class Messaging extends Component {
     }
 
     componentDidMount() {
-        this.getAllMessages();
-        this.getPendingMessages();
+        if (this.props.user) {
+            this.getAllMessages();
+        }
     }
 
 
     getAllMessages = () => {
         axios.get('/api/getAllMessages').then(res => {
             this.setState({messages: res.data})
-        })
-    }
-
-    getPendingMessages = () => {
+        });
         axios.get('/api/getPendingMessages').then(res => {
             this.setState({pendingMessages: res.data})
-        })
+        });
     }
 
     handleChange = (key, val) => {
@@ -71,11 +69,12 @@ class Messaging extends Component {
                 content: this.state.requestText
             }
         }
-        alert(JSON.stringify(data));
         socket.emit('message request', data.recipient, data.message)
-        axios.post('/api/newMessageRequest', data).then(() => {
+        axios.post('/api/newMessageRequest', data).then(res => {
+            if (res.status) {
             this.closeModal();
             this.getAllMessages();
+            }
         })
     }
 
@@ -84,7 +83,7 @@ class Messaging extends Component {
             return (<Message key={message.room} message={message} user={this.props.user}/>)
         })
         const pending = this.state.pendingMessages.map(message => {
-            return (<PendingMessage key={message.room} message={message} user={this.props.user}/>)
+            return (<PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.getAllMessages}/>)
         })
         let results;
         if (this.state.searchResults) {
@@ -105,8 +104,12 @@ class Messaging extends Component {
         return (
             <div>
                 <h1>Messaging</h1>
-                {pending}
-                {messages}
+                <div className='pending-messages'>
+                    {pending}
+                </div>
+                <div className='messages'>
+                    {messages}
+                </div>
                 <button onClick={this.openModal}>New Chat</button>
                 <Modal
                 isOpen={this.state.modalIsOpen}
