@@ -14,6 +14,9 @@ module.exports = {
     getAllMessages: async (req, res) => {
         const db = req.app.get('db');
         const {username} = req.session.user;
+        if (!username) {
+            res.sendStatus(403)
+        }
         const messages = await db.getAllMessages([username]);
         if (messages[0]) {
             res.status(200).send(messages)
@@ -26,7 +29,7 @@ module.exports = {
         const db = req.app.get('db');
         const {username} = req.session.user;
         const messages = await db.getPendingMessages([username]);
-        if (messages[0]) {
+        if (messages) {
             res.status(200).send(messages)
         } else {
             res.sendStatus(404)
@@ -35,10 +38,12 @@ module.exports = {
 
     newRequest: async (req, res) => {
         const db = req.app.get('db');
-        const {username} = req.session.user;
-        const {username2, messages} = req.body;
-        const room = `${username}>${username2}`;
-        const request = await db.newMessageRequest([username, username2, messages, room, true, false]);
+        const {sender, recipient, message} = req.body;
+        const timestamp = `{${message.timestamp}}`
+        const content = {"content": message.content,
+                         "author": sender}
+        const room = `${sender}>${recipient}`;
+        const request = await db.newMessageRequest([sender, recipient, timestamp, content, room, true, false]);
         if (request[0]) {
             res.sendStatus(200)
         }

@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom';
 import Modal from 'react-modal';
 import axios from 'axios';
 import Message from './message';
+import PendingMessage from './pendingMessage';
 
 
 class Messaging extends Component {
@@ -33,7 +34,7 @@ class Messaging extends Component {
     }
 
     getPendingMessages = () => {
-        axios.get('/api/pendingMessages').then(res => {
+        axios.get('/api/getPendingMessages').then(res => {
             this.setState({pendingMessages: res.data})
         })
     }
@@ -63,14 +64,15 @@ class Messaging extends Component {
     sendMessageRequest = () => {
         const {socket} = this.props;
         const data = {
-            username: this.state.expandedRequest,
+            recipient: this.state.expandedRequest,
+            sender: this.props.user.username,
             message: {
-                author: this.props.user.id,
-                timestamp: new Date(),
+                timestamp: new Date().getTime(),
                 content: this.state.requestText
             }
         }
-        socket.emit('message request', data.username, data.message)
+        alert(JSON.stringify(data));
+        socket.emit('message request', data.recipient, data.message)
         axios.post('/api/newMessageRequest', data).then(() => {
             this.closeModal();
             this.getAllMessages();
@@ -80,6 +82,9 @@ class Messaging extends Component {
     render() {
         const messages = this.state.messages.map(message => {
             return (<Message key={message.room} message={message} user={this.props.user}/>)
+        })
+        const pending = this.state.pendingMessages.map(message => {
+            return (<PendingMessage key={message.room} message={message} user={this.props.user}/>)
         })
         let results;
         if (this.state.searchResults) {
@@ -91,7 +96,7 @@ class Messaging extends Component {
                         {this.state.expandedRequest === result.username ? 
                             <div>
                                 <textarea onChange={e => {this.handleChange('requestText', e.target.value)}}/>
-                                <button>Send</button>
+                                <button onClick={this.sendMessageRequest}>Send</button>
                             </div> : null}
                     </div>
                 )
@@ -100,6 +105,7 @@ class Messaging extends Component {
         return (
             <div>
                 <h1>Messaging</h1>
+                {pending}
                 {messages}
                 <button onClick={this.openModal}>New Chat</button>
                 <Modal
