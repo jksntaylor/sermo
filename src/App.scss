@@ -338,7 +338,7 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 
 	span {
 		font-family: $font-bold;
-		color: $bright;
+		color: $light;
 	}
 
 	::placeholder {
@@ -357,7 +357,7 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 		bottom: 40px;
 	}
 
-	> div {
+	> div:not(.loading-animation) {
 		height: 50px;
 		display: flex;
 		align-items: center;
@@ -517,6 +517,24 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 		font-family: $font-bold;
 		font-size: 40px;
 		margin-top: 40vh;
+	}
+}
+
+.loading-animation {
+	height: 50px;
+	width: 50px;
+	border-top: 3px solid $light;
+	margin-top: 70px;
+	border-radius: 25px; 
+	animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+	from {
+		transform: none;
+	}
+	to {
+		transform: rotate(360deg)
 	}
 }
 
