@@ -125,42 +125,44 @@ class NewPost extends Component {
         }
 
         if (this.state.postButtons) {
-            var postButton = <button onClick={this.handlePostButton}>x</button>
+            var postButton = <button onClick={this.handlePostButton} className='close-menu'>+</button>
         } else {
-            postButton = <button onClick={this.handlePostButton}>+</button>
+            postButton = <button onClick={this.handlePostButton} className='open-menu'>+</button>
         }
 
         if (this.state.postButtons) {
-            var style = {display: 'inline'}
+            var style = 'active'
         } else {
-            style = {display: 'none'}
+            style = 'initial'
         }
 
         if (this.state.postType==='text') {
-            var input = <input placeholder='Text' onChange={this.handleTextChange}/>
+            var input = <textarea placeholder='Text' onChange={this.handleTextChange}/>
         } else if (this.state.postType==='link') {
-            input = <input value={this.state.link} placeholder='image url' onChange={this.handleLinkChange}/>
+            input = <input className='link-input' value={this.state.link} placeholder='image url' onChange={this.handleLinkChange}/>
         } else {
-            input = <input type='file' accept="image/*, video/*" onChange={this.handleMediaChange}/>
+            input = <input className='file-input' type='file' accept="image/*, video/*" onChange={this.handleMediaChange}/>
         }
         return (
-            <div className='newpost-component-container'>
+            <div className='newpost'>
                 {postButton}
-                <div style={style}>
-                    <button onClick={this.openModalText}>Text</button>
-                    <button onClick={this.openModalMedia}>Upload Media</button>
-                    <button onClick={this.openModalLink}>Media Link</button>
-                </div>
+                    <button className={`post-type ${style}-text`}onClick={this.openModalText}><i className="fas fa-align-justify"></i></button>
+                    <button className={`post-type ${style}-upload`}onClick={this.openModalMedia}><i className="fas fa-upload"></i></button>
+                    <button className={`post-type ${style}-link`}onClick={this.openModalLink}><i className="fas fa-link"></i></button>
                 <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
         
-                <button onClick={this.closeModal}>x</button>
-                <input placeholder='Title' onChange={this.handleTitleChange}/>
-                {input}
-                <input type='checkbox' onChange={this.handleAnonChange}/><span>Post Anonymously</span>
-                {tooBig}
+                <div class="newpost-content">
+                    <button onClick={this.closeModal} className='cancel-post'>x</button>
+                    <input placeholder='Title' onChange={this.handleTitleChange}/>
+                    {input}
+                    <div>
+                        <input className='checkbox' type='checkbox' onChange={this.handleAnonChange}/><span>Post Anonymously</span>
+                    </div>
+                    {tooBig}
+                </div>
                 </Modal>
             </div>
         );

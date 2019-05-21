@@ -58,167 +58,254 @@ $bright: #DE9E36;
 $muted: #BFBDC1;
 $gray: #6D6E75;
 $deep: #322E39;
-$font-stack: 'Raleway', sans-serif;
-
-
-* {
-  background-color: $deep;
-  color: $muted;
-}
-
-h1, h2, span, button, input {
-  font-family: $font-stack;
-}
-
-a {
-	color: $muted
-}
-
+$font-light: 'Raleway', sans-serif;
+$font-bold: 'Open Sans', sans-serif;
+$mobile-height: calc(var(--vh, 1vh) * 100);
 
 #root {
-	width: 100vw;
-	height: 100vh;
+	height: $mobile-height;
+	background-color: $deep;
 }
 
 .auth-component-container {
 	height: 100%;
-	width: 100%;
 	display: flex;
+	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
-	overflow: hidden;
 
-	> div {
-		width: 35%;
-		height: 60%;
+	.logo {
+		font-family: $font-bold;
+		text-transform: uppercase;
+		font-size: 80px;
+		letter-spacing: 5px;
+		color: $light;
+		width: 80%;
+		text-align: center;
+	}
+
+	.login, .register {
 		display: flex;
 		flex-direction: column;
-		justify-content: flex-start;
+		width: 80%;
 
-		* {
-			margin-bottom: 5%;
-			font-size: 20px;
+		h2, span {
+			font-family: $font-bold;
+			color: $light;
+		}
+
+		h2 {
+			font-size: 24px;
+			margin-bottom: 10px;
 		}
 
 		input {
-			padding: 5px;
-			border: 1px solid $deep;
+			font-family: $font-bold;
+			background-color: $gray;
+			color: $muted;
+			padding: 10px;
+			height: 30px;
+			border-radius: 15px;
+			margin-bottom: 10px;
+			
+		}
+		
+		::placeholder  {
+			color: $deep;
+			font-family: $font-bold;
+		}
+
+		.remember {
+			display: flex;
+			align-items: center;
+			flex-direction: row-reverse;
+
+			input {
+				margin: 0;
+				margin-left: 10px;
+			}
 		}
 
 		button {
+			height: 40px;
 			width: 50%;
-			padding: 10px;
-			border: 1px solid $deep;
-			margin: 0 25%;
+			background-color: $bright;
+			margin-left: 25%;
+			margin-top: 20px;
+			border-radius: 20px;
+			font-family: $font-bold;
+			font-size: 20px;
+			color: $deep;
 		}
+		
 	}
 }
 
 .user-component-container {
-	height: 10vh;
-	div {
-		width: 5%;
-		height: 5vw;
-		position: fixed;
-		top: 10px;
-		right: 10px;
-		// border-radius: 50%;
-		// background-image: radial-gradient($light 40%, $muted);
-		
-		button {
-			width: 100%;
-			height: 100%;
-			// border: 1px solid $muted;
-			border-radius: 50%;
+	width: 70px;
+	height: 70px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	i {
+		color: $light;
+	}
+}
 
-			i {
-				background: none;
-			}
+.home-component-container {
+	height: 100%;
+
+	.nav {
+		height: 70px;
+		display: flex;
+		width: calc(100% - 70px);
+		justify-content: space-around;
+		align-items: center;
+
+		a {
+			color: $light;
+			text-decoration: none;
+			font-family: $font-bold;
+			font-size: 28px;
 		}
 	}
-}
 
-.posts-component-container {
-	height: 80vh;
-	overflow-y: scroll;
-}
+	.posts-component-container {
+		height: calc(100% - 70px);
+		padding: 10px 0;
 
-.posts-container {
-	* {
-		background: none;
-		color: $deep;
-	}
-	width: 80%;
-	margin: 0 10%;
-	> div {
-		background-color: $muted;
-		margin-bottom: 10px;
-		display: flex;
-		border-radius: 5px;
+		.posts-container {
+			height: 90%;
+			overflow-y: scroll;
+		}
 
-		> :first-child {
-			width: 10%;
+		.newpost {
+			height: 10%;
 			display: flex;
-			flex-direction: column;
-			justify-content: center;
 			align-items: center;
+			padding-left: 20px;
 
 			button {
-				width: 50%;
-				padding: 0;
-
-				i {
-					width: 100%;
-					margin: 0;
-				}
-			}
-
-			h1 {
+				height: 50px;
+				width: 50px;
+				border-radius: 25px;
+				background-color: $light;
+				color: $deep;
+				font-family: $font-bold;
 				font-size: 30px;
-				margin: 10px 0;
+				transition: transform 350ms ease;
+				margin-right: 20px;
 			}
-		};
 
-		> :last-child {
-			width: 90%;
+			button:focus {
+				outline: none;
+			}
+
+			.initial-text {
+				transform: translateX(-70px);
+			}
+
+			.initial-upload {
+				transform: translateX(-140px);
+			}
+
+			.initial-link {
+				transform: translateX(-210px);
+			}
+
+			.open-menu, .close-menu {
+				z-index: 1;
+			}
+
+			.close-menu {
+				transform: rotate(45deg)
+			}
 		}
 	}
 }
 
-.post-teaser-container {
-	height: 20vh;
+.newpost-content {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 40px;
 
-	h2 {
-		height: 20%;
+	.cancel-post {
+		font-family: $font-bold;
+		font-size: 30px;
+		color: $light;
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		transform: translateY(-10px);
+	}
+	
+	input:not(.checkbox):not(.file-input), 
+	textarea {
+		color: $deep;
+		font-family: $font-bold;
+		background-color: $muted;
+		height: 30px;
+		border-radius: 15px;
+		padding: 10px;
 		width: 100%;
-		font-size: 2rem;
+		margin-bottom: 20px;
 	}
 
-	p {
-		height: 60%;
-		padding-top: 20px;
+	textarea {
+		height: 40%;
 	}
 
-	img {
-		height: 60%;
+	span {
+		font-family: $font-bold;
+		color: $bright;
 	}
 
-	div {
+	::placeholder {
+		color: $deep;
+	}
+	
+	button:not(.cancel-post) {
+		background-color: $bright;
+		color: $deep;
+		font-family: $font-bold;
+		height: 40px;
+		border-radius: 20px;
+		width: 50%;
+		font-size: 28px;
+		position: absolute;
+		bottom: 40px;
+	}
+
+	> div {
+		height: 50px;
 		display: flex;
-		height: 20%;
+		align-items: center;
+	}
 
-		> * {
-			margin: 0 2%;
-		}
+	.checkbox {
+		width: 20px;
+		height: 100%;
+		margin: 0;
+		margin-right: 20px;
 	}
 }
 
-.newpost-component-container {
-	position: absolute;
-	left: 20px;
-	bottom: 0;
+.ReactModal__Overlay, .ReactModal__Content {
+	z-index: 2;
+}
 
-	button {
-		font-size: 40px;
-	}
+.ReactModal__Overlay {
+	background-color: rgba(0,0,0,0.2) !important;
+}
+
+.ReactModal__Content {
+	background-color: $gray !important;
+	border: none !important;
+	height: 80vh !important;
 }

@@ -23,8 +23,10 @@ class Home extends Component {
             <HashRouter>
                 <div className='home-component-container'>
                     <User/>
-                        <Link to='/home'>Posts</Link>
-                        <Link to='/home/messaging'>Messages</Link>
+                        <div className="nav">
+                            <Link to='/home'>Posts</Link>
+                            <Link to='/home/messaging'>Messages</Link>
+                        </div>
                         <Switch>
                             <Route exact path='/home' component={Posts}/>
                             <Route path='/home/messaging' render={props => (<Messaging {...props} socket={socket}/>)}/>
