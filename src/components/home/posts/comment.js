@@ -79,15 +79,15 @@ class Comment extends Component {
         const elapsedTime = this.calculateTime();
         if (this.state.canEdit) {
             if (this.state.isEditing) {
-               var editor = <div>
-                                <button onClick={this.closeEditor}>Cancel</button>
-                                <input value={this.state.text} onChange={this.handleCommentChange}/>
-                                <button onClick={this.submitEdit}>Save Changes</button>
+               var editor = <div className='comment-editor'>
+                                <textarea value={this.state.text} onChange={this.handleCommentChange}/>
+                                <button onClick={this.closeEditor}>x</button>
+                                <button onClick={this.submitEdit}><i className='fas fa-check'/></button>
                             </div>
             } else {
-                editor = <div>
-                            <button onClick={this.openEditor}>Edit</button>
-                            <button onClick={this.deleteComment}>Delete</button>
+                editor = <div className='comment-editor'>
+                            <button onClick={this.openEditor}><i className='fas fa-edit'/></button>
+                            <button onClick={this.deleteComment}><i className='fas fa-trash'/></button>
                          </div>
             }   
         } else {
@@ -95,10 +95,12 @@ class Comment extends Component {
         }
 
         return (
-            <div>
-                <h1>{author}</h1>
-                <h2>{elapsedTime}</h2>
+            <div className='comment'>
                 <p>{text}</p>
+                <div class="comment-info">
+                    <h1>{author}</h1>
+                    <h2>{elapsedTime}</h2>
+                </div>
                 {editor}
             </div>
         )

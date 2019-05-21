@@ -51,6 +51,12 @@ input, button {
 	box-sizing: border-box;
 }
 
+button:focus,
+input:focus,
+textarea:focus {
+	outline: none !important;
+}
+
 // VARIABLES
 
 $light: #E1BE52;
@@ -225,6 +231,71 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 				transform: rotate(45deg)
 			}
 		}
+
+		.post-container {
+			width: 95%;
+			margin-left: 2.5%;
+			background-color: $gray;
+			border-radius: 10px;
+			padding: 10px;
+			margin-bottom: 10px;
+			display: flex;
+
+			.voting-container {
+				width: 10%;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+
+				> div {
+					height: 50%;
+					min-height: 60px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-around;
+				}
+
+				h1 {
+					font-family: $font-bold;
+					color: $light;
+					font-size: 20px;
+					height: 22px;
+				}
+			}
+
+			.post-teaser-container {
+				width: 85%;
+				margin-left: 5%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+
+				h2 {
+					color: white;
+					font-family: $font-bold;
+				}
+
+				p {
+					color: white;
+					font-family: $font-light;
+					margin: 10px 0;
+				}
+
+				.post-info {
+					display: flex;
+					justify-content: space-between;
+					font-family: $font-bold;
+					color: $deep;
+					font-size: 14px;
+				}
+
+				img {
+					width: 80%;
+					height: auto;
+					margin: 10px 0;
+				}
+			}
+		}
 	}
 }
 
@@ -234,6 +305,10 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 	flex-direction: column;
 	align-items: center;
 	padding-top: 40px;
+
+	.error {
+		background-color: $light !important;
+	}
 
 	.cancel-post {
 		font-family: $font-bold;
@@ -296,12 +371,162 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 	}
 }
 
+.post-modal {
+	height: 100%;
+	overflow-y: scroll;
+
+	.close-modal {
+		position: absolute;
+		right: 20px;
+		top: 5px;
+		font-family: $font-bold;
+		color: $light;
+		font-size: 30px;
+	}
+
+	h2 {
+		color: white;
+		font-family: $font-bold;
+		font-size: 24px;
+		margin-top: 30px;
+	}
+
+	p {
+		color: white;
+		font-family: $font-light;
+		font-size: 20px;
+		margin: 10px 0;
+	}
+
+	.post-modal-info {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 50%;
+		margin-left: 40%;
+		font-family: $font-bold;
+		color: $deep;
+
+		i {
+			color: white;
+		}
+	}
+
+	.voting-container {
+		display: flex;
+		align-items: center;
+		flex-direction: row-reverse;
+		justify-content: flex-end;
+		margin-bottom: 20px;
+
+		h1 {
+			font-family: $font-bold;
+			color: $light;
+			font-size: 20px;
+			margin-right: 10px;
+		}
+	}
+}
+
+.newcomment-container {
+
+	textarea {
+		background-color: $muted;
+		color: $deep;
+		width: 100%;
+		padding: 10px;
+		font-family: $font-bold;
+		font-size: 16px;
+		border-radius: 15px;
+		height: 100px;
+		margin-bottom: 10px;
+	}
+	button {
+		background-color: $light;
+		font-family: $font-bold;
+		color: $deep;
+		height: 30px;
+		border-radius: 15px;
+		padding: 0 10px;
+		margin-right: 10px;
+	}
+}
+
+.comments-container {
+
+	.comment {
+		margin-bottom: 10px;
+		border-bottom: 1px solid white;
+		padding-bottom: 10px;
+
+		> p {
+			font-size: 16px;
+		}
+
+		.comment-info {
+			display: flex;
+			justify-content: flex-end;
+			padding-right: 20px;
+			margin-bottom: 10px;
+
+			h1, h2 {
+				margin-top: 0;
+				font-size: 14px;
+				color: $deep;
+				font-family: $font-bold;
+				margin: 0 5px;
+			}
+		}
+
+		.comment-editor {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+
+			.fa-edit {
+				margin-right: 10px;
+			}
+
+			i {
+				color: white;
+			}
+
+			button {
+				color: white;
+				font-family: $font-bold;
+				text-transform: uppercase;
+				font-size: 20px;
+			}
+
+			textarea {
+				background-color: $muted;
+				color: $deep;
+				font-family: $font-bold;
+				width: 100%;
+				border-radius: 10px;
+				padding: 10px;
+			}
+		}
+	}
+}
+
+.messaging-component-container {
+	h1 {
+		text-align: center;
+		color: white;
+		font-family: $font-bold;
+		font-size: 40px;
+		margin-top: 40vh;
+	}
+}
+
+
 .ReactModal__Overlay, .ReactModal__Content {
 	z-index: 2;
 }
 
 .ReactModal__Overlay {
-	background-color: rgba(0,0,0,0.2) !important;
+	background-color: rgba(0,0,0,0.4) !important;
 }
 
 .ReactModal__Content {

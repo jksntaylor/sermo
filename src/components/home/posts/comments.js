@@ -9,7 +9,7 @@ export default function Comments (props)  {
     });
 
     return (
-        <div>
+        <div className='comments-container'>
             {comments}
         </div>
     )

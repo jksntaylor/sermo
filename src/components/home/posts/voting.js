@@ -52,10 +52,12 @@ class Voting extends Component {
         }
         const votingScore = this.props.upvoters.length - this.props.downvoters.length
         return (
-            <div>
-                <button onClick={this.handleUpvote}><i style={upStyle} className="fas fa-2x fa-arrow-up"/></button>
+            <div className='voting-container'>
+                <div>
+                    <button onClick={this.handleUpvote}><i style={upStyle} className="fas fa-2x fa-arrow-up"/></button>
+                    <button onClick={this.handleDownvote}><i style={downStyle} className="fas fa-2x fa-arrow-down"/></button>
+                </div>
                 <h1>{votingScore}</h1>
-                <button onClick={this.handleDownvote}><i style={downStyle} className="fas fa-2x fa-arrow-down"/></button>
             </div>
         )
     }
