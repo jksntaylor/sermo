@@ -17,7 +17,8 @@ class NewPost extends Component {
             postButtons: false,
             tooBig: false,
             anon: false,
-            error: ''
+            error: '',
+            loading: false
         }
     }
 
@@ -47,7 +48,8 @@ class NewPost extends Component {
                        postButtons: false,
                        tooBig: false,
                        anon: false,
-                       error: ''});
+                       error: '',
+                       loading: false});
     }
     
     handleTitleChange = e => {
@@ -107,6 +109,7 @@ class NewPost extends Component {
                 this.setState({error: 'text'});
                 return;
             }
+            this.setState({loading: true})
             axios.post('/api/newTextPost', {title, text, anon}).then(res => {
                 this.props.updatePosts(res.data);
                 this.closeModal();
@@ -116,6 +119,7 @@ class NewPost extends Component {
                 this.setState({error: 'link'});
                 return;
             }
+            this.setState({loading: true})
             axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
                 this.props.updatePosts(res.data);
                 this.closeModal();
@@ -125,6 +129,7 @@ class NewPost extends Component {
                 this.setState({error: 'media'});
                 return;
             }
+            this.setState({loading: true})
             var headers = {
                 'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
             }
@@ -145,6 +150,8 @@ class NewPost extends Component {
 
         if (this.state.tooBig) {
             var tooBig = 'Please choose a smaller file (less than 5MB)';
+        } else if (this.state.loading) {
+            tooBig = <div className='loading-animation'></div>
         } else {
             tooBig = <button onClick={this.post}>Post</button>;
             
