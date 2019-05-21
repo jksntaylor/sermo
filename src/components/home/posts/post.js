@@ -100,13 +100,12 @@ class Post extends Component {
             content = <img alt='' src={media}/>
         }
         return (
-            <div>
+            <div className='post-container'>
                 <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
                 <div className='post-teaser-container' onClick={this.openModal}>
                     <h2>{title}</h2>
                     {teasercontent}
-                    <div>
-                        {+this.props.post.user_id === +this.props.user.id ? <button onClick={this.deletePost()}>Delete</button> : null}
+                    <div className='post-info'>
                         <h1>{author}</h1>
                         <h6>{elapsedTime}</h6>
                         <h5>{this.state.commentCount} comments</h5>
@@ -116,14 +115,21 @@ class Post extends Component {
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
-                    <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
-                    {+this.props.post.user_id === +this.props.user.id ? <button onClick={this.deletePost()}>Delete</button> : null}
-                    <h1>{author}</h1>
-                    <h6>{elapsedTime}</h6>
-                    <h2>{title}</h2>
-                    {content}
-                    <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
-                    <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
+                    <div class="post-modal">
+                        <button className='close-modal' onClick={this.closeModal}>x</button>
+                        <h2>{title}</h2>
+                        {content}
+                        <div class="post-modal-info">
+                            <h1>{author}</h1>
+                            <h6>{elapsedTime}</h6>
+                            {+this.props.post.user_id === +this.props.user.id ? 
+                            <button onClick={this.deletePost}><i className='fas fa-trash'/></button>
+                            : null}
+                        </div>
+                        <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
+                        <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
+                        <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
+                    </div>
                 </Modal>
             </div>
         )

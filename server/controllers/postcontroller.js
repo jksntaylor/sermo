@@ -6,7 +6,7 @@ module.exports = {
         console.log(req.session)
         if (anon) {
             var {id} = req.session.user
-            var username = null
+            var username = 'anon'
         } else {
             var {id} = req.session.user;
             var username = req.session.user.username;
@@ -23,7 +23,7 @@ module.exports = {
         const {title, link, anon} = req.body
         if (anon) {
             var {id} = req.session.user
-            var username = null
+            var username = 'anon'
         } else {
             var id = req.session.user.id;
             var username = req.session.user.username;

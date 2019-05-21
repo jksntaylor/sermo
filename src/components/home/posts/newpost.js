@@ -16,7 +16,8 @@ class NewPost extends Component {
             postType: 'text',
             postButtons: false,
             tooBig: false,
-            anon: false
+            anon: false,
+            error: ''
         }
     }
 
@@ -37,7 +38,16 @@ class NewPost extends Component {
     }
     
     closeModal = () => {
-        this.setState({modalIsOpen: false});
+        this.setState({modalIsOpen: false,
+                       title: '',
+                       text: '',
+                       mediaFile: "",
+                       link: '',
+                       postType: 'text',
+                       postButtons: false,
+                       tooBig: false,
+                       anon: false,
+                       error: ''});
     }
     
     handleTitleChange = e => {
@@ -86,19 +96,35 @@ class NewPost extends Component {
     }
    
     post = () => {
+        if (!this.state.title) {
+            this.setState({error: 'title'});
+            return;
+        }
         console.log('posting')
         const {title, text, mediaFile, postType, link, anon} = this.state
         if (postType==='text') {
+            if (!this.state.text) {
+                this.setState({error: 'text'});
+                return;
+            }
             axios.post('/api/newTextPost', {title, text, anon}).then(res => {
                 this.props.updatePosts(res.data);
                 this.closeModal();
             })
         } else if (postType==='link') {
+            if (!this.state.link) {
+                this.setState({error: 'link'});
+                return;
+            }
             axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
                 this.props.updatePosts(res.data);
                 this.closeModal();
             })
         } else {
+            if (!this.state.mediaFile) {
+                this.setState({error: 'media'});
+                return;
+            }
             var headers = {
                 'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
             }
@@ -125,42 +151,44 @@ class NewPost extends Component {
         }
 
         if (this.state.postButtons) {
-            var postButton = <button onClick={this.handlePostButton}>x</button>
+            var postButton = <button onClick={this.handlePostButton} className='close-menu'>+</button>
         } else {
-            postButton = <button onClick={this.handlePostButton}>+</button>
+            postButton = <button onClick={this.handlePostButton} className='open-menu'>+</button>
         }
 
         if (this.state.postButtons) {
-            var style = {display: 'inline'}
+            var style = 'active'
         } else {
-            style = {display: 'none'}
+            style = 'initial'
         }
 
         if (this.state.postType==='text') {
-            var input = <input placeholder='Text' onChange={this.handleTextChange}/>
+            var input = <textarea className={this.state.error==='text' ? 'error' : null} placeholder='Text' onChange={this.handleTextChange}/>
         } else if (this.state.postType==='link') {
-            input = <input value={this.state.link} placeholder='image url' onChange={this.handleLinkChange}/>
+            input = <input className={`link-input ${this.state.error==='link' ? 'error' : null}`} value={this.state.link} placeholder='image url' onChange={this.handleLinkChange}/>
         } else {
-            input = <input type='file' accept="image/*, video/*" onChange={this.handleMediaChange}/>
+            input = <input className={`file-input ${this.state.error==='media' ? 'error' : null}`} type='file' accept="image/*, video/*" onChange={this.handleMediaChange}/>
         }
         return (
-            <div className='newpost-component-container'>
+            <div className='newpost'>
                 {postButton}
-                <div style={style}>
-                    <button onClick={this.openModalText}>Text</button>
-                    <button onClick={this.openModalMedia}>Upload Media</button>
-                    <button onClick={this.openModalLink}>Media Link</button>
-                </div>
+                    <button className={`post-type ${style}-text`}onClick={this.openModalText}><i className="fas fa-align-justify"></i></button>
+                    <button className={`post-type ${style}-upload`}onClick={this.openModalMedia}><i className="fas fa-upload"></i></button>
+                    <button className={`post-type ${style}-link`}onClick={this.openModalLink}><i className="fas fa-link"></i></button>
                 <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
         
-                <button onClick={this.closeModal}>x</button>
-                <input placeholder='Title' onChange={this.handleTitleChange}/>
-                {input}
-                <input type='checkbox' onChange={this.handleAnonChange}/><span>Post Anonymously</span>
-                {tooBig}
+                <div class="newpost-content">
+                    <button onClick={this.closeModal} className='cancel-post'>x</button>
+                    <input className={this.state.error==='title' ? 'error' : null} placeholder='Title' onChange={this.handleTitleChange}/>
+                    {input}
+                    <div>
+                        <input className='checkbox' type='checkbox' onChange={this.handleAnonChange}/><span>Post Anonymously</span>
+                    </div>
+                    {tooBig}
+                </div>
                 </Modal>
             </div>
         );

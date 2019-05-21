@@ -125,9 +125,9 @@ class Messaging extends Component {
         } else {results = null}
         let openMessage = this.state.messages.filter(message => message.room === this.state.expandedMessage)
         return (
-            <div>
-                <h1>Messaging</h1>
-                <ul className='pending-messages-list'>
+            <div className='messaging-component-container'>
+                <h1>Coming Soon</h1>
+                {/* <ul className='pending-messages-list'>
                     {pending}
                 </ul>
                 <ul className='messages-list'>
@@ -142,7 +142,7 @@ class Messaging extends Component {
                 <input placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
                 <button onClick={this.searchMessagingUsers}>Search</button>
                 {results}
-                </Modal>
+                </Modal> */}
             </div>
         )
     }

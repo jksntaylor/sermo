@@ -36,17 +36,17 @@ export default class NewComment extends Component {
     render() {
         if (this.state.modalIsOpen) {
             var commentInput =  <div>
-                                    <button onClick={this.closeModal}>Cancel</button>
-                                    <input placeholder='type here' value={this.state.text} onChange={this.handleTextChange}/>
+                                    <textarea placeholder='type here' value={this.state.text} onChange={this.handleTextChange}/>
                                     <button onClick={this.comment}>Comment</button>
+                                    <button onClick={this.closeModal}>Cancel</button>
                                 </div>
         } else {
             commentInput =  <div>
-                                <button onClick={this.openModal}>Comment</button>
+                                <button onClick={this.openModal}>New Comment</button>
                             </div>
         }
         return (
-            <div>
+            <div className='newcomment-container'>
                 {commentInput}
             </div>
         )

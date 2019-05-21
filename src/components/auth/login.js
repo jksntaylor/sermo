@@ -67,12 +67,12 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div className='login'>
                 <ToastContainer/>
                 <h2>Login</h2>
                 <input placeholder='username' value={this.state.username} onChange={this.handleUsernameChange}/>
                 <input placeholder='password' value={this.state.password} onChange={this.handlePasswordChange} type='password' onKeyPress={this.handleKeyPress}/>
-                <div>
+                <div className='remember'>
                     <input type='checkbox' value={this.state.remember} onChange={this.handleCheckboxChange}/>
                     <span>Remember Me</span>
                 </div>

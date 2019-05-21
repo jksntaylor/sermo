@@ -73,14 +73,14 @@ class Register extends Component {
 
     render() {
         return (
-            <div>
+            <div className='register'>
                 <ToastContainer/>
                 <h2>Register</h2>
                 <input placeholder='email' onChange={this.handleEmailChange}/>
                 <input placeholder='username' onChange={this.handleUsernameChange}/>
                 <input type='password' placeholder='password' onChange={this.handlePasswordChange}/>
                 <input type='password' placeholder='confirm password' onChange={this.handleConfirmChange}/>
-                <div>
+                <div className='remember'>
                     <input type='checkbox' onChange={this.handleRememberChange}/>
                     <span>Remember Me</span>
                 </div>
