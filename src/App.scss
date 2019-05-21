@@ -374,6 +374,7 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 .post-modal {
 	height: 100%;
 	overflow-y: scroll;
+	width: 100%;
 
 	.close-modal {
 		position: absolute;
@@ -396,6 +397,11 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 		font-family: $font-light;
 		font-size: 20px;
 		margin: 10px 0;
+	}
+
+	img {
+		width: 100%;
+		height: auto;
 	}
 
 	.post-modal-info {
