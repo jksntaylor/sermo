@@ -11,13 +11,13 @@ module.exports = {
         }
     },
 
-    getAllMessages: async (req, res) => {
+    getMessageTeasers: async (req, res) => {
         const db = req.app.get('db');
         const {username} = req.session.user;
         if (!username) {
             res.sendStatus(403)
         }
-        const messages = await db.getAllMessages([username]);
+        const messages = await db.getMessageTeasers([username]);
         if (messages[0]) {
             res.status(200).send(messages)
         } else {
@@ -31,6 +31,17 @@ module.exports = {
         const messages = await db.getPendingMessages([username]);
         if (messages[0]) { 
             res.status(200).send(messages)
+        } else {
+            res.status(200).send([])
+        }
+    },
+
+    getOpenMessage: async (req, res) => {
+        const db = req.app.get('db');
+        const {room} = req.params;
+        const message = await db.getOpenMessage([room]);
+        if (message[0]) {
+            res.status(200).send(message)
         } else {
             res.status(200).send([])
         }
@@ -67,6 +78,19 @@ module.exports = {
         const request = await db.newMessageResponse([username, username2, false]);
         if (request[0]) {
             res.sendStatus(200);
+        }
+    },
+
+    sendMessage: async (req, res) => {
+        const db = req.app.get('db');
+        const {author, content, timestamp } = req.body;
+        const timems = `{${timestamp}}`
+        const data = {"content": content,
+                      "author": author}
+        const {room} = req.params;
+        const message = await db.sendMessage([room, timems, data])
+        if (message[0]) {
+            res.status(200).send(message)
         }
     }
 }

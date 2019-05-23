@@ -517,12 +517,56 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 }
 
 .messaging-component-container {
+	height: calc(100% - 70px);
+	padding: 10px;
+
+	input {
+		background-color: white;
+		color: black;
+		width: 90%;
+		padding: 10px;
+	}
+
+	::placeholder {
+		color: gray;
+	}
+
+	li, i {
+		color: white;
+	}
+
+	.message-teaser {
+		height: 50px;
+		background-color: $muted;
+		border-radius: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.message-input {
+		width: 100%;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	> div {
+		height: calc(100% - 100px)
+	}
+
 	h1 {
 		text-align: center;
 		color: white;
 		font-family: $font-bold;
 		font-size: 40px;
-		margin-top: 40vh;
+	}
+
+	button {
+		height: 50px;
+		width: 100%;
+		border-radius: 10px;
+		background-color: $muted;
 	}
 }
 

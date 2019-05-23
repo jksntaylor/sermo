@@ -95,10 +95,10 @@ app.post('/api/editComment/:id', cc.editComment)
 app.post('/api/newMessageRequest', mc.newRequest)
 app.post('/api/acceptMessage', mc.acceptMessage),
 app.post('/api/rejectMessage', mc.rejectMessage)
-app.get('/api/getAllMessages', mc.getAllMessages)
+app.get('/api/getMessageTeasers', mc.getMessageTeasers)
 app.get('/api/getPendingMessages', mc.getPendingMessages)
-// app.get('/api/messages/:id', mc.getMessages)
-// app.post('/api/messages/:id/newMessage', mc.newMessage)
+app.get('/api/getOpenMessage/:room', mc.getOpenMessage)
+app.post('/api/sendMessage/:room', mc.sendMessage)
 app.get('/api/messaging/searchUsers/:query', mc.searchUsers)
 
 // SOCKETS

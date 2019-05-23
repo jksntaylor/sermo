@@ -119,7 +119,7 @@ class Post extends Component {
                         <button className='close-modal' onClick={this.closeModal}>x</button>
                         <h2>{title}</h2>
                         {content}
-                        <div class="post-modal-info">
+                        <div className="post-modal-info">
                             <h1>{author}</h1>
                             <h6>{elapsedTime}</h6>
                             {+this.props.post.user_id === +this.props.user.id ? 

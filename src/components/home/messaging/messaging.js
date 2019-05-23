@@ -14,7 +14,7 @@ class Messaging extends Component {
         this.state = {
             modalIsOpen: false,
             userSearch: '',
-            messages: [],
+            messageTeasers: [],
             pendingMessages: [],
             expandedMessage: '',
             searchResults: [],
@@ -30,14 +30,14 @@ class Messaging extends Component {
     }
 
     refresh = () => {
-        this.getAllMessages();
+        this.getMessageTeasers();
         this.getPendingMessages();
     }
 
 
-    getAllMessages = () => {
-        axios.get('/api/getAllMessages').then(res => {
-            this.setState({messages: res.data})
+    getMessageTeasers = () => {
+        axios.get('/api/getMessageTeasers').then(res => {
+            this.setState({messageTeasers: res.data})
         });
     }
 
@@ -97,9 +97,9 @@ class Messaging extends Component {
     }
 
     render() {
-        const messages = this.state.messages.map(message => {
-            return (<li onClick={() => {this.handleExpansion(message.room)}}>
-                <MessageTeaser key={message.room} message={message} user={this.props.user}/>
+        const messageTeasers = this.state.messageTeasers.map(teaser => {
+            return (<li onClick={() => {this.handleExpansion(teaser.room)}} key={teaser.id} >
+                <MessageTeaser user={this.props.user} message={teaser}/>
                     </li>)
         })
         const pending = this.state.pendingMessages.map(message => {
@@ -123,18 +123,17 @@ class Messaging extends Component {
                 )
             })
         } else {results = null}
-        let openMessage = this.state.messages.filter(message => message.room === this.state.expandedMessage)
         return (
             <div className='messaging-component-container'>
-                <h1>Coming Soon</h1>
-                {/* <ul className='pending-messages-list'>
+                <ul className='pending-messages-list'>
                     {pending}
                 </ul>
                 <ul className='messages-list'>
-                    {messages}
+                    {messageTeasers}
                 </ul>
+                {this.state.expandedMessage === '' ? <h1>Click on a Message to Open it!</h1> : 
+                <Message room={this.state.expandedMessage} user={this.props.user}/>}
                 <button onClick={this.openModal}>New Chat</button>
-                <Message room={this.state.expandedMessage} message={openMessage[0]}/>
                 <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
@@ -142,7 +141,7 @@ class Messaging extends Component {
                 <input placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
                 <button onClick={this.searchMessagingUsers}>Search</button>
                 {results}
-                </Modal> */}
+                </Modal>
             </div>
         )
     }
