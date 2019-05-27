@@ -104,7 +104,7 @@ class Messaging extends Component {
         })
         const pending = this.state.pendingMessages.map(message => {
             return (<li onClick={() => {this.handleExpansion(message.room)}}>
-                <PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.refresh}/>
+                <PendingMessage key={message.room} message={message} room={message.room} user={this.props.user} refresh={this.refresh}/>
             </li>)
         })
         let results;

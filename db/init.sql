@@ -40,8 +40,17 @@
 --     id SERIAL PRIMARY KEY,
 --     user1 VARCHAR,
 --     user2 VARCHAR,
---     messages jsonb [],
+--     note VARCHAR,
 --     room VARCHAR,
 --     pending BOOLEAN,
 --     accepted BOOLEAN
 -- )
+
+-- CREATE TABLE reddit_messages (
+--     id SERIAL PRIMARY KEY,
+--     room_id INTEGER REFERENCES reddit_chats(id),
+--     timems INTEGER,
+--     content TEXT,
+--     author VARCHAR,
+--     read BOOLEAN
+-- );

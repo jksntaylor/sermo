@@ -62,10 +62,9 @@ module.exports = {
 
     acceptMessage: async (req, res) => {
         const db = req.app.get('db');
-        const username2 = req.session.user.username
-        const {username} = req.body;
+        const {room} = req.body;
         console.log(req.body)
-        const request = await db.newMessageResponse([username, username2, true]);
+        const request = await db.newMessageResponse([room, true]);
         if (request[0]) {
             res.sendStatus(200);
         }
@@ -73,9 +72,8 @@ module.exports = {
 
     rejectMessage: async (req, res) => {
         const db = req.app.get('db');
-        const username2 = req.session.user.username
-        const {username} = req.body;
-        const request = await db.newMessageResponse([username, username2, false]);
+        const {room} = req.body;
+        const request = await db.newMessageResponse([room, false]);
         if (request[0]) {
             res.sendStatus(200);
         }

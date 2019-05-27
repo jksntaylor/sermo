@@ -44,16 +44,16 @@ export default class Message extends Component {
             // sort array by time here
             messages = arr.map(message => {
                 return (
-                    <li key={message.id}>{message.content}</li>
+                    <li key={message.timems}>{message.content}</li>
                 )
             })
         }
         return (
             <div>
                 <ul>{messages}</ul>
-                <div class="message-input">
+                <div className="message-input">
                     <input value={this.state.input} onChange={e => this.setState({input: e.target.value})} placeholder='Type Here'/>
-                    <i class="fas fa-paper-plane" onClick={this.sendMessage}></i>
+                    <i className="fas fa-paper-plane" onClick={this.sendMessage}></i>
                 </div>
             </div>
         )

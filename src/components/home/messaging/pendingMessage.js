@@ -4,14 +4,14 @@ import axios from 'axios';
 export default class PendingMessage extends Component {
     accept = () => {
         const data = {
-            username: this.props.message.user1
+            room: this.props.room
         }
         axios.post('/api/acceptMessage', data).then(this.props.refresh())
     }
 
     reject = () => {
         const data = {
-            username: this.props.message.user1
+            room: this.props.room
         }
         axios.post('/api/rejectMessage', data).then(this.props.refresh())
     }

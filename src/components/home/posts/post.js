@@ -115,7 +115,7 @@ class Post extends Component {
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
                 >
-                    <div class="post-modal">
+                    <div className="post-modal">
                         <button className='close-modal' onClick={this.closeModal}>x</button>
                         <h2>{title}</h2>
                         {content}
