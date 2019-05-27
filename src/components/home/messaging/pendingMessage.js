@@ -18,7 +18,7 @@ export default class PendingMessage extends Component {
 
     render() {
         return (
-            <div style={{border: '1px solid white'}}>
+            <div className='pending-container'>
                 {
                 this.props.user.username === this.props.message.user2 ?
                 <div>
@@ -32,8 +32,8 @@ export default class PendingMessage extends Component {
                 :
                 <div>
                     <h1>{this.props.message.user2}</h1>
-                    <p>{this.props.message.note}</p>
-                    <h2>Waiting on Response</h2>
+                    <p>You said: "{this.props.message.note}"</p>
+                    <h2>Waiting for {this.props.message.user2} to reply</h2>
                 </div>
              }
             </div>

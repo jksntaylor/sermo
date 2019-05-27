@@ -73,6 +73,18 @@ class Messaging extends Component {
         }
     }
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+                this.searchMessagingUsers()
+        } 
+    }
+
+    handleKeyPress2 = e => {
+        if (e.key === 'Enter') {
+                this.sendMessageRequest()
+        } 
+    }
+
     openModal = () => {
         this.setState({modalIsOpen: true});
     }
@@ -125,14 +137,16 @@ class Messaging extends Component {
         if (this.state.searchResults) {
             results = this.state.searchResults.map(result => {
                 return (
-                    <div key={result.id}>
-                        <h1>{result.username}</h1>
-                        <button onClick={() => {this.openMessageRequest(result.username)}}>Request</button>
+                    <div key={result.id} className={`search-result ${this.state.expandedRequest === result.username ? 'active' : null}`}>
+                        <h1>{result.username}</h1>   
                         {this.state.expandedRequest === result.username ? 
                             <div>
-                                <textarea onChange={e => {this.handleChange('requestText', e.target.value)}}/>
+                                <input className='request-input' onKeyUp={this.handleKeyPress2} onChange={e => {this.handleChange('requestText', e.target.value)}} placeholder='Send a note!'/>
                                 <button onClick={this.sendMessageRequest}>Send</button>
-                            </div> : null}
+                                <button onClick={() => {this.setState({expandedRequest: ''})}}>Cancel</button>
+                            </div>
+                            :
+                            <button onClick={() => {this.openMessageRequest(result.username)}}>Request</button>}
                     </div>
                 )
             })
@@ -144,18 +158,22 @@ class Messaging extends Component {
                     <ul className='pending-messages-list'>
                     {pending}
                     </ul>
+                    <h1>Click on a Message to Open it!</h1>
                     <ul className='messages-list'>
                     {messageTeasers}
                     </ul>
-                    <h1>Click on a Message to Open it!</h1>
                     <button onClick={this.openModal}>New Chat</button>
                     <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
                     >
-                    <input placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
-                    <button onClick={this.searchMessagingUsers}>Search</button>
-                    {results}
+                    <div class="user-search">
+                        <div class="search-input">
+                            <input onKeyUp={this.handleKeyPress} placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
+                            <button onClick={this.searchMessagingUsers}><i className="fas fa-search"></i></button>
+                        </div>
+                        {results}
+                        </div>
                     </Modal>
                 </div>
                 :

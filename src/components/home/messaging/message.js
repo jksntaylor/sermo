@@ -73,8 +73,10 @@ export default class Message extends Component {
         }
         return (
             <div className='message-container'>
-                <button onClick={() => {this.props.handleExpansion(this.props.room)}}>back</button>
-                <h1 className='message-user'>{this.props.user.username === this.state.info.user1 ? this.state.info.user2 : this.state.info.user1}</h1>
+                <div class="header">
+                    <button onClick={() => {this.props.handleExpansion(this.props.room)}}><i className='fas fa-2x fa-arrow-left'></i></button>
+                    <h1 className='message-user'>{this.props.user.username === this.state.info.user1 ? this.state.info.user2 : this.state.info.user1}</h1>
+                </div>
                 <ul className='messages'>{messages}</ul>
                 <div className="message-input">
                     <input value={this.state.input} onKeyUp={this.handleKeyPress} onChange={e => this.setState({input: e.target.value})} placeholder='Type Here'/>
