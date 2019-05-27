@@ -549,10 +549,37 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
+		height: 50px;
 	}
+	
+	.message-container {height: 100%}
 
-	> div {
-		height: calc(100% - 100px)
+	.messages {
+		height: calc(100% - 150px);
+		overflow-y: scroll;
+		display: flex;
+		flex-direction: column-reverse;
+
+		li {
+			margin: 20px 10px;
+			padding: 10px;
+			border-radius: 10px;
+			color: $deep;
+			font-family: $font-light;
+			max-width: 70%;
+		}
+
+		.mine {
+			background-color: $light;
+			text-align: right;
+			align-self: flex-end;
+		}
+
+		.theirs {
+			background-color: $muted;
+			align-self: flex-start;
+		}
+
 	}
 
 	h1 {
@@ -560,6 +587,10 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 		color: white;
 		font-family: $font-bold;
 		font-size: 40px;
+	}
+
+	.message-user {
+		height: 50px;
 	}
 
 	button {

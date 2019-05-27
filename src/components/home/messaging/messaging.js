@@ -24,9 +24,14 @@ class Messaging extends Component {
     }
 
     componentDidMount() {
+        let refresh = this.refresh
         if (this.props.user) {
             this.refresh();
         }
+        const {socket} = this.props;
+        socket.on('request', function() {
+            refresh();
+        })
     }
 
     refresh = () => {
@@ -34,10 +39,19 @@ class Messaging extends Component {
         this.getPendingMessages();
     }
 
+    joinRooms = () => {
+        const {socket} = this.props
+        this.state.messageTeasers.forEach(message => {
+            socket.emit('join room', message.room)
+        })
+    }
+
 
     getMessageTeasers = () => {
         axios.get('/api/getMessageTeasers').then(res => {
-            this.setState({messageTeasers: res.data})
+            this.setState({messageTeasers: res.data}, () => {
+                this.joinRooms();
+            })
         });
     }
 
@@ -87,11 +101,11 @@ class Messaging extends Component {
                 content: this.state.requestText
             }
         }
-        socket.emit('message request', data.recipient, data.message)
+        socket.emit('send message request', data.recipient, data.message)
         axios.post('/api/newMessageRequest', data).then(res => {
             if (res) {
             this.closeModal();
-            this.getAllMessages();
+            this.getPendingMessages();
             }
         })
     }
@@ -125,23 +139,28 @@ class Messaging extends Component {
         } else {results = null}
         return (
             <div className='messaging-component-container'>
-                <ul className='pending-messages-list'>
+                {!this.state.expandedMessage ? 
+                <div>
+                    <h1>Click on a Message to Open it!</h1>
+                    <ul className='pending-messages-list'>
                     {pending}
-                </ul>
-                <ul className='messages-list'>
+                    </ul>
+                    <ul className='messages-list'>
                     {messageTeasers}
-                </ul>
-                {this.state.expandedMessage === '' ? <h1>Click on a Message to Open it!</h1> : 
-                <Message room={this.state.expandedMessage} user={this.props.user}/>}
-                <button onClick={this.openModal}>New Chat</button>
-                <Modal
-                isOpen={this.state.modalIsOpen}
-                onRequestClose={this.closeModal}
-                >
-                <input placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
-                <button onClick={this.searchMessagingUsers}>Search</button>
-                {results}
-                </Modal>
+                    </ul>
+                    <button onClick={this.openModal}>New Chat</button>
+                    <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    >
+                    <input placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
+                    <button onClick={this.searchMessagingUsers}>Search</button>
+                    {results}
+                    </Modal>
+                </div>
+                :
+                <Message room={this.state.expandedMessage} user={this.props.user} handleExpansion={this.handleExpansion} socket={this.props.socket}/>
+                }
             </div>
         )
     }
