@@ -1,6 +1,6 @@
-UPDATE reddit_chats
-SET messages = jsonb_set(messages, $2, $3)
-WHERE room = $1;
+INSERT INTO reddit_messages (room_id, timems, author, content, read)
+VALUES ($1, $2, $3, $4, false);
 
-SELECT * from reddit_chats
-WHERE room = $1;
+SELECT * FROM reddit_messages
+WHERE room_id = $1
+ORDER BY timems DESC;

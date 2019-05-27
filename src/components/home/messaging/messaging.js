@@ -89,7 +89,7 @@ class Messaging extends Component {
         }
         socket.emit('message request', data.recipient, data.message)
         axios.post('/api/newMessageRequest', data).then(res => {
-            if (res.status) {
+            if (res) {
             this.closeModal();
             this.getAllMessages();
             }
@@ -104,7 +104,7 @@ class Messaging extends Component {
         })
         const pending = this.state.pendingMessages.map(message => {
             return (<li onClick={() => {this.handleExpansion(message.room)}}>
-                <PendingMessage key={message.room} message={message} room={message.room} user={this.props.user} refresh={this.refresh}/>
+                <PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.refresh}/>
             </li>)
         })
         let results;

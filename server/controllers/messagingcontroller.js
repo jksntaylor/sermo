@@ -39,23 +39,24 @@ module.exports = {
     getOpenMessage: async (req, res) => {
         const db = req.app.get('db');
         const {room} = req.params;
-        const message = await db.getOpenMessage([room]);
-        if (message[0]) {
-            res.status(200).send(message)
+        const info = await db.getOpenMessageInfo([room]);
+        const message = await db.getOpenMessages([room]);
+        const response = [info, message]
+        if (message[0] && info[0]) {
+            res.status(200).send(response)
         } else {
-            res.status(200).send([])
+            res.sendStatus(404)
         }
     },
 
     newRequest: async (req, res) => {
         const db = req.app.get('db');
         const {sender, recipient, message} = req.body;
-        const timestamp = `{${message.timestamp}}`
-        const content = {"content": message.content,
-                         "author": sender}
+        const {content} = message;
+        const timestamp = `${message.timestamp}`
         const room = `${sender}>${recipient}`;
         const request = await db.newMessageRequest([sender, recipient, timestamp, content, room, true, false]);
-        if (request[0]) {
+        if (request) {
             res.sendStatus(200)
         }
     },
@@ -82,11 +83,8 @@ module.exports = {
     sendMessage: async (req, res) => {
         const db = req.app.get('db');
         const {author, content, timestamp } = req.body;
-        const timems = `{${timestamp}}`
-        const data = {"content": content,
-                      "author": author}
         const {room} = req.params;
-        const message = await db.sendMessage([room, timems, data])
+        const message = await db.sendMessage([room, timestamp, data])
         if (message[0]) {
             res.status(200).send(message)
         }

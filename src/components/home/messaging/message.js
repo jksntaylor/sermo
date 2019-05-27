@@ -6,15 +6,16 @@ export default class Message extends Component {
         super();
         this.state = {
             input: '',
-            messages: {}
+            info: {},
+            messages: []
         }
     }
 
     componentDidMount() {
         axios.get(`/api/getOpenMessage/${this.props.room}`).then(res => {
             console.log(res)
-            this.setState({messages: res.data[0].messages})
-        })
+            this.setState({info: res.data[0][0], messages: res.data[1]})
+        });
     }
 
     sendMessage = () => {
