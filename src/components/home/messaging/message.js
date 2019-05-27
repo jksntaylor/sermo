@@ -26,7 +26,16 @@ export default class Message extends Component {
         });
     }
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+                this.sendMessage()
+        } 
+    }
+
     sendMessage = () => {
+        if (!this.state.input) {
+            return;
+        }
         const {socket} = this.props;
         const data = {
             author: this.props.user.username,
@@ -68,7 +77,7 @@ export default class Message extends Component {
                 <h1 className='message-user'>{this.props.user.username === this.state.info.user1 ? this.state.info.user2 : this.state.info.user1}</h1>
                 <ul className='messages'>{messages}</ul>
                 <div className="message-input">
-                    <input value={this.state.input} onChange={e => this.setState({input: e.target.value})} placeholder='Type Here'/>
+                    <input value={this.state.input} onKeyUp={this.handleKeyPress} onChange={e => this.setState({input: e.target.value})} placeholder='Type Here'/>
                     <i className="fas fa-paper-plane" onClick={this.sendMessage}></i>
                 </div>
             </div>

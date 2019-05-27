@@ -551,6 +551,18 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 		align-items: center;
 		height: 50px;
 	}
+
+	.messaging-dashboard {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		h1 {
+			font-size: 20px;
+			color: $muted;
+		}
+	}
 	
 	.message-container {height: 100%}
 

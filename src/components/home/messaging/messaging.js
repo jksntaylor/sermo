@@ -78,7 +78,7 @@ class Messaging extends Component {
     }
 
     closeModal = () => {
-        this.setState({modalIsOpen: false});
+        this.setState({modalIsOpen: false, searchResults: [], userSearch: ''});
     }
 
     searchMessagingUsers = () => {
@@ -140,14 +140,14 @@ class Messaging extends Component {
         return (
             <div className='messaging-component-container'>
                 {!this.state.expandedMessage ? 
-                <div>
-                    <h1>Click on a Message to Open it!</h1>
+                <div className='messaging-dashboard'>
                     <ul className='pending-messages-list'>
                     {pending}
                     </ul>
                     <ul className='messages-list'>
                     {messageTeasers}
                     </ul>
+                    <h1>Click on a Message to Open it!</h1>
                     <button onClick={this.openModal}>New Chat</button>
                     <Modal
                     isOpen={this.state.modalIsOpen}
