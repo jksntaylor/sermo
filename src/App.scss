@@ -517,12 +517,227 @@ $mobile-height: calc(var(--vh, 1vh) * 100);
 }
 
 .messaging-component-container {
+	height: calc(100% - 70px);
+	padding: 10px;
+
+	input {
+		background-color: white;
+		color: black;
+		width: 90%;
+		padding: 10px;
+	}
+
+	::placeholder {
+		color: gray;
+	}
+
+	li, i {
+		color: white;
+	}
+
+	.message-teaser {
+		height: 50px;
+		background-color: $muted;
+		border-radius: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-family: $font-bold;
+		color: $deep;
+	}
+
+	.message-input {
+		width: 100%;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		height: 50px;
+	}
+
+	.messaging-dashboard {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		h1 {
+			font-size: 20px;
+			color: $muted;
+		}
+
+		button {
+			font-family: $font-bold;
+			font-size: 24px;
+			color: $deep;
+		}
+	}
+	
+	.message-container {
+		height: 100%;
+
+		.header {
+			display: flex;
+			justify-content: space-between;
+			padding: 0 20px;
+
+			button {
+				width: 10%;
+				background: none;
+			}
+		}
+	}
+
+	.messages-list {
+		height: 40%;
+	}
+
+	.messages {
+		height: calc(100% - 100px);
+		overflow-y: scroll;
+		display: flex;
+		flex-direction: column-reverse;
+
+		li {
+			margin: 20px 10px;
+			padding: 10px;
+			border-radius: 10px;
+			color: $deep;
+			font-family: $font-light;
+			max-width: 70%;
+			letter-spacing: 1px;
+		}
+
+		.mine {
+			background-color: $light;
+			text-align: right;
+			align-self: flex-end;
+		}
+
+		.theirs {
+			background-color: $muted;
+			align-self: flex-start;
+		}
+
+	}
+
 	h1 {
 		text-align: center;
 		color: white;
 		font-family: $font-bold;
 		font-size: 40px;
-		margin-top: 40vh;
+	}
+
+	.message-user {
+		height: 50px;
+	}
+
+	button {
+		height: 50px;
+		width: 100%;
+		border-radius: 10px;
+		background-color: $muted;
+	}
+}
+
+.user-search {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	input {
+		width: 90%;
+		padding: 10px;
+		font-family: $font-bold;
+	}
+
+	.search-input {
+		margin-bottom: 10px;
+		background-color: $muted;
+		border-radius: 5px;
+	}
+
+	button {
+		width: 10%;
+
+		i {
+			color: $gray;
+		}
+	}
+
+	.search-result {
+		width: 100%;
+		height: 50px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		font-family: $font-bold;
+		color: $light;
+		align-items: center;
+
+		h1 {
+			height: 25px;
+		}
+
+		button {
+			width: 30%;
+			height: 50%;
+			text-align: right;
+			padding: 0;
+			font-family: $font-bold;
+			color: $light;
+		}
+
+		
+		> div {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+		}
+		
+		.request-input {
+			width: 100%;
+			font-family: $font-bold;
+			border-radius: 5px;
+			padding: 5px;
+			background-color: $muted;
+			margin-bottom: 5px;
+		}
+	}
+	.active {
+		height: 80px;
+		margin-bottom: 10px;
+
+		button {
+			text-align: left;
+		}
+	}
+}
+
+.pending-messages-list {
+	height: 40%;
+	overflow-y: scroll;
+}
+
+.pending-container {
+	padding: 10px;
+	font-family: $font-bold;
+	color: $muted;
+	border-bottom: 1px solid $muted;
+
+	h1 {
+		text-align: right;
+	}
+
+	.buttons {
+		display: flex;
+		margin-top: 10px;
+
+		button {
+			width: 30%;
+			margin-right: 10px;
+			font-size: 18px;
+			height: 30px;
+		}
 	}
 }
 

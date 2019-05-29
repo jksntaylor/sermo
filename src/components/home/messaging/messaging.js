@@ -14,30 +14,57 @@ class Messaging extends Component {
         this.state = {
             modalIsOpen: false,
             userSearch: '',
-            messages: [],
+            messageTeasers: [],
             pendingMessages: [],
             expandedMessage: '',
             searchResults: [],
             expandedRequest: '',
-            requestText: ''
+            requestText: '',
+            onlineUsers: {}
         }
     }
 
     componentDidMount() {
+        let refresh = this.refresh
+        let updateOnlineUsers = this.updateOnlineUsers
         if (this.props.user) {
             this.refresh();
         }
+        const {socket} = this.props;
+        socket.on('request', function() {
+            refresh();
+        })
+        socket.on('user connection', function(arg) {
+            updateOnlineUsers(arg)
+        })
+        socket.on('user disconnection', function(arg) {
+            updateOnlineUsers(arg)
+        })
+    }
+
+    updateOnlineUsers = param => {
+        this.setState({onlineUsers: param})
     }
 
     refresh = () => {
-        this.getAllMessages();
+        this.getMessageTeasers();
         this.getPendingMessages();
+        this.setState({expandedMessage: ''})
+    }
+
+    joinRooms = () => {
+        const {socket} = this.props
+        this.state.messageTeasers.forEach(message => {
+            socket.emit('join room', message.room)
+        })
     }
 
 
-    getAllMessages = () => {
-        axios.get('/api/getAllMessages').then(res => {
-            this.setState({messages: res.data})
+    getMessageTeasers = () => {
+        axios.get('/api/getMessageTeasers').then(res => {
+            this.setState({messageTeasers: res.data}, () => {
+                this.joinRooms();
+            })
         });
     }
 
@@ -59,12 +86,24 @@ class Messaging extends Component {
         }
     }
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+                this.searchMessagingUsers()
+        } 
+    }
+
+    handleKeyPress2 = e => {
+        if (e.key === 'Enter') {
+                this.sendMessageRequest()
+        } 
+    }
+
     openModal = () => {
         this.setState({modalIsOpen: true});
     }
 
     closeModal = () => {
-        this.setState({modalIsOpen: false});
+        this.setState({modalIsOpen: false, searchResults: [], userSearch: ''});
     }
 
     searchMessagingUsers = () => {
@@ -87,62 +126,82 @@ class Messaging extends Component {
                 content: this.state.requestText
             }
         }
-        socket.emit('message request', data.recipient, data.message)
+        socket.emit('send message request', data.recipient, data.message)
         axios.post('/api/newMessageRequest', data).then(res => {
-            if (res.status) {
+            if (res) {
             this.closeModal();
-            this.getAllMessages();
+            this.getPendingMessages();
             }
         })
     }
 
     render() {
-        const messages = this.state.messages.map(message => {
-            return (<li onClick={() => {this.handleExpansion(message.room)}}>
-                <MessageTeaser key={message.room} message={message} user={this.props.user}/>
+        const messageTeasers = this.state.messageTeasers.map(teaser => {
+            let activeStyle;
+            if (this.props.user.username === teaser.user1) {
+                if (this.state.onlineUsers[teaser.user2]) {
+                    activeStyle='online'
+                } else {activeStyle=null}
+            } else if (this.props.user.username === teaser.user2) {
+                if (this.state.onlineUsers[teaser.user1]) {
+                    activeStyle='onlne'
+                } else {activeStyle=null}
+            }
+            return (<li className={activeStyle} onClick={() => {this.handleExpansion(teaser.room)}} key={teaser.id} >
+                <MessageTeaser user={this.props.user} message={teaser}/>
                     </li>)
         })
         const pending = this.state.pendingMessages.map(message => {
-            return (<li onClick={() => {this.handleExpansion(message.room)}}>
-                <PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.refresh}/>
+            return (<li key={message.room} onClick={() => {this.handleExpansion(message.room)}}>
+                <PendingMessage message={message} user={this.props.user} refresh={this.refresh}/>
             </li>)
         })
         let results;
         if (this.state.searchResults) {
             results = this.state.searchResults.map(result => {
                 return (
-                    <div key={result.id}>
-                        <h1>{result.username}</h1>
-                        <button onClick={() => {this.openMessageRequest(result.username)}}>Request</button>
+                    <div key={result.id} className={`search-result ${this.state.expandedRequest === result.username ? 'active' : null}`}>
+                        <h1>{result.username}</h1>   
                         {this.state.expandedRequest === result.username ? 
                             <div>
-                                <textarea onChange={e => {this.handleChange('requestText', e.target.value)}}/>
+                                <input className='request-input' onKeyUp={this.handleKeyPress2} onChange={e => {this.handleChange('requestText', e.target.value)}} placeholder='Send a note!'/>
                                 <button onClick={this.sendMessageRequest}>Send</button>
-                            </div> : null}
+                                <button onClick={() => {this.setState({expandedRequest: ''})}}>Cancel</button>
+                            </div>
+                            :
+                            <button onClick={() => {this.openMessageRequest(result.username)}}>Request</button>}
                     </div>
                 )
             })
         } else {results = null}
-        let openMessage = this.state.messages.filter(message => message.room === this.state.expandedMessage)
         return (
             <div className='messaging-component-container'>
-                <h1>Coming Soon</h1>
-                {/* <ul className='pending-messages-list'>
+                {!this.state.expandedMessage ? 
+                <div className='messaging-dashboard'>
+                    <ul className='pending-messages-list'>
                     {pending}
-                </ul>
-                <ul className='messages-list'>
-                    {messages}
-                </ul>
-                <button onClick={this.openModal}>New Chat</button>
-                <Message room={this.state.expandedMessage} message={openMessage[0]}/>
-                <Modal
-                isOpen={this.state.modalIsOpen}
-                onRequestClose={this.closeModal}
-                >
-                <input placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
-                <button onClick={this.searchMessagingUsers}>Search</button>
-                {results}
-                </Modal> */}
+                    </ul>
+                    <h1>Click on a Message to Open it!</h1>
+                    <ul className='messages-list'>
+                    {messageTeasers}
+                    </ul>
+                    <button onClick={this.openModal}>New Chat</button>
+                    <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    >
+                    <div class="user-search">
+                        <div class="search-input">
+                            <input onKeyUp={this.handleKeyPress} placeholder='username' onChange={e => {this.handleChange('userSearch', e.target.value)}}/>
+                            <button onClick={this.searchMessagingUsers}><i className="fas fa-search"></i></button>
+                        </div>
+                        {results}
+                        </div>
+                    </Modal>
+                </div>
+                :
+                <Message room={this.state.expandedMessage} user={this.props.user} handleExpansion={this.handleExpansion} socket={this.props.socket}/>
+                }
             </div>
         )
     }

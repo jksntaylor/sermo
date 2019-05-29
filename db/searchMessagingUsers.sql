@@ -1,5 +1,5 @@
 select id, username from reddit_users ru
-where username like $1
+where username like LOWER($1)
 and username != $2
 and username not in (
     select user2 from reddit_chats

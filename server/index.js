@@ -43,28 +43,30 @@ io.on('connection', function(socket) {
         console.log(onlineUsers)
         onlineSocket = onlineUser.socket;
         onlineUsername = onlineUser.username
-    })
-    socket.on('chat message', function(message) {
-        console.log(message)
-        io.emit('chat message', message)
-    })
-    socket.on('chat request', function(user1, user2) {
-        socket.join(`${user1}||${user2}`) 
+        io.emit('user connection', onlineUsers)
     })
 
-    socket.on('message request', function(username, message) {
+    socket.on('join room', function(room) {
+        socket.join(room)
+        console.log('joined', room)
+    })
+
+    socket.on('send message request', function(username, message) {
         if (onlineUsers[username]) {
-            io.to(`${onlineUsers[username]}`).emit(message);
+            console.log('emitting', onlineUsers[username], message)
+            io.to(`${onlineUsers[username]}`).emit('request', message);
         }
     })
 
     socket.on('direct message', function(room, message) {
         io.in(room).emit('dm', message)
     })
+
     socket.on('disconnect', function() {
         delete onlineUsers[onlineSocket]
         console.log(`${onlineUsername} disconnected\nOnline Users:`);
         console.log(onlineUsers)
+        io.emit('user disconnection', onlineUsers)
     });
 })
 
@@ -95,10 +97,10 @@ app.post('/api/editComment/:id', cc.editComment)
 app.post('/api/newMessageRequest', mc.newRequest)
 app.post('/api/acceptMessage', mc.acceptMessage),
 app.post('/api/rejectMessage', mc.rejectMessage)
-app.get('/api/getAllMessages', mc.getAllMessages)
+app.get('/api/getMessageTeasers', mc.getMessageTeasers)
 app.get('/api/getPendingMessages', mc.getPendingMessages)
-// app.get('/api/messages/:id', mc.getMessages)
-// app.post('/api/messages/:id/newMessage', mc.newMessage)
+app.get('/api/getOpenMessage/:room', mc.getOpenMessage)
+app.post('/api/sendMessage', mc.sendMessage)
 app.get('/api/messaging/searchUsers/:query', mc.searchUsers)
 
 // SOCKETS

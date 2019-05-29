@@ -1,4 +1,4 @@
-select id, user1, user2, messages, room, pending, accepted 
+select *
 from reddit_chats
 where user1 = $1
 and pending = false

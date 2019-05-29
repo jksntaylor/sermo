@@ -11,13 +11,13 @@ module.exports = {
         }
     },
 
-    getAllMessages: async (req, res) => {
+    getMessageTeasers: async (req, res) => {
         const db = req.app.get('db');
         const {username} = req.session.user;
         if (!username) {
             res.sendStatus(403)
         }
-        const messages = await db.getAllMessages([username]);
+        const messages = await db.getMessageTeasers([username]);
         if (messages[0]) {
             res.status(200).send(messages)
         } else {
@@ -36,25 +36,36 @@ module.exports = {
         }
     },
 
+    getOpenMessage: async (req, res) => {
+        const db = req.app.get('db');
+        const {room} = req.params;
+        const info = await db.getOpenMessageInfo([room]);
+        const message = await db.getOpenMessages([room]);
+        const response = [info, message];
+        if (info[0]) {
+            res.status(200).send(response)
+        } else {
+            res.sendStatus(404)
+        }
+    },
+
     newRequest: async (req, res) => {
         const db = req.app.get('db');
         const {sender, recipient, message} = req.body;
-        const timestamp = `{${message.timestamp}}`
-        const content = {"content": message.content,
-                         "author": sender}
+        const {content} = message;
+        const timestamp = `${message.timestamp}`
         const room = `${sender}>${recipient}`;
         const request = await db.newMessageRequest([sender, recipient, timestamp, content, room, true, false]);
-        if (request[0]) {
+        if (request) {
             res.sendStatus(200)
         }
     },
 
     acceptMessage: async (req, res) => {
         const db = req.app.get('db');
-        const username2 = req.session.user.username
-        const {username} = req.body;
+        const {room} = req.body;
         console.log(req.body)
-        const request = await db.newMessageResponse([username, username2, true]);
+        const request = await db.newMessageResponse([room, true]);
         if (request[0]) {
             res.sendStatus(200);
         }
@@ -62,11 +73,20 @@ module.exports = {
 
     rejectMessage: async (req, res) => {
         const db = req.app.get('db');
-        const username2 = req.session.user.username
-        const {username} = req.body;
-        const request = await db.newMessageResponse([username, username2, false]);
+        const {room} = req.body;
+        const request = await db.newMessageResponse([room, false]);
         if (request[0]) {
             res.sendStatus(200);
+        }
+    },
+
+    sendMessage: async (req, res) => {
+        console.log(req.body);
+        const db = req.app.get('db');
+        const {author, content, timestamp, id} = req.body;
+        const message = await db.sendMessage([id, timestamp, author, content])
+        if (message[0]) {
+            res.status(200).send(message)
         }
     }
 }
