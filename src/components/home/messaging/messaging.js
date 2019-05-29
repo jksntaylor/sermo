@@ -19,12 +19,14 @@ class Messaging extends Component {
             expandedMessage: '',
             searchResults: [],
             expandedRequest: '',
-            requestText: ''
+            requestText: '',
+            onlineUsers: {}
         }
     }
 
     componentDidMount() {
         let refresh = this.refresh
+        let updateOnlineUsers = this.updateOnlineUsers
         if (this.props.user) {
             this.refresh();
         }
@@ -32,6 +34,16 @@ class Messaging extends Component {
         socket.on('request', function() {
             refresh();
         })
+        socket.on('user connection', function(arg) {
+            updateOnlineUsers(arg)
+        })
+        socket.on('user disconnection', function(arg) {
+            updateOnlineUsers(arg)
+        })
+    }
+
+    updateOnlineUsers = param => {
+        this.setState({onlineUsers: param})
     }
 
     refresh = () => {
@@ -124,7 +136,17 @@ class Messaging extends Component {
 
     render() {
         const messageTeasers = this.state.messageTeasers.map(teaser => {
-            return (<li onClick={() => {this.handleExpansion(teaser.room)}} key={teaser.id} >
+            let activeStyle;
+            if (this.props.user.username === teaser.user1) {
+                if (this.state.onlineUsers[teaser.user2]) {
+                    activeStyle='online'
+                } else {activeStyle=null}
+            } else if (this.props.user.username === teaser.user2) {
+                if (this.state.onlineUsers[teaser.user1]) {
+                    activeStyle='onlne'
+                } else {activeStyle=null}
+            }
+            return (<li className={activeStyle} onClick={() => {this.handleExpansion(teaser.room)}} key={teaser.id} >
                 <MessageTeaser user={this.props.user} message={teaser}/>
                     </li>)
         })

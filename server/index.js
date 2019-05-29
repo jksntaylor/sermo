@@ -43,6 +43,7 @@ io.on('connection', function(socket) {
         console.log(onlineUsers)
         onlineSocket = onlineUser.socket;
         onlineUsername = onlineUser.username
+        io.emit('user connection', onlineUsers)
     })
 
     socket.on('join room', function(room) {
@@ -65,6 +66,7 @@ io.on('connection', function(socket) {
         delete onlineUsers[onlineSocket]
         console.log(`${onlineUsername} disconnected\nOnline Users:`);
         console.log(onlineUsers)
+        io.emit('user disconnection', onlineUsers)
     });
 })
 
