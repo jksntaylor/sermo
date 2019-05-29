@@ -49,6 +49,7 @@ class Messaging extends Component {
     refresh = () => {
         this.getMessageTeasers();
         this.getPendingMessages();
+        this.setState({expandedMessage: ''})
     }
 
     joinRooms = () => {
@@ -151,8 +152,8 @@ class Messaging extends Component {
                     </li>)
         })
         const pending = this.state.pendingMessages.map(message => {
-            return (<li onClick={() => {this.handleExpansion(message.room)}}>
-                <PendingMessage key={message.room} message={message} user={this.props.user} refresh={this.refresh}/>
+            return (<li key={message.room} onClick={() => {this.handleExpansion(message.room)}}>
+                <PendingMessage message={message} user={this.props.user} refresh={this.refresh}/>
             </li>)
         })
         let results;
