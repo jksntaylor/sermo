@@ -45,7 +45,8 @@ module.exports = {
         const time = date.getTime().toString();
         const {data} = await mql(link);
         const {title, image, url} = data;
-        const newPost = await db.newPost([id, title, url, date, username, time, 'link', image[url], [0, id], [0]]);
+        console.log(image["url"]);
+        const newPost = await db.newPost([id, title, url, date, username, time, 'link', image['url'], [0, id], [0]]);
 
         return res.status(200).send(newPost)
     },
