@@ -4,7 +4,6 @@ import Register from './register';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import {loggedIn} from '../../redux/reducer';
-import {withRouter} from 'react-router-dom';
 
 
 class Auth extends Component {
@@ -30,4 +29,4 @@ class Auth extends Component {
     }
 }
 
-export default withRouter(connect(null, {loggedIn})(Auth));
+export default connect(null, {loggedIn})(Auth);

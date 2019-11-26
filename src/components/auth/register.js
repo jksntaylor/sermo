@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {loggedIn} from '../../redux/reducer'
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {withRouter} from 'react-router-dom';
 
 class Register extends Component {
     constructor() {
@@ -90,4 +89,4 @@ class Register extends Component {
     }
 }
 
-export default withRouter(connect(null, {loggedIn})(Register));
+export default connect(null, {loggedIn})(Register);

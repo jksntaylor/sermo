@@ -41,11 +41,11 @@ class Voting extends Component {
 
     render() {
         if (this.props.uservote==='up') {
-            var upStyle = {color: 'lawngreen'}
+            var upStyle = {color: 'orange'}
             var downStyle = {color: 'gray'}
         } else if (this.props.uservote==='down') {
             upStyle = {color: 'gray'}
-            downStyle = {color: 'red'}
+            downStyle = {color: 'orange'}
         } else {
             upStyle = {color: 'gray'}
             downStyle = {color: 'gray'}

@@ -5,6 +5,7 @@ import NewComment from './newcomment';
 import axios from 'axios';
 import Comments from './comments';
 import Voting from './voting';
+import Microlink from '@microlink/react';
 
 class Post extends Component {
     constructor(props) {
@@ -28,22 +29,17 @@ class Post extends Component {
     
     handleNewComment = () => {
         axios.get(`/api/${this.state.post.id}/comments`).then(res => {
-            // console.log(res);
             this.setState({comments: res.data, commentCount: res.data.length});
         })
     }
 
     handleUservoteChange = val => {
-        console.log(val)
         this.setState({
             uservote: val
         })
     }
 
     componentDidMount = () => {
-        if (this.state.post.downvoters.length > 5) {
-            this.deletePost();
-        }
         this.handleNewComment();
         if (this.state.post.upvoters.includes(+this.props.user.id)) {
             this.setState({uservote: 'up'})
@@ -59,8 +55,7 @@ class Post extends Component {
     }
 
     calculateTime = () => {
-        const {time} = this.state.post
-        const timeMS = new Date(time).getTime();
+        const timeMS = new Date(this.state.post.time).getTime();
         const current = new Date().getTime();
         const elapsed = current - timeMS;
         if (elapsed<60000) {
@@ -95,13 +90,18 @@ class Post extends Component {
         if (posttype==='text') {
             var teasercontent = <p>{text.slice(0,100)}{teaserdots}</p>
             var content = <p>{text}</p>
+        } else if (posttype==='link') {
+            teasercontent = <Microlink url={media}/>
+            content = <div>
+                        <Microlink url={media}/>
+                      </div>
         } else {
-            teasercontent = <img alt='' src={media}/>
+            teasercontent = <img style={{'height': '100px','width': '100px'}} alt='' src={media}/>
             content = <img alt='' src={media}/>
         }
         return (
             <div className='post-container'>
-                <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
+                {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
                 <div className='post-teaser-container' onClick={this.openModal}>
                     <h2>{title}</h2>
                     {teasercontent}
@@ -126,7 +126,7 @@ class Post extends Component {
                             <button onClick={this.deletePost}><i className='fas fa-trash'/></button>
                             : null}
                         </div>
-                        <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/>
+                        {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
                         <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
                         <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
                     </div>
@@ -138,7 +138,8 @@ class Post extends Component {
 
 let mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        isLoggedIn: state.isLoggedIn
     }
 }
 
