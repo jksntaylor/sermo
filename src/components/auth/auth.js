@@ -19,7 +19,6 @@ class Auth extends Component {
     render() {
         return (
             <div className='auth-component-container'>
-                <h1 className='logo'>Sermo</h1>
                 <Login />
                 <Register />
             </div>
