@@ -5,7 +5,6 @@ import NewComment from './newcomment';
 import axios from 'axios';
 import Comments from './comments';
 import Voting from './voting';
-import Microlink from '@microlink/react';
 
 class Post extends Component {
     constructor(props) {
@@ -91,10 +90,8 @@ class Post extends Component {
             var teasercontent = <p>{text.slice(0,100)}{teaserdots}</p>
             var content = <p>{text}</p>
         } else if (posttype==='link') {
-            teasercontent = <Microlink url={media}/>
-            content = <div>
-                        <Microlink url={media}/>
-                      </div>
+            teasercontent = <div></div>
+            content = <div></div>
         } else {
             teasercontent = <img style={{'height': '100px','width': '100px'}} alt='' src={media}/>
             content = <img alt='' src={media}/>

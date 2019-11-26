@@ -80,6 +80,7 @@ app.get('/api/checkAuth', ac.checkAuth);
 //POSTS
 app.post('/api/newTextPost', pc.newTextPost)
 app.post('/api/newMediaPost', pc.newMediaPost)
+app.post('/api/newLinkPost', pc.newLinkPost)
 app.get('/api/initialLoadPosts', pc.initialLoad)
 app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
 app.post('/api/deletePost/:id', pc.deletePost)

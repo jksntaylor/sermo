@@ -54,10 +54,10 @@ class Voting extends Component {
         return (
             <div className='voting-container'>
                 <div>
-                    <button onClick={this.handleUpvote}><i style={upStyle} className="fas fa-2x fa-arrow-up"/></button>
-                    <button onClick={this.handleDownvote}><i style={downStyle} className="fas fa-2x fa-arrow-down"/></button>
+                    <button onClick={this.handleUpvote}><i style={upStyle} className="fas fa-2x fa-arrow-alt-circle-up"/></button>
+                    <h1>{votingScore}</h1>
+                    <button onClick={this.handleDownvote}><i style={downStyle} className="fas fa-2x fa-arrow-alt-circle-down"/></button>
                 </div>
-                <h1>{votingScore}</h1>
             </div>
         )
     }

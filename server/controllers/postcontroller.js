@@ -1,3 +1,5 @@
+const mql = require('@microlink/mql');
+
 module.exports = {
     newTextPost: async (req, res) => {
         console.log('posting2');
@@ -31,6 +33,19 @@ module.exports = {
         const date = new Date();
         const time = date.getTime().toString();
         const newPost = await db.newPost([id, title, null, date, username, time, 'media', link, [0, id], [0]]);
+
+        return res.status(200).send(newPost)
+    },
+
+    newLinkPost: async (req, res) => {
+        const db = req.app.get('db');
+        const {link} = req.body;
+        let {id, username} = req.session.user;
+        const date = new Date();
+        const time = date.getTime().toString();
+        const {data} = await mql(link);
+        const {title, image, url} = data;
+        const newPost = await db.newPost([id, title, url, date, username, time, 'link', image[url], [0, id], [0]]);
 
         return res.status(200).send(newPost)
     },

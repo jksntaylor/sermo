@@ -102,7 +102,6 @@ class NewPost extends Component {
             this.setState({error: 'title'});
             return;
         }
-        console.log('posting')
         const {title, text, mediaFile, postType, link, anon} = this.state
         if (postType==='text') {
             if (!this.state.text) {
@@ -120,7 +119,7 @@ class NewPost extends Component {
                 return;
             }
             this.setState({loading: true})
-            axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
+            axios.post('/api/newLinkPost', {title, link, anon}).then(res => {
                 this.props.updatePosts(res.data);
                 this.closeModal();
             })
@@ -187,7 +186,7 @@ class NewPost extends Component {
                 onRequestClose={this.closeModal}
                 >
         
-                <div class="newpost-content">
+                <div className="newpost-content">
                     <button onClick={this.closeModal} className='cancel-post'>x</button>
                     <input className={this.state.error==='title' ? 'error' : null} placeholder='Title' onChange={this.handleTitleChange}/>
                     {input}

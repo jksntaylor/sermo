@@ -16,7 +16,10 @@ class Home extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='home-container'>
+                <div className='title'>
+                    <h1>Sermo</h1>
+                </div>
                 {this.props.isLoggedIn ? <User/> : <Auth/>}
                 <Posts/>
                 {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
