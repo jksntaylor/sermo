@@ -17,10 +17,9 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <Auth/>
+                {this.props.isLoggedIn ? <User/> : <Auth/>}
                 <Posts/>
                 {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
-                {this.props.isLoggedIn ? <User/> : null}
             </div>
         )
     }   

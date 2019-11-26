@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {loggedOut} from '../../../redux/reducer';
 import axios from 'axios';
@@ -9,7 +8,6 @@ class Logout extends Component {
     logout = () => {
         axios.post('/api/logout').then(() => {
             this.props.loggedOut();
-            this.props.history.push('/')
         })
     }
 
@@ -22,4 +20,4 @@ class Logout extends Component {
     }
 }
 
-export default withRouter(connect(null, {loggedOut})(Logout))
+export default connect(null, {loggedOut})(Logout);

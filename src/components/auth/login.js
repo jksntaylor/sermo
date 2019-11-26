@@ -54,7 +54,6 @@ class Login extends Component {
                 remember: false
             })
             this.props.loggedIn(response.data);
-            this.props.history.push('/home'); 
         }).catch( err => {
             console.log(err);
             this.loginFailed();
