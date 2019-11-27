@@ -7,6 +7,8 @@ import io from 'socket.io-client';
 import Auth from '../auth/auth';
 import Filter from './filter';
 import Search from './search';
+import { Container, Row, Col } from 'shards-react';
+import Header from './header';
 const socket = io();
 
 
@@ -18,16 +20,12 @@ class Home extends Component {
     }
     render() {
         return (
-            <div className='home-container'>
-                <div className='title'>
-                    <h1>Sermo</h1>
-                    <Filter/>
-                    <Search/>
-                </div>
+            <Container className='home-container'>
+                <Header/>
                 <Posts/>
                 {this.props.isLoggedIn ? <User/> : <Auth/>}
                 {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
-            </div>
+            </Container>
         )
     }   
 }
