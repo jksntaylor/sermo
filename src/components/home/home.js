@@ -5,7 +5,8 @@ import Messaging from './messaging/messaging';
 import User from './user/user';
 import io from 'socket.io-client';
 import Auth from '../auth/auth';
-import Filter from './filter/filter';
+import Filter from './filter';
+import Search from './search';
 const socket = io();
 
 
@@ -21,6 +22,7 @@ class Home extends Component {
                 <div className='title'>
                     <h1>Sermo</h1>
                     <Filter/>
+                    <Search/>
                 </div>
                 <Posts/>
                 {this.props.isLoggedIn ? <User/> : <Auth/>}

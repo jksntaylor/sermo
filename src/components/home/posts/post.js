@@ -90,8 +90,8 @@ class Post extends Component {
             var teasercontent = <p>{text.slice(0,100)}{teaserdots}</p>
             var content = <p>{text}</p>
         } else if (posttype==='link') {
-            teasercontent = <div></div>
-            content = <div></div>
+            teasercontent = <img style={{'height': '100px','width': '100px'}} alt='' src={media}/>
+            content = <img alt='' src={media}/>
         } else {
             teasercontent = <img style={{'height': '100px','width': '100px'}} alt='' src={media}/>
             content = <img alt='' src={media}/>
