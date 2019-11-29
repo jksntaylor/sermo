@@ -83,7 +83,7 @@ class Register extends Component {
                     <input type='checkbox' onChange={this.handleRememberChange}/>
                     <span>Remember Me</span>
                 </div>
-                <button onClick={this.register}>Register</button>
+                <button onClick={this.register}><i className='ion-ios-arrow-round-forward'></i></button>
             </div>
         )
     }

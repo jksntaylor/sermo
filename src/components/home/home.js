@@ -5,10 +5,9 @@ import Messaging from './messaging/messaging';
 import User from './user/user';
 import io from 'socket.io-client';
 import Auth from '../auth/auth';
-import Filter from './filter';
-import Search from './search';
 import { Container, Row, Col } from 'shards-react';
 import Header from './header';
+import Trending from './trending';
 const socket = io();
 
 
@@ -21,10 +20,15 @@ class Home extends Component {
     render() {
         return (
             <Container className='home-container'>
-                <Header/>
-                <Posts/>
-                {this.props.isLoggedIn ? <User/> : <Auth/>}
-                {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
+                <Row><Header/></Row>
+                <Row>
+                    <Col md='12' lg='3'><Trending/></Col>
+                    <Col md='12' lg='6'><Posts/></Col>
+                    <Col md='12' lg='3'>
+                        {this.props.isLoggedIn ? <User/> : <Auth/>}
+                        {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
+                    </Col>
+                </Row>
             </Container>
         )
     }   

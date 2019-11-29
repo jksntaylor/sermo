@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Col, Container, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormInput, Row} from "shards-react";
+import axios from 'axios';
 
 class Header extends React.Component {
     constructor() {
@@ -22,7 +23,7 @@ class Header extends React.Component {
     }
 
     filter = () => {
-
+        // axios.get()
     }
 
     search = () => {
@@ -46,7 +47,7 @@ class Header extends React.Component {
                                 <DropdownItem onClick={() => {this.handleChange('type', 'Newest')}} >Newest</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        {this.state.type==='Newest' ? null : <Dropdown open={this.state.timeMenu} toggle={() => {this.toggle('timeMenu')}}>
+                        {this.state.type==='Newest'||this.state.type==='Trending' ? null : <Dropdown open={this.state.timeMenu} toggle={() => {this.toggle('timeMenu')}}>
                             <DropdownToggle><h2>{this.state.time}</h2><i className="fas fa-sort-down"></i></DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem onClick={() => {this.handleChange('time', 'Today')}} >Today</DropdownItem>
@@ -58,7 +59,7 @@ class Header extends React.Component {
                         </Dropdown>}
                         <Button><h2>Update</h2><i className="fas fa-sync-alt"></i></Button>
                     </Col>
-                    <Col>
+                    <Col sm='12' lg='8'>
                         <FormInput placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
                     </Col>
                 </Row>
