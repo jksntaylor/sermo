@@ -1,6 +1,7 @@
 h1, h2, h3, h4, h5, h6, p, input, button, span {
-    font-size: 20px;
+    font-size: 16px;
     font-family: 'Raleway';
+    margin: 0;
 }
 
 h1 {
@@ -9,5 +10,67 @@ h1 {
 
 button {
     background: none;
-    border: 1px solid black;
+    border: 1px solid rgb(160, 160, 160);
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid rgb(141, 141, 141);
+}
+
+input:focus {
+    outline: none;
+}
+
+.header-container {
+    height: 100px;
+    padding-top: 26px;
+    .btn-primary {
+        background: none;
+    }
+    
+    .btn {
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+    
+    .filters {
+        display: flex;
+        justify-content: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        h2 {
+            font-size: 10px;
+            letter-spacing: 1px;
+            line-height: 10px;
+            margin-right: 5px;
+        }
+        button {
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .dropdown button {
+            border-right: none;
+        }
+    }
+
+    .search {
+        input {
+            height: 28px;
+            margin-top: 10px;
+            border-radius: 0;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .form-control:focus {
+            border-color: #aaa;
+        }
+    }
 }

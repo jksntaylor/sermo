@@ -74,7 +74,7 @@ class Register extends Component {
         return (
             <div className='register'>
                 <ToastContainer/>
-                <h2>Register</h2>
+                <h1>Register</h1>
                 <input placeholder='email' onChange={this.handleEmailChange}/>
                 <input placeholder='username' onChange={this.handleUsernameChange}/>
                 <input type='password' placeholder='password' onChange={this.handlePasswordChange}/>

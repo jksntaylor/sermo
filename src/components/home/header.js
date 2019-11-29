@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Col, Container, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormInput, Row} from "shards-react";
-import axios from 'axios';
+// import axios from 'axios';
 
 class Header extends React.Component {
     constructor() {
@@ -32,23 +32,23 @@ class Header extends React.Component {
 
     render() {
         return (
-            <Container>
+            <Container className='header-container'>
                 <Row>
-                    <Col>
+                    <Col sm='3' lg='2' className='title'>
                         <h1>Sermo</h1>
                     </Col>
-                    <Col>
+                    <Col sm='9' lg='4' className='filters'>
                         <Dropdown open={this.state.typeMenu} toggle={() => {this.toggle('typeMenu')}}>
-                            <DropdownToggle><h2>{this.state.type}</h2><i className="fas fa-sort-down"></i></DropdownToggle>
+                            <DropdownToggle outline theme='light'><h2>{this.state.type}</h2><i className="ion-md-arrow-dropdown"></i></DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem onClick={() => {this.handleChange('type', 'Most Popular')}} >Most Popular</DropdownItem>
-                                <DropdownItem onClick={() => {this.handleChange('type', 'Most Commented')}} >Most Commented</DropdownItem>
+                                <DropdownItem onClick={() => {this.handleChange('type', 'Most Comments')}} >Most Comments</DropdownItem>
                                 <DropdownItem onClick={() => {this.handleChange('type', 'Trending')}} >Trending</DropdownItem>
                                 <DropdownItem onClick={() => {this.handleChange('type', 'Newest')}} >Newest</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                         {this.state.type==='Newest'||this.state.type==='Trending' ? null : <Dropdown open={this.state.timeMenu} toggle={() => {this.toggle('timeMenu')}}>
-                            <DropdownToggle><h2>{this.state.time}</h2><i className="fas fa-sort-down"></i></DropdownToggle>
+                            <DropdownToggle outline theme='light'><h2>{this.state.time}</h2><i className="ion-md-arrow-dropdown"></i></DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem onClick={() => {this.handleChange('time', 'Today')}} >Today</DropdownItem>
                                 <DropdownItem onClick={() => {this.handleChange('time', 'This Week')}} >This Week</DropdownItem>
@@ -57,9 +57,9 @@ class Header extends React.Component {
                                 <DropdownItem onClick={() => {this.handleChange('time', 'All Time')}} >All Time</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>}
-                        <Button><h2>Update</h2><i className="fas fa-sync-alt"></i></Button>
+                        <Button outline theme='light'><h2>Update</h2><i className="ion-ios-refresh"></i></Button>
                     </Col>
-                    <Col sm='12' lg='8'>
+                    <Col sm='12' lg='6' className='search'>
                         <FormInput placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
                     </Col>
                 </Row>

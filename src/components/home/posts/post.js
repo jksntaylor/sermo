@@ -103,9 +103,9 @@ class Post extends Component {
                     <h2>{title}</h2>
                     {teasercontent}
                     <div className='post-info'>
-                        <h1>{author}</h1>
+                        <h6>{author}</h6>
                         <h6>{elapsedTime}</h6>
-                        <h5>{this.state.commentCount} comments</h5>
+                        <h6>{this.state.commentCount} comments</h6>
                     </div>
                 </div>
                 <Modal
@@ -117,7 +117,7 @@ class Post extends Component {
                         <h2>{title}</h2>
                         {content}
                         <div className="post-modal-info">
-                            <h1>{author}</h1>
+                            <h6>{author}</h6>
                             <h6>{elapsedTime}</h6>
                             {+this.props.post.user_id === +this.props.user.id ? 
                             <button onClick={this.deletePost}><i className='fas fa-trash'/></button>

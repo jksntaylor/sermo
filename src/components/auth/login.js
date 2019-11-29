@@ -67,7 +67,7 @@ class Login extends Component {
         return (
             <div className='login'>
                 <ToastContainer/>
-                <h2>Login</h2>
+                <h1>Login</h1>
                 <input placeholder='username' value={this.state.username} onChange={this.handleUsernameChange}/>
                 <input placeholder='password' value={this.state.password} onChange={this.handlePasswordChange} type='password' onKeyPress={this.handleKeyPress}/>
                 <div className='remember'>
