@@ -73,8 +73,8 @@ class Login extends Component {
                 <div className='remember'>
                     <input type='checkbox' value={this.state.remember} onChange={this.handleCheckboxChange}/>
                     <span>Remember Me</span>
+                    <button onClick={this.login}><i className='ion-ios-arrow-round-forward'></i></button>
                 </div>
-                <button onClick={this.login}><i className='ion-ios-arrow-round-forward'></i></button>
             </div>
         )
     }

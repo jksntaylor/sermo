@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import Modal from 'react-modal';
 import NewComment from './newcomment';
 import axios from 'axios';
 import Comments from './comments';
 import Voting from './voting';
+import { Modal } from 'shards-react';
 
 class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalIsOpen:false,
+            modal:false,
             post: this.props.post,
             comments: [],
             commentCount: 0,
@@ -18,12 +18,8 @@ class Post extends Component {
         }
     }
 
-    openModal = () => {
-        this.setState({modalIsOpen: true});
-      }
-    
-    closeModal = () => {
-        this.setState({modalIsOpen: false});
+    toggle = () => {
+        this.setState({modal: !this.state.modal})
     }
     
     handleNewComment = () => {
@@ -99,8 +95,8 @@ class Post extends Component {
         return (
             <div className='post-container'>
                 {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
-                <div className='post-teaser-container' onClick={this.openModal}>
-                    <h2>{title}</h2>
+                <div className='teaser-container' onClick={this.toggle}>
+                    <h1>{title}</h1>
                     {teasercontent}
                     <div className='post-info'>
                         <h6>{author}</h6>
@@ -108,25 +104,19 @@ class Post extends Component {
                         <h6>{this.state.commentCount} comments</h6>
                     </div>
                 </div>
-                <Modal
-                isOpen={this.state.modalIsOpen}
-                onRequestClose={this.closeModal}
-                >
-                    <div className="post-modal">
-                        <button className='close-modal' onClick={this.closeModal}>x</button>
-                        <h2>{title}</h2>
+                <Modal open={this.state.modal} toggle={this.toggle}>
+                        <h1>{title}</h1>
+                        {+this.props.post.user_id === +this.props.user.id ? 
+                        <button onClick={this.deletePost}><i className='ion-ios-trash'/></button>
+                        : null}
                         {content}
                         <div className="post-modal-info">
                             <h6>{author}</h6>
                             <h6>{elapsedTime}</h6>
-                            {+this.props.post.user_id === +this.props.user.id ? 
-                            <button onClick={this.deletePost}><i className='fas fa-trash'/></button>
-                            : null}
                         </div>
                         {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
                         <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
                         <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
-                    </div>
                 </Modal>
             </div>
         )

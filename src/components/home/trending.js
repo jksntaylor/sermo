@@ -7,7 +7,6 @@ export default class Trending extends React.Component {
                 <div className='trending-post'>Trending Post</div>
                 <div className='trending-post'>Trending Post</div>
                 <div className='trending-post'>Trending Post</div>
-                <div className='trending-post'>Trending Post</div>
             </div>
         )
     }
