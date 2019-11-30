@@ -16,12 +16,15 @@ class Posts extends Component {
     }
 
     componentDidMount = () => {
+        this.reloadPosts();
+    }
+
+    reloadPosts = () => {
         axios.get('/api/initialLoadPosts').then(res => {
             this.setState({
                 posts: res.data
             })
         });
-        // this.handleSortPosts();
     }
 
     handleSortPosts = () => {
@@ -40,7 +43,7 @@ class Posts extends Component {
     render() {
         if (this.state.posts) {
         var posts = this.state.posts.map(post => {
-            return <Post post={post} key={post.id} postID={post.id}/>
+            return <Post post={post} key={post.id} postID={post.id} reload={this.reloadPosts}/>
         })
         } else {
         posts = <h1>No posts available</h1>

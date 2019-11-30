@@ -11,6 +11,7 @@ class Post extends Component {
         super(props);
         this.state = {
             modal:false,
+            modal2: false,
             post: this.props.post,
             comments: [],
             commentCount: 0,
@@ -20,6 +21,10 @@ class Post extends Component {
 
     toggle = () => {
         this.setState({modal: !this.state.modal})
+    }
+
+    toggle2 = () => {
+        this.setState({modal2: !this.state.modal2})
     }
     
     handleNewComment = () => {
@@ -45,7 +50,8 @@ class Post extends Component {
 
     deletePost = () => {
         axios.post(`/api/deletePost/${this.state.post.id}`).then(() => {
-            this.closeModal();
+            this.toggle();
+            this.props.reload();
         })
     }
 
@@ -122,15 +128,24 @@ class Post extends Component {
                     {postInfo}
                 </div>
                 <Modal open={this.state.modal} toggle={this.toggle}>
+                    <Modal open={this.state.modal2} toggle={this.toggle2} size='sm'>
+                        <h1>Are you sure?</h1>
+                        <div className='delete-buttons'>
+                            <button onClick={this.deletePost}>Yes, Delete It</button>
+                            <button onClick={this.toggle2}>Never Mind</button>
+                        </div>
+                    </Modal>
                         <div className='post-header'>
                             <h2>{title}</h2>
-                            {+this.props.post.user_id === +this.props.user.id ? <button onClick={this.deletePost}><i className='ion-ios-trash'/></button> : null}
+                            {+this.props.post.user_id === +this.props.user.id ? <button onClick={this.toggle2}><i className='ion-ios-trash'/></button> : null}
                         </div>
                         <div className='post-content'>
                             {content}
                         </div>
-                        {postInfo}
-                        {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
+                        <div className='infovoting'>
+                            {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
+                            {postInfo}
+                        </div>
                         <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
                         <Comments comments={this.state.comments} handleNewComment={this.handleNewComment}/>
                 </Modal>

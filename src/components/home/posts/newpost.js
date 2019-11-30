@@ -167,7 +167,7 @@ class NewPost extends Component {
         
                 <div className="newpost-content">
                     <button onClick={this.closeModal} className='cancel-post'>x</button>
-                    <input className={this.state.error==='title' ? 'error' : null} placeholder='Title' onChange={this.handleTitleChange}/>
+                    <input className={this.state.error==='title' ? 'error' : null} placeholder='Title' onChange={this.handleTitleChange} maxLength='50'/>
                     {input}
                     {tooBig}
                 </div>
