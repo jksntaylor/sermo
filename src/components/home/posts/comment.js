@@ -9,37 +9,15 @@ class Comment extends Component {
         this.state = {
             text: '',
             comment: this.props.comment,
-            canEdit: false,
-            isEditing: false
+            owns: false
         }
     }
 
     componentDidMount() {
         if (+this.props.user.id===+this.state.comment.user_id) {
-            this.setState({canEdit: true})
+            this.setState({owns: true})
         };
         this.setState({text: this.state.comment.text})
-    }
-
-    handleCommentChange = e => {
-        this.setState({text: e.target.value})
-    }
-
-    openEditor = () => {
-        this.setState({isEditing: true})
-    }
-
-    closeEditor = () => {
-        this.setState({isEditing: false, text:this.state.comment.text})
-    }
-
-    submitEdit = () => {
-        let text = this.state.text;
-        text += ' (edited)'
-        axios.post(`/api/editComment/${this.state.comment.comment_id}`, {text}).then(() => {
-            this.props.handleNewComment();
-            this.closeEditor();
-        })
     }
 
     deleteComment = () => {
@@ -77,31 +55,16 @@ class Comment extends Component {
     render() {
         const {author, text} = this.state.comment;
         const elapsedTime = this.calculateTime();
-        if (this.state.canEdit) {
-            if (this.state.isEditing) {
-               var editor = <div className='comment-editor'>
-                                <textarea value={this.state.text} onChange={this.handleCommentChange}/>
-                                <button onClick={this.closeEditor}>x</button>
-                                <button onClick={this.submitEdit}><i className='fas fa-check'/></button>
-                            </div>
-            } else {
-                editor = <div className='comment-editor'>
-                            <button onClick={this.openEditor}><i className='fas fa-edit'/></button>
-                            <button onClick={this.deleteComment}><i className='fas fa-trash'/></button>
-                         </div>
-            }   
-        } else {
-            editor = null;
-        }
+        let trash = this.state.owns ? <button onClick={this.deleteComment}><i className='ion-ios-trash'/></button> : null
 
         return (
             <div className='comment'>
                 <p>{text}</p>
                 <div class="comment-info">
-                    <h1>{author}</h1>
-                    <h2>{elapsedTime}</h2>
+                    <h6>{author}</h6>
+                    <h6>{elapsedTime}</h6>
+                    {trash}
                 </div>
-                {editor}
             </div>
         )
     }

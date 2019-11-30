@@ -83,7 +83,7 @@ class Post extends Component {
     render() {
         const {author, title, text, posttype, media, upvoters, downvoters} = this.state.post
         var elapsedTime = this.calculateTime();
-        var dots, teaser, content;
+        var linkDots, dots, teaser, content;
 
         let postInfo =  <div className='post-info'>
                             <h6>{author}</h6>
@@ -92,6 +92,7 @@ class Post extends Component {
                         </div>
 
         dots = posttype==='text'&&text.length>200 ? '...' : null;
+        linkDots = posttype==='link'&&text.length>40 ? '...' : null;
 
         teaser = posttype==='text' ? 
         <div className='text' onClick={this.toggle}>
@@ -102,9 +103,9 @@ class Post extends Component {
         <div className='link' onClick={this.toggle}>
             <div className='link-info'>
                 <h2>{title}</h2>
-                <a href={text} target='_blank' rel='noopener noreferrer'>{text}</a>
+                <a href={text} target='_blank' rel='noopener noreferrer'>{text.slice(0,40)}{linkDots}</a>
             </div>
-            <img alt={title} src={media}/>
+            <a href={text} target='_blank' rel='noopener noreferrer'><img alt={title} src={media}/></a>
         </div>
         :
         <div className='media' onClick={this.toggle}>
@@ -114,8 +115,8 @@ class Post extends Component {
 
         content = posttype==='text' ?
         <p>{text}</p> : posttype==='link' ? 
-        <div>
-            <a href={text} target='_blank' rel='noopener noreferrer'><p>{text}</p></a>
+        <div className='content-link'>
+            <a href={text} target='_blank' rel='noopener noreferrer'>{text}</a>
             <a href={text} target='_blank' rel='noopener noreferrer'><img alt={title} src={media}/></a>
         </div>
         : <img alt={title} src={media}/>
