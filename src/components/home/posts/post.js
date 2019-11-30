@@ -85,15 +85,15 @@ class Post extends Component {
                             <h6>{this.state.commentCount} comments</h6>
                         </div>
 
-        dots = posttype==='text'&&text.length>100 ? '...' : null;
+        dots = posttype==='text'&&text.length>200 ? '...' : null;
 
         teaser = posttype==='text' ? 
-        <div className='teaser-container text' onClick={this.toggle}>
+        <div className='text' onClick={this.toggle}>
             <h2>{title}</h2>
-            <p>{text.slice(0,100)}{dots}</p>
+            <p>{text.slice(0,200)}{dots}</p>
         </div>
         : posttype==='link' ? 
-        <div className='teaser-container link' onClick={this.toggle}>
+        <div className='link' onClick={this.toggle}>
             <div className='link-info'>
                 <h2>{title}</h2>
                 <a href={text} target='_blank' rel='noopener noreferrer'>{text}</a>
@@ -101,33 +101,34 @@ class Post extends Component {
             <img alt={title} src={media}/>
         </div>
         :
-        <div className='teaser-container media' onClick={this.toggle}>
+        <div className='media' onClick={this.toggle}>
             <h2>{title}</h2>
             <img alt={title} src={media}/>
         </div>
 
         content = posttype==='text' ?
-        <p>{text}</p>
-        : posttype==='link' ? 
+        <p>{text}</p> : posttype==='link' ? 
         <div>
             <a href={text} target='_blank' rel='noopener noreferrer'><p>{text}</p></a>
             <a href={text} target='_blank' rel='noopener noreferrer'><img alt={title} src={media}/></a>
         </div>
-        :
-        <div>
-            <img alt={title} src={media}/>
-        </div>
+        : <img alt={title} src={media}/>
 
         return (
             <div className='post-container'>
                 {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
-                <div className='teaser-container' onClick={this.toggle}>{teaser}{postInfo}</div>
+                <div className='teaser-container'>
+                    {teaser}
+                    {postInfo}
+                </div>
                 <Modal open={this.state.modal} toggle={this.toggle}>
                         <div className='post-header'>
                             <h2>{title}</h2>
                             {+this.props.post.user_id === +this.props.user.id ? <button onClick={this.deletePost}><i className='ion-ios-trash'/></button> : null}
                         </div>
-                        {content}
+                        <div className='post-content'>
+                            {content}
+                        </div>
                         {postInfo}
                         {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
                         <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>
