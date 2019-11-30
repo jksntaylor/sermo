@@ -22,9 +22,9 @@ class Home extends Component {
             <Container className='home-container'>
                 <Row><Header/></Row>
                 <Row>
-                    <Col md='12' lg='3'><Trending/></Col>
-                    <Col md='12' lg='6'><Posts/></Col>
-                    <Col md='12' lg='3'>
+                    <Col className='col trending' xs='12' sm='12' md='0' lg='3'><Trending/></Col>
+                    <Col className='col' xs='12' sm='12' md='8' lg='6'><Posts/></Col>
+                    <Col className='col' xs='12' sm='12' md='4' lg='3'>
                         {this.props.isLoggedIn ? <User/> : <Auth/>}
                         {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
                     </Col>

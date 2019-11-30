@@ -68,8 +68,8 @@ class Login extends Component {
             <div className='login'>
                 <ToastContainer/>
                 <h1>Login</h1>
-                <input placeholder='username' value={this.state.username} onChange={this.handleUsernameChange}/>
-                <input placeholder='password' value={this.state.password} onChange={this.handlePasswordChange} type='password' onKeyPress={this.handleKeyPress}/>
+                <input placeholder='Username' value={this.state.username} onChange={this.handleUsernameChange}/>
+                <input placeholder='Password' value={this.state.password} onChange={this.handlePasswordChange} type='password' onKeyPress={this.handleKeyPress}/>
                 <div className='remember'>
                     <input type='checkbox' value={this.state.remember} onChange={this.handleCheckboxChange}/>
                     <span>Remember Me</span>

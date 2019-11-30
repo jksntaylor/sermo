@@ -12,6 +12,9 @@ button {
     background: none;
     border: 1px solid rgb(160, 160, 160);
 }
+button:focus {
+    outline: none;
+}
 
 input {
     border: none;
@@ -46,7 +49,7 @@ input:focus {
         padding-bottom: 10px;
         h2 {
             font-size: 10px;
-            letter-spacing: 1px;
+            letter-spacing: .9px;
             line-height: 10px;
             margin-right: 5px;
         }
@@ -72,5 +75,126 @@ input:focus {
         .form-control:focus {
             border-color: #aaa;
         }
+    }
+}
+
+.home-container {
+    .col {
+        overflow-y: scroll;
+        padding-top: 10px;
+    }
+}
+
+.login, .register {
+    border-radius: 10px;
+    padding: 10px 20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.603);
+
+    h1 {
+        font-size: 24px;
+    }
+
+    input, span {
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .remember {
+        color: black;
+        input {
+            width: 10%;
+        }
+    }
+
+    button {
+        border: none;
+        font-size: 30px;
+        width: 32px;
+        margin-left: calc(100% - 32px);
+    }
+}
+
+.login {
+    margin-bottom: 30px
+}
+
+.trending {
+    display: none;
+}
+
+.trending-container {
+    height: calc(100vh - 100px);
+    overflow: visible;
+
+    .trending-post {
+        height: 150px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.507);
+    }
+}
+
+.posts-component-container {
+
+    .newpost {
+        height: 40px;
+        padding: 5px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.513);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+
+        .post-text-button {
+            width: calc(100% - 80px);
+            margin: 0;
+            text-align: left;
+            padding: 0;
+            padding-left: 10px;
+            height: 31px;
+            border-radius: 10px 0 0 10px;
+            background-color: rgb(240, 240, 240);
+            border: none;
+        }
+
+        .post-media-button,
+        .post-link-button {
+            border-left: none;
+            font-size: 28px;
+            line-height: 28px;
+            padding: 0;
+            margin: 0;
+            width: 40px;
+            color: white;
+            background-color: gray;
+        }
+
+        .post-link-button {
+            border-radius: 0 10px 10px 0;
+        }
+    }
+    
+    .posts-container {
+        height: calc(100vh - 129px);
+        overflow: visible;
+        overflow-y: scroll;
+        padding: 20px 0;
+        
+        .post-container {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.459);
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .trending {
+        display: block;
     }
 }

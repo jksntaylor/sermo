@@ -14,7 +14,6 @@ class NewPost extends Component {
             mediaFile: "",
             link: '',
             postType: 'text',
-            postButtons: false,
             tooBig: false,
             anon: false,
             error: '',
@@ -22,9 +21,6 @@ class NewPost extends Component {
         }
     }
 
-    handlePostButton = () => {
-        this.setState({postButtons: !this.state.postButtons})
-    }
 
     openModalText = () => {
         this.setState({modalIsOpen: true, postType: 'text', postButtons: false});
@@ -92,10 +88,6 @@ class NewPost extends Component {
           });
         })
     }
-
-    handleAnonChange = () => {
-        this.setState({anon: !this.state.anon})
-    }
    
     post = () => {
         if (!this.state.title) {
@@ -156,18 +148,6 @@ class NewPost extends Component {
             
         }
 
-        if (this.state.postButtons) {
-            var postButton = <button onClick={this.handlePostButton} className='close-menu'>+</button>
-        } else {
-            postButton = <button onClick={this.handlePostButton} className='open-menu'>+</button>
-        }
-
-        if (this.state.postButtons) {
-            var style = 'active'
-        } else {
-            style = 'initial'
-        }
-
         if (this.state.postType==='text') {
             var input = <textarea className={this.state.error==='text' ? 'error' : null} placeholder='Text' onChange={this.handleTextChange}/>
         } else if (this.state.postType==='link') {
@@ -177,10 +157,9 @@ class NewPost extends Component {
         }
         return (
             <div className='newpost'>
-                {postButton}
-                    <button className={`post-type ${style}-text`}onClick={this.openModalText}><i className="fas fa-align-justify"></i></button>
-                    <button className={`post-type ${style}-upload`}onClick={this.openModalMedia}><i className="fas fa-upload"></i></button>
-                    <button className={`post-type ${style}-link`}onClick={this.openModalLink}><i className="fas fa-link"></i></button>
+                    <button className='post-text-button' onClick={this.openModalText}>Create Post</button>
+                    <button className='post-media-button' onClick={this.openModalMedia}><i className="ion-ios-images"></i></button>
+                    <button className='post-link-button' onClick={this.openModalLink}><i className="ion-ios-link"></i></button>
                 <Modal
                 isOpen={this.state.modalIsOpen}
                 onRequestClose={this.closeModal}
@@ -190,9 +169,6 @@ class NewPost extends Component {
                     <button onClick={this.closeModal} className='cancel-post'>x</button>
                     <input className={this.state.error==='title' ? 'error' : null} placeholder='Title' onChange={this.handleTitleChange}/>
                     {input}
-                    <div>
-                        <input className='checkbox' type='checkbox' onChange={this.handleAnonChange}/><span>Post Anonymously</span>
-                    </div>
                     {tooBig}
                 </div>
                 </Modal>

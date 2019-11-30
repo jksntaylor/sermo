@@ -47,8 +47,8 @@ class Posts extends Component {
         } 
         return (
             <div className='posts-component-container'>
-                <div className='posts-container'>{posts}</div>
                 <NewPost posts={this.state.posts} updatePosts={this.updatePosts}/>
+                <div className='posts-container'>{posts}</div>
             </div>
         )
     }
