@@ -12,6 +12,7 @@ class Header extends React.Component {
             type: 'Most Popular',
             time: 'This Week',
             search: '',
+            results: false
         }
     }
 
@@ -33,13 +34,21 @@ class Header extends React.Component {
         } 
     }
 
+    clear = () => {
+        this.setState({search: '', results: false});
+        this.props.reload();
+    }
+
     search = () => {
         const {search} = this.state;
-        if (search==='')
-            return;
-        axios.get(`/api/searchPosts/${search}`).then(res => {
-            this.props.updatePosts(res.data);
-        });
+        if (search==='') {
+            this.props.reload();
+        } else {
+            axios.get(`/api/searchPosts/${search}`).then(res => {
+                this.props.updatePosts(res.data);
+                this.setState({results: true})
+            });
+        }
     }
 
     render() {
@@ -72,7 +81,8 @@ class Header extends React.Component {
                         <Button outline theme='light'><h2>Update</h2><i className="ion-ios-refresh"></i></Button>
                     </Col>
                     <Col sm='12' lg='6' className='search'>
-                        <FormInput onKeyUp={this.handleKeyPress} placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
+                        <FormInput value={this.state.search} onKeyUp={this.handleKeyPress} placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
+                        {this.state.results ? <button onClick={this.clear}>Clear Search</button> : null}
                     </Col>
                 </Row>
             </Container>

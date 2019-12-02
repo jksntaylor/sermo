@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import NewPost from './newpost';
 import Post from './post';
-import axios from 'axios';
 
 class Posts extends Component {
     constructor() {
@@ -12,16 +11,6 @@ class Posts extends Component {
             limit: 25,
             page: 1
         }
-    }
-
-    componentDidMount = () => {
-        this.reloadPosts();
-    }
-
-    reloadPosts = () => {
-        axios.get('/api/initialLoadPosts').then(res => {
-            this.props.updatePosts(res.data);
-        });
     }
 
     // handleSortPosts = () => {
@@ -40,7 +29,7 @@ class Posts extends Component {
     render() {
         if (this.props.posts) {
         var posts = this.props.posts.map(post => {
-            return <Post post={post} key={post.id} postID={post.id} reload={this.reloadPosts}/>
+            return <Post post={post} key={post.id} postID={post.id} reload={this.props.reload}/>
         })
         } else {
         posts = <h1>No posts available</h1>

@@ -83,6 +83,7 @@ a {
     }
 
     .search {
+        position: relative;
         input {
             height: 28px;
             margin-top: 10px;
@@ -96,6 +97,20 @@ a {
 
         .form-control:focus {
             border-color: #aaa;
+        }
+
+        button {
+            position: absolute;
+            height: 28px;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-radius: 10px;
+            top: 10px;
+            right: 15px;
+            background-color: #aaa;
+            color: white;
+            border: none
         }
     }
 }

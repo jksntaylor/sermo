@@ -8,6 +8,7 @@ import Auth from '../auth/auth';
 import { Container, Row, Col } from 'shards-react';
 import Header from './header';
 import Trending from './trending';
+import axios from 'axios';
 const socket = io();
 
 
@@ -21,20 +22,27 @@ class Home extends Component {
     componentDidMount() {
         const onlineUser = {username: this.props.user.username,
                             socket: socket.id}
-        if (onlineUser.username) {socket.emit('username', onlineUser)}
+        if (onlineUser.username) {socket.emit('username', onlineUser)};
+        this.reload();
     }
 
     updatePosts = posts => {
         this.setState({posts: posts})
     }
 
+    reload = () => {
+        axios.get('/api/initialLoadPosts').then(res => {
+            this.setState({posts: res.data})
+        });
+    }
+
     render() {
         return (
             <Container className='home-container'>
-                <Row><Header updatePosts={this.updatePosts}/></Row>
+                <Row><Header updatePosts={this.updatePosts} reload={this.reload}/></Row>
                 <Row>
                     <Col className='col trending' xs='12' sm='12' md='0' lg='3'><Trending/></Col>
-                    <Col className='col posts' xs='12' sm='12' md='8' lg='6'><Posts updatePosts={this.updatePosts} posts={this.state.posts}/></Col>
+                    <Col className='col posts' xs='12' sm='12' md='8' lg='6'><Posts updatePosts={this.updatePosts} posts={this.state.posts} reload={this.reload}/></Col>
                     <Col className='col right' xs='12' sm='12' md='4' lg='3'>
                         {this.props.isLoggedIn ? <User/> : <Auth/>}
                         {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
