@@ -163,7 +163,7 @@ a {
     display: none;
     .trending-container {
         height: calc(100vh - 100px);
-        overflow: visible;
+        overflow-y: scroll;
 
         h2 {
             font-size: 20px;
@@ -484,6 +484,15 @@ a {
                 }
             }
         }
+    }
+}
+
+.user {
+    position: relative;
+
+    .messaging-component-container {
+        position: absolute;
+        bottom: 0;
     }
 }
 
