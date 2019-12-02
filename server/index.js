@@ -15,6 +15,7 @@ const pc = require('./controllers/postcontroller.js')
 const cc = require('./controllers/commentcontroller.js')
 const vc = require('./controllers/votingcontroller.js')
 const mc = require('./controllers/messagingcontroller.js')
+const uc = require('./controllers/usercontroller.js')
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db);
@@ -94,7 +95,7 @@ app.get('/api/:postID/comments', cc.getPostComments)
 app.post('/api/deleteComment/:id', cc.deleteComment)
 app.post('/api/editComment/:id', cc.editComment)
 
-// // MESSAGING
+// MESSAGING
 app.post('/api/newMessageRequest', mc.newRequest)
 app.post('/api/acceptMessage', mc.acceptMessage),
 app.post('/api/rejectMessage', mc.rejectMessage)
@@ -103,6 +104,9 @@ app.get('/api/getPendingMessages', mc.getPendingMessages)
 app.get('/api/getOpenMessage/:room', mc.getOpenMessage)
 app.post('/api/sendMessage', mc.sendMessage)
 app.get('/api/messaging/searchUsers/:query', mc.searchUsers)
+
+// USER
+app.get('/api/getUserPosts/:id', uc.getUserPosts)
 
 // SOCKETS
 

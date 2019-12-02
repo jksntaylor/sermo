@@ -30,6 +30,10 @@ a {
     line-height: 14px;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .header-container {
     height: 100px;
     padding-top: 26px;
@@ -98,7 +102,6 @@ a {
 
 .home-container {
     .col {
-        overflow-y: scroll;
         padding-top: 10px;
     }
 }
@@ -155,7 +158,8 @@ a {
         }
 
         .trending-post {
-            height: 150px;
+            width: 100%;
+            padding-top: 100%;
             margin-bottom: 30px;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -292,7 +296,8 @@ a {
                     flex-direction: column;
                     img {
                         width: 100%;
-                        height: auto;
+                        max-height: 400px;
+                        object-fit: cover;
                     }
                 }
                 .post-info {
@@ -467,8 +472,19 @@ a {
     }
 }
 
+.modal-dialog {
+    width: 60%;
+    max-width: 1000px;
+}
+
 @media (min-width: 992px) {
     .trending {
         display: block;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1500px;
     }
 }

@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
 import Logout from './logout';
 import {connect} from 'react-redux';
+import axios from 'axios';
 
 class User extends Component {
     constructor() {
         super();
         this.state = {
-            
+            posts: []
         }
+    }
+
+    getUserPost = () => {
+        axios.get(`/api/getUserPosts/${this.props.user.id}`)
     }
 
     render() {

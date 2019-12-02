@@ -16,7 +16,6 @@ class Home extends Component {
         const onlineUser = {username: this.props.user.username,
                             socket: socket.id}
         if (onlineUser.username) {socket.emit('username', onlineUser)}
-        alert('This page is still a work in progress, please be patient with the layout :)')
     }
     render() {
         return (
