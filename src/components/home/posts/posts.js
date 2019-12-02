@@ -7,7 +7,6 @@ class Posts extends Component {
     constructor() {
         super();
         this.state = {
-            posts: [],
             filter: 'new',
             time: 'day',
             limit: 25,
@@ -21,28 +20,26 @@ class Posts extends Component {
 
     reloadPosts = () => {
         axios.get('/api/initialLoadPosts').then(res => {
-            this.setState({
-                posts: res.data
-            })
+            this.props.updatePosts(res.data);
         });
     }
 
-    handleSortPosts = () => {
-        const {filter, time, limit, page} = this.state;
-        axios.get(`/api/${filter}/${time}/${limit}/${page}`).then(res => {
-            this.setState({
-                posts: res.data
-            })
-        })
-    }
+    // handleSortPosts = () => {
+    //     const {filter, time, limit, page} = this.state;
+    //     axios.get(`/api/${filter}/${time}/${limit}/${page}`).then(res => {
+    //         this.setState({
+    //             posts: res.data
+    //         })
+    //     })
+    // }
 
-    updatePosts = arr => {
-        this.setState({posts: arr});
+    updatePosts = posts => {
+        this.props.updatePosts(posts);
     }
     
     render() {
-        if (this.state.posts) {
-        var posts = this.state.posts.map(post => {
+        if (this.props.posts) {
+        var posts = this.props.posts.map(post => {
             return <Post post={post} key={post.id} postID={post.id} reload={this.reloadPosts}/>
         })
         } else {
@@ -50,7 +47,7 @@ class Posts extends Component {
         } 
         return (
             <div className='posts-component-container'>
-                <NewPost posts={this.state.posts} updatePosts={this.updatePosts}/>
+                <NewPost posts={this.props.posts} updatePosts={this.props.updatePosts}/>
                 <div className='posts-container'>{posts}</div>
             </div>
         )

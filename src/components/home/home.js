@@ -12,18 +12,29 @@ const socket = io();
 
 
 class Home extends Component {
+    constructor() {
+        super();
+        this.state = {
+            posts: []
+        }
+    }
     componentDidMount() {
         const onlineUser = {username: this.props.user.username,
                             socket: socket.id}
         if (onlineUser.username) {socket.emit('username', onlineUser)}
     }
+
+    updatePosts = posts => {
+        this.setState({posts: posts})
+    }
+
     render() {
         return (
             <Container className='home-container'>
-                <Row><Header/></Row>
+                <Row><Header updatePosts={this.updatePosts}/></Row>
                 <Row>
                     <Col className='col trending' xs='12' sm='12' md='0' lg='3'><Trending/></Col>
-                    <Col className='col posts' xs='12' sm='12' md='8' lg='6'><Posts/></Col>
+                    <Col className='col posts' xs='12' sm='12' md='8' lg='6'><Posts updatePosts={this.updatePosts} posts={this.state.posts}/></Col>
                     <Col className='col right' xs='12' sm='12' md='4' lg='3'>
                         {this.props.isLoggedIn ? <User/> : <Auth/>}
                         {this.props.isLoggedIn ? <Messaging {...this.props} socket={socket}/> : null}
@@ -37,7 +48,8 @@ class Home extends Component {
 let mapStateToProps = state => {
     return {
         isLoggedIn: state.isLoggedIn,
-        user: state.user
+        user: state.user,
+        posts: state.posts
     }
 }
 

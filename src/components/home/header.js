@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Col, Container, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormInput, Row} from "shards-react";
+import axios from 'axios';
 // import axios from 'axios';
 
 class Header extends React.Component {
@@ -26,8 +27,19 @@ class Header extends React.Component {
         // axios.get()
     }
 
+    handleKeyPress = e => {
+        if (e.key === 'Enter') {
+                this.search()
+        } 
+    }
+
     search = () => {
-        
+        const {search} = this.state;
+        if (search==='')
+            return;
+        axios.get(`/api/searchPosts/${search}`).then(res => {
+            this.props.updatePosts(res.data);
+        });
     }
 
     render() {
@@ -60,7 +72,7 @@ class Header extends React.Component {
                         <Button outline theme='light'><h2>Update</h2><i className="ion-ios-refresh"></i></Button>
                     </Col>
                     <Col sm='12' lg='6' className='search'>
-                        <FormInput placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
+                        <FormInput onKeyUp={this.handleKeyPress} placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
                     </Col>
                 </Row>
             </Container>

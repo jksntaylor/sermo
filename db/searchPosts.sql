@@ -1,3 +1,4 @@
 SELECT * FROM reddit_posts
-WHERE title LIKE $1
-OR text LIKE $1;
+WHERE title ILIKE $1
+OR text ILIKE $1
+ORDER BY timems DESC;

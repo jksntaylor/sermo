@@ -2,10 +2,8 @@ const mql = require('@microlink/mql');
 
 module.exports = {
     newTextPost: async (req, res) => {
-        console.log('posting2');
         const db = req.app.get('db');
         const {title, text, anon} = req.body;
-        console.log(req.session)
         if (anon) {
             var {id} = req.session.user
             var username = 'anon'
@@ -16,7 +14,6 @@ module.exports = {
         const date = new Date();
         const time = date.getTime().toString();
         const newPost = await db.newPost([id, title, text, date, username, time, 'text', null, [0, id], [0]]);
-        console.log(newPost)
         return res.status(200).send(newPost)
     },
 
@@ -45,7 +42,6 @@ module.exports = {
         const time = date.getTime().toString();
         const {data} = await mql(link);
         const {title, image, url} = data;
-        console.log(image["url"]);
         const newPost = await db.newPost([id, title, url, date, username, time, 'link', image['url'], [0, id], [0]]);
 
         return res.status(200).send(newPost)
@@ -58,31 +54,37 @@ module.exports = {
         return res.status(200).send(posts);  
     },
 
-    sortPosts: async (req, res) => {
+    searchPosts: async (req, res) => {
         const db = req.app.get('db');
-        const currentDate = new Date;
-        const currentTime = currentDate.getTime();
-        const {filter, limit, page, time} = req.params;
-        const offset = page * limit
-        if (time==='day') {
-            var range = 86400000;
-        } else if (time==='week') {
-            range = 604800000;
-        } else if (time==='month') {
-            range = 18144000000 
-        } else {
-            range = 9999999999999
-        }
-        // console.log(req.params, currentDate, currentTime);
-        if (filter==='new') {
-            var posts = await db.getNewPosts([currentTime, range, limit, offset])
-        } else if (filter==='top') {
-            posts = await db.getTopPosts([currentTime, range, limit, offset])
-        } else {
-            posts = await db.getActivePosts([currentTime, range, limit, offset])
-        }
-        res.status(200).send(posts)
+        const search = `%${req.params.query}%`;
+        const posts = await db.searchPosts([search]);
+        res.status(200).send(posts);
     },
+
+    // sortPosts: async (req, res) => {
+    //     const db = req.app.get('db');
+    //     const currentDate = new Date;
+    //     const currentTime = currentDate.getTime();
+    //     const {filter, limit, page, time} = req.params;
+    //     const offset = page * limit
+    //     if (time==='day') {
+    //         var range = 86400000;
+    //     } else if (time==='week') {
+    //         range = 604800000;
+    //     } else if (time==='month') {
+    //         range = 18144000000 
+    //     } else {
+    //         range = 9999999999999
+    //     }
+    //     if (filter==='new') {
+    //         var posts = await db.getNewPosts([currentTime, range, limit, offset])
+    //     } else if (filter==='top') {
+    //         posts = await db.getTopPosts([currentTime, range, limit, offset])
+    //     } else {
+    //         posts = await db.getActivePosts([currentTime, range, limit, offset])
+    //     }
+    //     res.status(200).send(posts)
+    // },
 
     deletePost: async (req, res) => {
         const db = req.app.get('db');
