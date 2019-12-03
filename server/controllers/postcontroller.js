@@ -1,50 +1,27 @@
 const mql = require('@microlink/mql');
 
 module.exports = {
-    newTextPost: async (req, res) => {
+    newPost: async (req, res) => {
         const db = req.app.get('db');
-        const {title, text, anon} = req.body;
-        if (anon) {
-            var {id} = req.session.user
-            var username = 'anon'
+        const {title, content, link} = req.body;
+        const {type} = req.params;
+        const {id, username} = req.session.user;
+        const date = new Date();
+        const time = date.getTime().toString();
+        let newPost;
+
+        if (type==='text') {
+            newPost = await db.newPost([id, title, content, date, username, time, 'text', null, [0, id], [0]]);
+        } else if (type==='media') {
+            newPost = await db.newPost([id, title, null, date, username, time, 'media', link, [0,id], [0]]);
         } else {
-            var {id} = req.session.user;
-            var username = req.session.user.username;
-        }
-        const date = new Date();
-        const time = date.getTime().toString();
-        const newPost = await db.newPost([id, title, text, date, username, time, 'text', null, [0, id], [0]]);
-        return res.status(200).send(newPost)
-    },
+            const {data} = await mql(content);
+            const {image, url} = data;
+            const linkTitle = data.title;
+            newPost = await db.newPost([id, linkTitle, url, date, username, time, 'link', image['url'], [0,id], [0]]);
+        };
 
-    newMediaPost: async (req, res) => {
-        const db = req.app.get('db');
-        const {title, link, anon} = req.body
-        if (anon) {
-            var {id} = req.session.user
-            var username = 'anon'
-        } else {
-            var id = req.session.user.id;
-            var username = req.session.user.username;
-        }
-        const date = new Date();
-        const time = date.getTime().toString();
-        const newPost = await db.newPost([id, title, null, date, username, time, 'media', link, [0, id], [0]]);
-
-        return res.status(200).send(newPost)
-    },
-
-    newLinkPost: async (req, res) => {
-        const db = req.app.get('db');
-        const {link} = req.body;
-        let {id, username} = req.session.user;
-        const date = new Date();
-        const time = date.getTime().toString();
-        const {data} = await mql(link);
-        const {title, image, url} = data;
-        const newPost = await db.newPost([id, title, url, date, username, time, 'link', image['url'], [0, id], [0]]);
-
-        return res.status(200).send(newPost)
+        return res.status(200).send(newPost);
     },
 
     initialLoad: async (req, res) => {

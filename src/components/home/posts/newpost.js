@@ -48,7 +48,7 @@ class NewPost extends React.Component {
     }
 
     handleMediaLink = value => {
-        this.handleChange("media", value)
+        this.handleChange("content", value)
         this.setState({mediaType: "link"})
     }
 
@@ -86,9 +86,9 @@ class NewPost extends React.Component {
     
     render() {
         const { type, error, content } = this.state;
-        let submit = error ? <h4>{error}</h4> : <button>Post</button>;
-        let input = type==='text' ? <textarea placeholder="What's on Your Mind?" onChange={e => {this.handleChange('text', e.target.value)}}/>
-        : type==='link' ? <input value={content} placeholder="Link an Article Here!" onChange={e => {this.handleChange('link', e.target.value)}}/>
+        let submit = error ? <h4>{error}</h4> : <button onClick={this.post}>Post</button>;
+        let input = type==='text' ? <textarea placeholder="What's on Your Mind?" onChange={e => {this.handleChange('content', e.target.value)}}/>
+        : type==='link' ? <input value={content} placeholder="Link an Article Here!" onChange={e => {this.handleChange('content', e.target.value)}}/>
         :   <div>
             <input type="file" accept="image/*, video/*" onChange={e => {this.checkMedia(e)}}/>
             <h2>or</h2>

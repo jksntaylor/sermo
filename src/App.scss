@@ -162,7 +162,6 @@ a {
 .trending {
     display: none;
     .trending-container {
-        height: calc(100vh - 100px);
         overflow-y: scroll;
 
         h2 {
@@ -183,11 +182,14 @@ a {
 }
 
 .posts {
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .posts-component-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
     .newpost {
         height: 40px;
@@ -196,8 +198,7 @@ a {
         border-radius: 10px;
         display: flex;
         align-items: center;
-        margin-right: 15px;
-        margin-left: 15px;
+        margin-bottom: 30px;
 
         .post-text-button {
             width: calc(100% - 80px);
@@ -232,22 +233,17 @@ a {
     }
     
     .posts-container {
-        height: calc(100vh - 150px);
         overflow-y: scroll;
-        padding-top: 10px;
-        margin-top: 10px;
-        padding-right: 15px;
-        padding-left: 15px;
         
         .post-container {
             border: 1px solid #ccc;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             padding: 10px;
             display: flex;
 
             .voting-container {
-                padding-right: 5px;
+                padding-right: 10px;
                 margin-right: 10px;
                 border-right: 1px solid #ccc;
                 text-align: center;
@@ -501,8 +497,15 @@ a {
 }
 
 @media (min-width: 992px) {
+    .home-container {
+        height: 100vh;
+        overflow: hidden;
+    }
     .trending {
         display: block;
+    }
+    .posts {
+        height: calc(100vh - 100px);
     }
 }
 

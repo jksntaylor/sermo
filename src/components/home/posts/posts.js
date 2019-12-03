@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import NewPost from './newpost';
 import Post from './post';
 
@@ -36,11 +37,17 @@ class Posts extends Component {
         } 
         return (
             <div className='posts-component-container'>
-                <NewPost posts={this.props.posts} updatePosts={this.props.updatePosts}/>
+                {this.props.isLoggedIn ? <NewPost posts={this.props.posts} updatePosts={this.props.updatePosts}/>: null}
                 <div className='posts-container'>{posts}</div>
             </div>
         )
     }
 }
 
-export default Posts;
+let mapStateToProps = state => {
+    return {
+        isLoggedIn: state.isLoggedIn
+    }
+}
+
+export default connect(mapStateToProps)(Posts);
