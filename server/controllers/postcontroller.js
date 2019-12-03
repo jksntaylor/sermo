@@ -12,8 +12,10 @@ module.exports = {
 
         if (type==='text') {
             newPost = await db.newPost([id, title, content, date, username, time, 'text', null, [0, id], [0]]);
-        } else if (type==='media') {
+        } else if (type==='mediaFile') {
             newPost = await db.newPost([id, title, null, date, username, time, 'media', link, [0,id], [0]]);
+        } else if (type==='mediaLink') {
+            newPost = await db.newPost([id, title, null, date, username, time, 'media', content, [0,id], [0]]);
         } else {
             const {data} = await mql(content);
             const {image, url} = data;

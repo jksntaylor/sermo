@@ -363,6 +363,11 @@ a {
                 padding: 20px;
                 max-height: 90vh;
                 overflow-y: scroll;
+                .voting-container {
+                    h1 {
+                        margin: 0 10px;
+                    }
+                }
                 .post-header {
                     display: flex;
                     justify-content: space-between;
@@ -378,10 +383,17 @@ a {
                     }
                 }
                 .post-content {
+                    display: flex;
+                    justify-content: center;
                     p {
                         font-size: 14px;
                         letter-spacing: 1px;
                         line-height: 16px;
+                    }
+
+                    img {
+                        max-height: 75vh;
+                        width: auto;
                     }
 
                     .content-link {

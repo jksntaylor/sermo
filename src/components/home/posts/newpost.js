@@ -59,7 +59,7 @@ class NewPost extends React.Component {
 
     post = () => {
         const {title, content, type, mediaType} = this.state;
-        if (!title) {
+        if (!title&&type!=='link') {
             this.setState({error: "Don't Forget a Title!"});
             return;
         }
@@ -101,7 +101,7 @@ class NewPost extends React.Component {
                 <button className='post-link-button' onClick={() => {this.toggle('link')}}><i className="ion-ios-link"></i></button>
                 <Modal open={this.state.modal} toggle={() => {this.toggle('text')}}>
                     <div className="newpost-content">
-                        <input placeholder='Title' onChange={e => {this.handleChange('title', e.target.value)}} maxLength='50'/>
+                        {type==="link" ? null : <input placeholder='Title' onChange={e => {this.handleChange('title', e.target.value)}} maxLength='50'/>}
                         {input}
                         {submit}
                     </div>
