@@ -251,7 +251,6 @@ a {
                 margin-right: 10px;
                 border-right: 1px solid #ccc;
                 text-align: center;
-                flex-grow: 1;
                 h1 {
                     line-height: 24px;
                 }
@@ -264,7 +263,7 @@ a {
             }
 
             .teaser-container {
-               flex-grow: 9;
+               flex-grow: 1;
                 h2 {
                     font-weight: 600;
                     font-size: 20px;

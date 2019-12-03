@@ -1,151 +1,106 @@
 import React, {Component} from 'react';
-import Modal from 'react-modal';
+import { Modal } from 'shards-react';
 import axios from 'axios';
-
-Modal.setAppElement('#root');
 
 class NewPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalIsOpen: false,
-            title: '',
-            text: '',
-            mediaFile: "",
-            link: '',
-            postType: 'text',
-            tooBig: false,
-            anon: false,
-            error: '',
-            loading: false
+            modal: false,
+            title: "",
+            content: "",
+            type: "text",
+            error: ""
         }
     }
 
-
-    openModalText = () => {
-        this.setState({modalIsOpen: true, postType: 'text', postButtons: false});
-    }
-    
-    openModalMedia = () => {
-        this.setState({modalIsOpen: true, postType: 'media', postButtons: false});
-    }
-
-    openModalLink = () => {
-        this.setState({modalIsOpen: true, postType: 'link', postButtons: false})
-    }
-    
-    closeModal = () => {
-        this.setState({modalIsOpen: false,
-                       title: '',
-                       text: '',
-                       mediaFile: "",
-                       link: '',
-                       postType: 'text',
-                       postButtons: false,
-                       tooBig: false,
-                       anon: false,
-                       error: '',
-                       loading: false});
-    }
-    
-    handleTitleChange = e => {
-        this.setState({
-            title: e.target.value
-        })
-    }
- 
-    handleTextChange = e => {
-        this.setState({
-            text: e.target.value
-        })
-    }
-    
-    handleLinkChange = e => {
-        this.setState({link: e.target.value})
+    toggle = type => {
+        this.setState({ modal: !this.state.modal,
+                        title: "",
+                        content: "",
+                        type: type,
+                        error: ""})
     }
 
-    handleMediaChange = e => {
-        if (e.target.files[0].size>4999999) {
-            this.setState({tooBig: true});
-            return null;
-        }
-
-        this.setState({
-            mediaFile: e.target.files[0],
-            tooBig: false
-        }, () => {
-        const fileToBase64 = (file) => {
-            return new Promise(resolve => {
-              var reader = new FileReader();
-              reader.onload = function(event) {
-                resolve(event.target.result);
-              };
-              reader.readAsDataURL(file);
-            });
-          };
-          fileToBase64(this.state.mediaFile).then(v => {
-              this.setState({mediaFile: v.slice(v.indexOf(',')+1)})
-          });
-        })
+    handleChange = (key, value) => {
+        this.setState({[key]: value})
     }
-   
-    post = () => {
-        if (!this.state.title) {
-            this.setState({error: 'title'});
+
+    checkMedia = e => {
+        let file = e.target.files[0];
+        if (file.size>4999999) {
+            this.setState({error: 'bigFile'});
             return;
         }
-        const {title, text, mediaFile, postType, link, anon} = this.state
-        if (postType==='text') {
-            if (!this.state.text) {
-                this.setState({error: 'text'});
-                return;
-            }
-            this.setState({loading: true})
-            axios.post('/api/newTextPost', {title, text, anon}).then(res => {
-                this.props.updatePosts(res.data);
-                this.closeModal();
-            })
-        } else if (postType==='link') {
-            if (!this.state.link) {
-                this.setState({error: 'link'});
-                return;
-            }
-            this.setState({loading: true})
-            axios.post('/api/newLinkPost', {title, link, anon}).then(res => {
-                this.props.updatePosts(res.data);
-                this.closeModal();
-            })
-        } else {
-            if (!this.state.mediaFile) {
-                this.setState({error: 'media'});
-                return;
-            }
-            this.setState({loading: true})
-            var headers = {
-                'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
-            }
-            axios.post('https://api.imgur.com/3/image', {"image": mediaFile}, {'headers': headers}).then(res => {
-                const {link, in_gallery} = res.data.data;
-                console.log(link, in_gallery)
-                axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
-                    this.props.updatePosts(res.data);
-                    this.closeModal();
-                })
-            }).catch(err => {
-                console.log(err)
-            })
-        }
+        const f2b64 = file => {
+            return new Promise(resolve => {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    resolve(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+        f2b64(file).then(v => {
+            this.setState({content: v.slice(v.indexOf(',')+1)})
+        });
     }
+   
+    // post = () => {
+    //     if (!this.state.title) {
+    //         this.setState({error: 'title'});
+    //         return;
+    //     }
+    //     const {title, text, mediaFile, postType, link, anon} = this.state
+    //     if (postType==='text') {
+    //         if (!this.state.text) {
+    //             this.setState({error: 'text'});
+    //             return;
+    //         }
+    //         this.setState({loading: true})
+    //         axios.post('/api/newTextPost', {title, text, anon}).then(res => {
+    //             this.props.updatePosts(res.data);
+    //             this.closeModal();
+    //         })
+    //     } else if (postType==='link') {
+    //         if (!this.state.link) {
+    //             this.setState({error: 'link'});
+    //             return;
+    //         }
+    //         this.setState({loading: true})
+    //         axios.post('/api/newLinkPost', {title, link, anon}).then(res => {
+    //             this.props.updatePosts(res.data);
+    //             this.closeModal();
+    //         })
+    //     } else {
+    //         if (!this.state.mediaFile) {
+    //             this.setState({error: 'media'});
+    //             return;
+    //         }
+    //         this.setState({loading: true})
+    //         var headers = {
+    //             'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
+    //         }
+    //         axios.post('https://api.imgur.com/3/image', {"image": mediaFile}, {'headers': headers}).then(res => {
+    //             const {link, in_gallery} = res.data.data;
+    //             console.log(link, in_gallery)
+    //             axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
+    //                 this.props.updatePosts(res.data);
+    //                 this.closeModal();
+    //             })
+    //         }).catch(err => {
+    //             console.log(err)
+    //         })
+    //     }
+    // }
     
     render() {
-
-        if (this.state.tooBig) {
-            var tooBig = 'Please choose a smaller file (less than 5MB)';
-        } else if (this.state.loading) {
-            tooBig = <div className='loading-animation'></div>
+        let submit;
+        const {error} = this.state
+        if (error) {
+            submit = <h4>{error}</h4>
         } else {
-            tooBig = <button onClick={this.post}>Post</button>;
-            
+            submit = <button>Post</button>
         }
 
         if (this.state.postType==='text') {
@@ -157,19 +112,16 @@ class NewPost extends Component {
         }
         return (
             <div className='newpost'>
-                    <button className='post-text-button' onClick={this.openModalText}>Create Post</button>
-                    <button className='post-media-button' onClick={this.openModalMedia}><i className="ion-ios-images"></i></button>
-                    <button className='post-link-button' onClick={this.openModalLink}><i className="ion-ios-link"></i></button>
-                <Modal
-                isOpen={this.state.modalIsOpen}
-                onRequestClose={this.closeModal}
-                >
+                    <button className='post-text-button' onClick={() => {this.toggle()}}>Create Post</button>
+                    <button className='post-media-button' onClick={() => {this.toggle()}}><i className="ion-ios-images"></i></button>
+                    <button className='post-link-button' onClick={() => {this.toggle()}}><i className="ion-ios-link"></i></button>
+                <Modal open={this.state.modal} toggle={() => {this.toggle('text')}}>
         
                 <div className="newpost-content">
                     <button onClick={this.closeModal} className='cancel-post'>x</button>
                     <input className={this.state.error==='title' ? 'error' : null} placeholder='Title' onChange={this.handleTitleChange} maxLength='50'/>
                     {input}
-                    {tooBig}
+                    {submit}
                 </div>
                 </Modal>
             </div>

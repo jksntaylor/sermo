@@ -47,7 +47,6 @@ module.exports = {
         return res.status(200).send(newPost)
     },
 
-
     initialLoad: async (req, res) => {
         const db = req.app.get('db');
         const posts = await db.initialGetPosts([20, 0]);
