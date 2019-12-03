@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Modal } from 'shards-react';
 import axios from 'axios';
 
-class NewPost extends Component {
+class NewPost extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,6 +10,7 @@ class NewPost extends Component {
             title: "",
             content: "",
             type: "text",
+            mediaType: "file",
             error: ""
         }
     }
@@ -29,12 +30,12 @@ class NewPost extends Component {
     checkMedia = e => {
         let file = e.target.files[0];
         if (file.size>4999999) {
-            this.setState({error: 'bigFile'});
+            this.setState({error: 'Please choose a file smaller than 5MB'});
             return;
         }
         const f2b64 = file => {
             return new Promise(resolve => {
-                var reader = new FileReader();
+                let reader = new FileReader();
                 reader.onload = function(e) {
                     resolve(e.target.result);
                 };
@@ -42,87 +43,68 @@ class NewPost extends Component {
             });
         };
         f2b64(file).then(v => {
-            this.setState({content: v.slice(v.indexOf(',')+1)})
+            this.setState({content: v.slice(v.indexOf(",")+1), mediaType: "file"})
         });
     }
-   
-    // post = () => {
-    //     if (!this.state.title) {
-    //         this.setState({error: 'title'});
-    //         return;
-    //     }
-    //     const {title, text, mediaFile, postType, link, anon} = this.state
-    //     if (postType==='text') {
-    //         if (!this.state.text) {
-    //             this.setState({error: 'text'});
-    //             return;
-    //         }
-    //         this.setState({loading: true})
-    //         axios.post('/api/newTextPost', {title, text, anon}).then(res => {
-    //             this.props.updatePosts(res.data);
-    //             this.closeModal();
-    //         })
-    //     } else if (postType==='link') {
-    //         if (!this.state.link) {
-    //             this.setState({error: 'link'});
-    //             return;
-    //         }
-    //         this.setState({loading: true})
-    //         axios.post('/api/newLinkPost', {title, link, anon}).then(res => {
-    //             this.props.updatePosts(res.data);
-    //             this.closeModal();
-    //         })
-    //     } else {
-    //         if (!this.state.mediaFile) {
-    //             this.setState({error: 'media'});
-    //             return;
-    //         }
-    //         this.setState({loading: true})
-    //         var headers = {
-    //             'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`
-    //         }
-    //         axios.post('https://api.imgur.com/3/image', {"image": mediaFile}, {'headers': headers}).then(res => {
-    //             const {link, in_gallery} = res.data.data;
-    //             console.log(link, in_gallery)
-    //             axios.post('/api/newMediaPost', {title, link, anon}).then(res => {
-    //                 this.props.updatePosts(res.data);
-    //                 this.closeModal();
-    //             })
-    //         }).catch(err => {
-    //             console.log(err)
-    //         })
-    //     }
-    // }
+
+    handleMediaLink = value => {
+        this.handleChange("media", value)
+        this.setState({mediaType: "link"})
+    }
+
+    finishPost = data => {
+        this.props.updatePosts(data);
+        this.toggle('text');
+    }
+
+    post = () => {
+        const {title, content, type, mediaType} = this.state;
+        if (!title) {
+            this.setState({error: "Don't Forget a Title!"});
+            return;
+        }
+        if (!content) {
+            this.setState({error: "You Need Something to Post!"});
+            return;
+        }
+        if (type==='text') {
+            axios.post('/api/newPost/text', {title, content}).then(res => {this.finishPost(res.data)})
+        } else if (type==='media') {
+            if (mediaType==='link') {
+                axios.post('/api/newPost/mediaLink', {title, content}).then(res => {this.finishPost(res.data)})
+            } else {
+                const headers = {'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`}
+                axios.post('https://api.imgur.com/3/image', {"image": content}, {"headers": headers}).then(res => {
+                    const {link} = res.data.data;
+                    axios.post('/api/newPost/mediaFile', {title, link}).then(res => {this.finishPost(res.data)})
+                })
+            }
+        } else {
+            axios.post('/api/newPost/link', {title, content}).then(res => {this.finishPost(res.data)})
+        };
+    }
     
     render() {
-        let submit;
-        const {error} = this.state
-        if (error) {
-            submit = <h4>{error}</h4>
-        } else {
-            submit = <button>Post</button>
-        }
-
-        if (this.state.postType==='text') {
-            var input = <textarea className={this.state.error==='text' ? 'error' : null} placeholder='Text' onChange={this.handleTextChange}/>
-        } else if (this.state.postType==='link') {
-            input = <input className={`link-input ${this.state.error==='link' ? 'error' : null}`} value={this.state.link} placeholder='image url' onChange={this.handleLinkChange}/>
-        } else {
-            input = <input className={`file-input ${this.state.error==='media' ? 'error' : null}`} type='file' accept="image/*, video/*" onChange={this.handleMediaChange}/>
-        }
+        const { type, error, content } = this.state;
+        let submit = error ? <h4>{error}</h4> : <button>Post</button>;
+        let input = type==='text' ? <textarea placeholder="What's on Your Mind?" onChange={e => {this.handleChange('text', e.target.value)}}/>
+        : type==='link' ? <input value={content} placeholder="Link an Article Here!" onChange={e => {this.handleChange('link', e.target.value)}}/>
+        :   <div>
+            <input type="file" accept="image/*, video/*" onChange={e => {this.checkMedia(e)}}/>
+            <h2>or</h2>
+            <input value={content} placeholder="Link an Image Here!" onChange={e => {this.handleMediaLink(e.target.value)}}/>
+            </div>;
         return (
             <div className='newpost'>
-                    <button className='post-text-button' onClick={() => {this.toggle()}}>Create Post</button>
-                    <button className='post-media-button' onClick={() => {this.toggle()}}><i className="ion-ios-images"></i></button>
-                    <button className='post-link-button' onClick={() => {this.toggle()}}><i className="ion-ios-link"></i></button>
+                <button className='post-text-button' onClick={() => {this.toggle('text')}}>Create Post</button>
+                <button className='post-media-button' onClick={() => {this.toggle('media')}}><i className="ion-ios-images"></i></button>
+                <button className='post-link-button' onClick={() => {this.toggle('link')}}><i className="ion-ios-link"></i></button>
                 <Modal open={this.state.modal} toggle={() => {this.toggle('text')}}>
-        
-                <div className="newpost-content">
-                    <button onClick={this.closeModal} className='cancel-post'>x</button>
-                    <input className={this.state.error==='title' ? 'error' : null} placeholder='Title' onChange={this.handleTitleChange} maxLength='50'/>
-                    {input}
-                    {submit}
-                </div>
+                    <div className="newpost-content">
+                        <input placeholder='Title' onChange={e => {this.handleChange('title', e.target.value)}} maxLength='50'/>
+                        {input}
+                        {submit}
+                    </div>
                 </Modal>
             </div>
         );
