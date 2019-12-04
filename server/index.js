@@ -19,7 +19,7 @@ const uc = require('./controllers/usercontroller.js')
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db);
-    console.log("i'm a lead farmer muthafucka!");
+    console.log("database connection active");
 });
 
 app.use(bodyParser.json());
@@ -84,6 +84,7 @@ app.get('/api/initialLoadPosts', pc.initialLoad)
 // app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
 app.post('/api/deletePost/:id', pc.deletePost)
 app.get('/api/searchPosts/:query', pc.searchPosts)
+app.get('/api/trending', pc.getTrending)
 
 //VOTING
 app.post('/api/:postID/voting', vc.updateVoting)
@@ -110,5 +111,5 @@ app.get('/api/getUserPosts/:id', uc.getUserPosts)
 // SOCKETS
 
 http.listen(SERVER_PORT, () => {
-    console.log('i need some goddamn jellybeans', SERVER_PORT)
+    console.log('sermo listening on', SERVER_PORT)
 })

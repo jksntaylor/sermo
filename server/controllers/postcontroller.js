@@ -39,6 +39,12 @@ module.exports = {
         res.status(200).send(posts);
     },
 
+    getTrending: async (req, res) => {
+        const db = req.app.get('db');
+        const trending = await db.getTrending();
+        res.status(200).send(trending)
+    },
+
     // sortPosts: async (req, res) => {
     //     const db = req.app.get('db');
     //     const currentDate = new Date;
