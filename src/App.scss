@@ -559,9 +559,12 @@ a {
                 padding: 10px;
                 margin-bottom: 10px;
                 overflow: hidden;
-
+                p, a {
+                    display: none;
+                }
                 h2 {
                     font-weight: 600;
+                    line-height: 24px;
                 }
                 img {
                     display: none;

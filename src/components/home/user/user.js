@@ -33,7 +33,7 @@ class User extends Component {
                     <Logout />
                 </div>
                 <div className='user-posts'>
-                    <h1>My Recent Posts</h1>
+                    <h1>Recent Posts</h1>
                     {posts}
                 </div>
             </div>
