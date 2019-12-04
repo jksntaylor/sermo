@@ -14,7 +14,7 @@ class Logout extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.logout}><i className='ion-md-exit'/></button>
+                <button onClick={this.logout}><h2>Logout</h2><i className='ion-md-exit'/></button>
             </div>
         )
     }
