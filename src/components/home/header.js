@@ -85,7 +85,7 @@ class Header extends React.Component {
                                 <DropdownItem onClick={() => {this.handleChange('time', 'All Time')}} >All Time</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>}
-                        <Button outline theme='light'><h2>Update</h2><i className="ion-ios-refresh"></i></Button>
+                        <Button outline theme='light' onClick={this.filter}><h2>Update</h2><i className="ion-ios-refresh"></i></Button>
                     </Col>
                     <Col sm='12' lg='6' className='search'>
                         <FormInput value={this.state.search} onKeyUp={this.handleKeyPress} placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>

@@ -41,47 +41,26 @@ module.exports = {
 
     getTrending: async (req, res) => {
         const db = req.app.get('db');
-        const trending = await db.getTrending();
+        const trending = await db.getTrendingNews();
         res.status(200).send(trending)
     },
 
     sortPosts: async (req, res) => {
         const db = req.app.get('db');
         const {type, time} = req.body;
+        let posts;
         const currentDate = new Date();
         const currentTime = currentDate.getTime();
-        let range = time==='Today' ? 86400000 : 0;
-
-        if (type==='Newest') {
-            
+        let range = time==='Today' ? 86400000 : time==='This Week' ? 604800000 : time==='This Month' ? 18144000000 : 1814400000000;
+        if (type==='Trending') {
+            posts = await db.getTopPosts([currentTime, 86400000]);
+        } else if (type==='Most Comments') {
+            posts = await db.getActivePosts([currentTime, range]);
+        } else {
+            posts = await db.getTopPosts([currentTime, range])
         }
         res.status(200).send(posts)
     },
-
-    // sortPosts: async (req, res) => {
-    //     const db = req.app.get('db');
-    //     const currentDate = new Date;
-    //     const currentTime = currentDate.getTime();
-    //     const {filter, limit, page, time} = req.params;
-    //     const offset = page * limit
-    //     if (time==='day') {
-    //         var range = 86400000;
-    //     } else if (time==='week') {
-    //         range = 604800000;
-    //     } else if (time==='month') {
-    //         range = 18144000000 
-    //     } else {
-    //         range = 9999999999999
-    //     }
-    //     if (filter==='new') {
-    //         var posts = await db.getNewPosts([currentTime, range, limit, offset])
-    //     } else if (filter==='top') {
-    //         posts = await db.getTopPosts([currentTime, range, limit, offset])
-    //     } else {
-    //         posts = await db.getActivePosts([currentTime, range, limit, offset])
-    //     }
-    //     res.status(200).send(posts)
-    // },
 
     deletePost: async (req, res) => {
         const db = req.app.get('db');
