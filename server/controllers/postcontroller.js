@@ -45,6 +45,19 @@ module.exports = {
         res.status(200).send(trending)
     },
 
+    sortPosts: async (req, res) => {
+        const db = req.app.get('db');
+        const {type, time} = req.body;
+        const currentDate = new Date();
+        const currentTime = currentDate.getTime();
+        let range = time==='Today' ? 86400000 : 0;
+
+        if (type==='Newest') {
+            
+        }
+        res.status(200).send(posts)
+    },
+
     // sortPosts: async (req, res) => {
     //     const db = req.app.get('db');
     //     const currentDate = new Date;

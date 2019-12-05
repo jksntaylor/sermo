@@ -81,7 +81,7 @@ app.get('/api/checkAuth', ac.checkAuth);
 //POSTS
 app.post('/api/newPost/:type', pc.newPost)
 app.get('/api/initialLoadPosts', pc.initialLoad)
-// app.get('/api/:filter/:time/:limit/:page', pc.sortPosts)
+app.get('/api/sortPosts', pc.sortPosts)
 app.post('/api/deletePost/:id', pc.deletePost)
 app.get('/api/searchPosts/:query', pc.searchPosts)
 app.get('/api/trending', pc.getTrending)

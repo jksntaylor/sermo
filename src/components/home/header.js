@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Col, Container, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormInput, Row} from "shards-react";
 import axios from 'axios';
-// import axios from 'axios';
 
 class Header extends React.Component {
     constructor() {
@@ -25,7 +24,15 @@ class Header extends React.Component {
     }
 
     filter = () => {
-        // axios.get()
+        const { type, time } = this.state;
+        if (type==='Newest') {
+            this.clear();
+        } else {
+            this.setState({search: '', results: false});
+            axios.get('/api/sortPosts', {type, time}).then(res => {
+                this.props.updatePosts(res.data)
+            })
+        }
     }
 
     handleKeyPress = e => {
