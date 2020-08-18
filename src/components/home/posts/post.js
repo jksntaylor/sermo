@@ -26,7 +26,7 @@ class Post extends Component {
     toggle2 = () => {
         this.setState({modal2: !this.state.modal2})
     }
-    
+
     handleNewComment = () => {
         axios.get(`/api/${this.state.post.id}/comments`).then(res => {
             this.setState({comments: res.data, commentCount: res.data.length});
@@ -86,6 +86,7 @@ class Post extends Component {
         var linkDots, dots, teaser, content;
 
         let postInfo =  <div className='post-info'>
+                            {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
                             <h6>{author}</h6>
                             <h6>{elapsedTime}</h6>
                             <h6>{this.state.commentCount} comments</h6>
@@ -94,12 +95,12 @@ class Post extends Component {
         dots = posttype==='text'&&text.length>200 ? '...' : null;
         linkDots = posttype==='link'&&text.length>40 ? '...' : null;
 
-        teaser = posttype==='text' ? 
+        teaser = posttype==='text' ?
         <div className='text'>
             <h2>{title}</h2>
             <p>{text.slice(0,200)}{dots}</p>
         </div>
-        : posttype==='link' ? 
+        : posttype==='link' ?
         <div className='link'>
             <div className='link-info'>
                 <h2>{title}</h2>
@@ -114,7 +115,7 @@ class Post extends Component {
         </div>
 
         content = posttype==='text' ?
-        <p>{text}</p> : posttype==='link' ? 
+        <p>{text}</p> : posttype==='link' ?
         <div className='content-link'>
             <a href={text} target='_blank' rel='noopener noreferrer'>{text}</a>
             <a href={text} target='_blank' rel='noopener noreferrer'><img alt={title} src={media}/></a>
@@ -123,7 +124,6 @@ class Post extends Component {
 
         return (
             <div className='post-container'>
-                {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
                 <div className='teaser-container' onClick={this.toggle}>
                     {teaser}
                     {postInfo}
@@ -144,7 +144,6 @@ class Post extends Component {
                             {content}
                         </div>
                         <div className='infovoting'>
-                            {this.props.isLoggedIn ? <Voting upvoters={upvoters} downvoters={downvoters} postID={this.state.post.id} uservote={this.state.uservote} handleUservoteChange={this.handleUservoteChange}/> : null}
                             {postInfo}
                         </div>
                         <NewComment parentIsPost={true} parentID={this.props.postID} postID={this.props.postID} handleNewComment={this.handleNewComment}/>

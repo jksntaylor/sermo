@@ -38,7 +38,7 @@ class Header extends React.Component {
     handleKeyPress = e => {
         if (e.key === 'Enter') {
                 this.search()
-        } 
+        }
     }
 
     clear = () => {
@@ -65,6 +65,10 @@ class Header extends React.Component {
                     <Col sm='3' lg='2' className='title'>
                         <h1>Sermo</h1>
                     </Col>
+                    <Col sm='12' lg='6' className='search'>
+                        <FormInput value={this.state.search} onKeyUp={this.handleKeyPress} placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
+                        {this.state.results ? <button onClick={this.clear}>Clear Search</button> : null}
+                    </Col>
                     <Col sm='9' lg='4' className='filters'>
                         <Dropdown open={this.state.typeMenu} toggle={() => {this.toggle('typeMenu')}}>
                             <DropdownToggle outline theme='light'><h2>{this.state.type}</h2><i className="ion-md-arrow-dropdown"></i></DropdownToggle>
@@ -86,10 +90,6 @@ class Header extends React.Component {
                             </DropdownMenu>
                         </Dropdown>}
                         <Button outline theme='light' onClick={this.filter}><h2>Update</h2><i className="ion-ios-refresh"></i></Button>
-                    </Col>
-                    <Col sm='12' lg='6' className='search'>
-                        <FormInput value={this.state.search} onKeyUp={this.handleKeyPress} placeholder='Search Sermo' onChange={e => {this.handleChange('search', e.target.value)}}/>
-                        {this.state.results ? <button onClick={this.clear}>Clear Search</button> : null}
                     </Col>
                 </Row>
             </Container>
